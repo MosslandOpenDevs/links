@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mossland Official Links</title>
+    <meta
+      name="description"
+      content="Official Mossland channels, ecosystem surfaces, and market links."
+    />
+    <link rel="canonical" href="https://links.moss.land/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Mossland Official Links" />
+    <meta
+      property="og:description"
+      content="Official Mossland channels, ecosystem surfaces, and market links."
+    />
+    <meta property="og:url" content="https://links.moss.land/" />
+    <meta name="twitter:card" content="summary" />
+    <style>
+      :root {
+        --bg: #f5f1e8;
+        --bg-deep: #ece3d3;
+        --panel: rgba(255, 251, 244, 0.84);
+        --panel-strong: rgba(255, 251, 244, 0.96);
+        --line: rgba(34, 40, 28, 0.1);
+        --text: #1d241b;
+        --muted: #6d7365;
+        --accent: #1f3b2b;
+        --accent-soft: #e5dcc9;
+        --shadow: 0 30px 80px rgba(44, 46, 30, 0.12);
+        --radius-xl: 32px;
+        --radius-lg: 22px;
+        --radius-md: 16px;
+        --display: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+        --body: "Avenir Next", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR",
+          sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: var(--body);
+        color: var(--text);
+        background:
+          radial-gradient(circle at top, rgba(255, 255, 255, 0.75), transparent 36%),
+          radial-gradient(circle at right top, rgba(214, 191, 146, 0.18), transparent 22%),
+          linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(rgba(29, 36, 27, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(29, 36, 27, 0.035) 1px, transparent 1px);
+        background-size: 30px 30px;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5), transparent 90%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        width: min(760px, calc(100% - 24px));
+        margin: 0 auto;
+        padding: 24px 0 56px;
+      }
+
+      .shell {
+        position: relative;
+        overflow: hidden;
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 40px;
+        background: linear-gradient(180deg, rgba(255, 252, 247, 0.96), rgba(248, 242, 231, 0.82));
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(20px);
+      }
+
+      .shell::after {
+        content: "";
+        position: absolute;
+        top: -120px;
+        right: -80px;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(31, 59, 43, 0.1), transparent 72%);
+      }
+
+      .topbar {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .brand-mark {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        border-radius: 15px;
+        background: linear-gradient(135deg, #233b2f, #14231b);
+        color: #f8f3ea;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+      }
+
+      .brand-copy strong {
+        display: block;
+        font-size: 1rem;
+      }
+
+      .brand-copy span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .nav {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .nav a {
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(29, 36, 27, 0.06);
+        background: rgba(255, 255, 255, 0.46);
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .hero {
+        position: relative;
+        z-index: 1;
+        padding: 22px 8px 18px;
+        text-align: center;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(29, 36, 27, 0.08);
+        background: rgba(255, 255, 255, 0.5);
+        color: var(--muted);
+        font-size: 0.83rem;
+        letter-spacing: 0.04em;
+      }
+
+      h1 {
+        margin: 18px 0 10px;
+        font-family: var(--display);
+        font-size: clamp(2.7rem, 8vw, 4.9rem);
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+      }
+
+      .hero p {
+        width: min(480px, 100%);
+        margin: 0 auto;
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.7;
+      }
+
+      .hero-actions {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+      }
+
+      .hero-actions a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 148px;
+        padding: 14px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+
+      .hero-actions a:first-child {
+        background: linear-gradient(135deg, #233b2f, #14231b);
+        color: #f8f3ea;
+      }
+
+      .hero-actions a:last-child {
+        border: 1px solid rgba(29, 36, 27, 0.08);
+        background: rgba(255, 255, 255, 0.54);
+      }
+
+      .sections {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      .section {
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-xl);
+        background: var(--panel);
+      }
+
+      .section-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .section-head h2 {
+        margin: 0;
+        font-family: var(--display);
+        font-size: 1.75rem;
+        letter-spacing: -0.03em;
+      }
+
+      .section-head p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 16px 18px;
+        border: 1px solid rgba(29, 36, 27, 0.08);
+        border-radius: var(--radius-lg);
+        background: var(--panel-strong);
+        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+      }
+
+      .link:hover,
+      .link:focus-visible {
+        transform: translateY(-1px);
+        border-color: rgba(31, 59, 43, 0.18);
+        box-shadow: 0 18px 32px rgba(44, 46, 30, 0.08);
+      }
+
+      .link-copy {
+        min-width: 0;
+      }
+
+      .link-copy strong {
+        display: block;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .link-copy span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 0.88rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .chip {
+        flex: 0 0 auto;
+        padding: 8px 11px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+
+      .footer {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+        padding: 8px 6px 0;
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          width: min(100% - 16px, 760px);
+          padding-top: 12px;
+        }
+
+        .shell {
+          padding: 16px;
+          border-radius: 28px;
+        }
+
+        .topbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .nav {
+          justify-content: flex-start;
+        }
+
+        .section-head,
+        .link,
+        .footer {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .chip {
+          align-self: flex-start;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <div class="shell" itemscope itemtype="https://schema.org/Organization">
+        <meta itemprop="name" content="Mossland" />
+        <meta itemprop="url" content="https://links.moss.land/" />
+        <header class="topbar">
+          <div class="brand">
+            <div class="brand-mark" aria-hidden="true">ML</div>
+            <div class="brand-copy">
+              <strong>Mossland</strong>
+              <span>links.moss.land</span>
+            </div>
+          </div>
+          <nav class="nav" aria-label="Sections">
+            <a href="#official">Official</a>
+            <a href="#ecosystem">Ecosystem</a>
+            <a href="#markets">Markets</a>
+          </nav>
+        </header>
+
+        <section class="hero" aria-labelledby="title">
+          <span class="eyebrow">Official Links</span>
+          <h1 id="title">Mossland Official Links</h1>
+          <p>Official channels, ecosystem surfaces, and market links.</p>
+          <div class="hero-actions">
+            <a
+              href="https://www.moss.land/"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Open Website
+            </a>
+            <a
+              href="https://github.com/MosslandOpenDevs/links"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              View Source
+            </a>
+          </div>
+        </section>
+
+        <div class="sections">
+          <section class="section" id="official">
+            <div class="section-head">
+              <div>
+                <h2>Official Channels</h2>
+              </div>
+            </div>
+            <div class="list">
+              <a class="link" href="https://www.moss.land/" target="_blank" rel="noreferrer noopener" itemprop="url">
+                <div class="link-copy">
+                  <strong>Website</strong>
+                  <span>www.moss.land</span>
+                </div>
+                <span class="chip">OPEN</span>
+              </a>
+              <a class="link" href="https://disclosure.moss.land/" target="_blank" rel="noreferrer noopener">
+                <div class="link-copy">
+                  <strong>Disclosure</strong>
+                  <span>disclosure.moss.land</span>
+                </div>
+                <span class="chip">OPEN</span>
+              </a>
+              <a class="link" href="https://medium.com/mossland-blog" target="_blank" rel="noreferrer noopener" itemprop="sameAs">
+                <div class="link-copy">
+                  <strong>Medium</strong>
+                  <span>medium.com/mossland-blog</span>
+                </div>
+                <span class="chip">OPEN</span>
+              </a>
+              <a class="link" href="https://x.com/TheMossland" target="_blank" rel="noreferrer noopener" itemprop="sameAs">
+                <div class="link-copy">
+                  <strong>X</strong>
+                  <span>x.com/TheMossland</span>
+                </div>
+                <span class="chip">OPEN</span>
+              </a>
+              <a class="link" href="https://github.com/mossland" target="_blank" rel="noreferrer noopener" itemprop="sameAs">
+                <div class="link-copy">
+                  <strong>Main GitHub</strong>
+                  <span>github.com/mossland</span>
+                </div>
+                <span class="chip">GITHUB</span>
+              </a>
+            </div>
+          </section>
+
+          <section class="section" id="ecosystem">
+            <div class="section-head">
+              <div>
+                <h2>Ecosystem</h2>
+              </div>
+            </div>
+            <div class="list">
+              <a class="link" href="https://github.com/MosslandOpenDevs" target="_blank" rel="noreferrer noopener">
+                <div class="link-copy">
+                  <strong>MosslandOpenDevs</strong>
+                  <span>github.com/MosslandOpenDevs</span>
+                </div>
+                <span class="chip">GITHUB</span>
+              </a>
+              <a class="link" href="https://mait.moss.land/" target="_blank" rel="noreferrer noopener">
+                <div class="link-copy">
+                  <strong>MAIT</strong>
+                  <span>mait.moss.land</span>
+                </div>
+                <span class="chip">OPEN</span>
+              </a>
+              <a class="link" href="https://agora.moss.land/" target="_blank" rel="noreferrer noopener">
+                <div class="link-copy">
+                  <strong>Agora</strong>
+                  <span>agora.moss.land</span>
+                </div>
+                <span class="chip">OPEN</span>
+              </a>
+            </div>
+          </section>
+
+          <section class="section" id="markets">
+            <div class="section-head">
+              <div>
+                <h2>Market Data &amp; Exchanges (3rd-party)</h2>
+                <p>External pages. Listing status may change.</p>
+              </div>
+            </div>
+            <div class="list">
+              <a class="link" href="https://coinmarketcap.com/currencies/moss-coin/" target="_blank" rel="noreferrer noopener">
+                <div class="link-copy">
+                  <strong>CoinMarketCap</strong>
+                  <span>MOC</span>
+                </div>
+                <span class="chip">DATA</span>
+              </a>
+              <a class="link" href="https://www.coingecko.com/en/coins/mossland" target="_blank" rel="noreferrer noopener">
+                <div class="link-copy">
+                  <strong>CoinGecko</strong>
+                  <span>MOC</span>
+                </div>
+                <span class="chip">DATA</span>
+              </a>
+              <a class="link" href="https://upbit.com/exchange/CRIX.UPBIT.KRW-MOC" target="_blank" rel="noreferrer noopener">
+                <div class="link-copy">
+                  <strong>Upbit</strong>
+                  <span>MOC / KRW</span>
+                </div>
+                <span class="chip">TRADE</span>
+              </a>
+              <a class="link" href="https://www.bithumb.com/react/trade/order/MOC-KRW" target="_blank" rel="noreferrer noopener">
+                <div class="link-copy">
+                  <strong>Bithumb</strong>
+                  <span>MOC / KRW</span>
+                </div>
+                <span class="chip">TRADE</span>
+              </a>
+              <a class="link" href="https://coinone.co.kr/exchange/trade/moc/krw" target="_blank" rel="noreferrer noopener">
+                <div class="link-copy">
+                  <strong>Coinone</strong>
+                  <span>MOC / KRW</span>
+                </div>
+                <span class="chip">TRADE</span>
+              </a>
+              <a class="link" href="https://www.gopax.co.kr/exchange?market=moc-krw" target="_blank" rel="noreferrer noopener">
+                <div class="link-copy">
+                  <strong>GOPAX</strong>
+                  <span>MOC / KRW</span>
+                </div>
+                <span class="chip">TRADE</span>
+              </a>
+            </div>
+          </section>
+        </div>
+
+        <footer class="footer">
+          <span>links.moss.land</span>
+          <a
+            href="https://github.com/MosslandOpenDevs/links"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            MosslandOpenDevs/links
+          </a>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>
