@@ -7,5 +7,6 @@ frontend:
     baseDirectory: .
     files:
       - index.html
+      - favicon.svg
   cache:
     paths: []
