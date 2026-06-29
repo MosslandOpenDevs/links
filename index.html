@@ -89,6 +89,11 @@
       a {
         color: inherit;
         text-decoration: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      :lang(ko) {
+        word-break: keep-all;
       }
 
       .page {
@@ -166,12 +171,23 @@
       }
 
       .nav a {
-        padding: 10px 14px;
+        padding: 12px 16px;
         border-radius: 999px;
         border: 1px solid rgba(29, 36, 27, 0.06);
         background: rgba(255, 255, 255, 0.46);
         color: var(--muted);
         font-size: 0.9rem;
+        transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+      }
+
+      .nav a:hover {
+        background: rgba(255, 255, 255, 0.82);
+        color: var(--text);
+        border-color: rgba(29, 36, 27, 0.12);
+      }
+
+      .nav a:active {
+        background: rgba(255, 255, 255, 0.7);
       }
 
       .hero {
@@ -181,25 +197,13 @@
         text-align: center;
       }
 
-      .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 14px;
-        border-radius: 999px;
-        border: 1px solid rgba(29, 36, 27, 0.08);
-        background: rgba(255, 255, 255, 0.5);
-        color: var(--muted);
-        font-size: 0.83rem;
-        letter-spacing: 0.04em;
-      }
-
       h1 {
         margin: 18px 0 10px;
         font-family: var(--display);
-        font-size: clamp(2.7rem, 8vw, 4.9rem);
+        font-size: clamp(2.2rem, 8.5vw, 4.9rem);
         line-height: 0.95;
         letter-spacing: -0.04em;
+        text-wrap: balance;
       }
 
       .hero p {
@@ -207,7 +211,9 @@
         margin: 0 auto;
         color: var(--muted);
         font-size: 1rem;
-        line-height: 1.7;
+        line-height: 1.55;
+        word-break: keep-all;
+        text-wrap: balance;
       }
 
       .hero-actions {
@@ -226,6 +232,17 @@
         padding: 14px 18px;
         border-radius: 999px;
         font-weight: 600;
+        transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+      }
+
+      .hero-actions a:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 24px rgba(31, 59, 43, 0.16);
+      }
+
+      .hero-actions a:active {
+        transform: translateY(0);
+        filter: brightness(0.96);
       }
 
       .hero-actions a:first-child {
@@ -251,6 +268,7 @@
         border: 1px solid var(--line);
         border-radius: var(--radius-xl);
         background: var(--panel);
+        scroll-margin-top: 24px;
       }
 
       .section-head {
@@ -296,6 +314,11 @@
         transform: translateY(-1px);
         border-color: rgba(31, 59, 43, 0.18);
         box-shadow: 0 18px 32px rgba(44, 46, 30, 0.08);
+      }
+
+      .link:active {
+        transform: translateY(0) scale(0.997);
+        box-shadow: none;
       }
 
       .nav a:focus-visible,
@@ -367,7 +390,7 @@
       }
 
       .hero .hero-sub {
-        margin-top: 8px;
+        margin-top: 4px;
         font-size: 0.9rem;
         opacity: 0.85;
       }
@@ -377,6 +400,14 @@
         font-size: 0.8rem;
         line-height: 1.55;
         color: var(--muted);
+      }
+
+      .section-head .note span {
+        display: block;
+      }
+
+      .section-head .note span + span {
+        margin-top: 4px;
       }
 
       .footer {
@@ -390,6 +421,10 @@
         padding: 8px 6px 0;
         color: var(--muted);
         font-size: 0.84rem;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
       }
 
       @media (max-width: 720px) {
@@ -413,14 +448,29 @@
         }
 
         .section-head,
-        .link,
         .footer {
           align-items: flex-start;
           flex-direction: column;
         }
 
-        .chip {
-          align-self: flex-start;
+        .hero-actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .hero-actions a {
+          width: 100%;
+          min-width: 0;
+        }
+
+        .hero .hero-sub {
+          display: none;
+        }
+
+        .footer a {
+          display: inline-flex;
+          align-items: center;
+          min-height: 44px;
         }
       }
 
@@ -458,7 +508,6 @@
         </header>
 
         <section class="hero" aria-labelledby="title">
-          <span class="eyebrow">Official Links</span>
           <h1 id="title">Mossland Official Links</h1>
           <p lang="ko">Mossland 공식 링크 허브 — Passport, 공시, 커뮤니티, 거래소 링크를 한 곳에서.</p>
           <p class="hero-sub" lang="en">Mossland's official link hub — Passport, disclosures, community, and market references.</p>
@@ -582,7 +631,7 @@
           <section class="section" id="markets">
             <div class="section-head">
               <div>
-                <h2>Market Data &amp; Exchanges (3rd-party)</h2>
+                <h2>Market Data &amp; Exchanges</h2>
                 <p>External pages. Listing status may change.</p>
                 <p class="note">
                   <span lang="ko">제3자 거래소·시세 링크는 참고용이며, 거래 권유가 아닙니다.</span>
