@@ -8,5 +8,6 @@ frontend:
     files:
       - index.html
       - favicon.svg
+      - og.png
   cache:
     paths: []

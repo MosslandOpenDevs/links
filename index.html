@@ -6,18 +6,35 @@
     <title>Mossland Official Links</title>
     <meta
       name="description"
-      content="Official Mossland channels, ecosystem surfaces, and market links."
+      content="Mossland 공식 링크 허브 — Passport, 공시, 커뮤니티, 거래소 링크를 한 곳에서. Official Mossland links — Passport, disclosures, community, and market references."
     />
+    <meta name="theme-color" content="#1f3b2b" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href="https://links.moss.land/" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mossland" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:title" content="Mossland Official Links" />
     <meta
       property="og:description"
-      content="Official Mossland channels, ecosystem surfaces, and market links."
+      content="Mossland 공식 링크 허브 — Passport, 공시, 커뮤니티, 거래소 링크. Official Mossland links."
     />
     <meta property="og:url" content="https://links.moss.land/" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="https://links.moss.land/og.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Mossland Official Links" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@TheMossland" />
+    <meta name="twitter:title" content="Mossland Official Links" />
+    <meta
+      name="twitter:description"
+      content="Official Mossland links — Passport, disclosures, community, and market references."
+    />
+    <meta name="twitter:image" content="https://links.moss.land/og.png" />
+    <meta name="twitter:image:alt" content="Mossland Official Links" />
     <style>
       :root {
         --bg: #f5f1e8;
@@ -26,7 +43,7 @@
         --panel-strong: rgba(255, 251, 244, 0.96);
         --line: rgba(34, 40, 28, 0.1);
         --text: #1d241b;
-        --muted: #6d7365;
+        --muted: #5b6153;
         --accent: #1f3b2b;
         --accent-soft: #e5dcc9;
         --shadow: 0 30px 80px rgba(44, 46, 30, 0.12);
@@ -281,6 +298,14 @@
         box-shadow: 0 18px 32px rgba(44, 46, 30, 0.08);
       }
 
+      .nav a:focus-visible,
+      .hero-actions a:focus-visible,
+      .footer a:focus-visible,
+      .link:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+
       .link-copy {
         min-width: 0;
       }
@@ -310,6 +335,48 @@
         font-size: 0.76rem;
         font-weight: 700;
         letter-spacing: 0.04em;
+      }
+
+      .chip.accent {
+        background: linear-gradient(135deg, #233b2f, #14231b);
+        color: #f8f3ea;
+      }
+
+      .chip.beta {
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid rgba(29, 36, 27, 0.2);
+      }
+
+      .link.featured {
+        border-color: rgba(31, 59, 43, 0.22);
+        background: linear-gradient(180deg, rgba(228, 240, 231, 0.92), var(--panel-strong));
+      }
+
+      .hero-actions .beta-badge {
+        margin-left: 8px;
+        padding: 2px 7px;
+        border-radius: 999px;
+        background: rgba(248, 243, 234, 0.16);
+        border: 1px solid rgba(248, 243, 234, 0.4);
+        color: #f8f3ea;
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        line-height: 1;
+      }
+
+      .hero .hero-sub {
+        margin-top: 8px;
+        font-size: 0.9rem;
+        opacity: 0.85;
+      }
+
+      .section-head .note {
+        margin-top: 10px;
+        font-size: 0.8rem;
+        line-height: 1.55;
+        color: var(--muted);
       }
 
       .footer {
@@ -374,7 +441,7 @@
     <main class="page">
       <div class="shell" itemscope itemtype="https://schema.org/Organization">
         <meta itemprop="name" content="Mossland" />
-        <meta itemprop="url" content="https://links.moss.land/" />
+        <meta itemprop="url" content="https://www.moss.land/" />
         <header class="topbar">
           <div class="brand">
             <div class="brand-mark" aria-hidden="true">ML</div>
@@ -393,21 +460,23 @@
         <section class="hero" aria-labelledby="title">
           <span class="eyebrow">Official Links</span>
           <h1 id="title">Mossland Official Links</h1>
-          <p>Official channels, ecosystem surfaces, and market links.</p>
+          <p lang="ko">Mossland 공식 링크 허브 — Passport, 공시, 커뮤니티, 거래소 링크를 한 곳에서.</p>
+          <p class="hero-sub" lang="en">Mossland's official link hub — Passport, disclosures, community, and market references.</p>
           <div class="hero-actions">
+            <a
+              href="https://passport.moss.land/"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Open Passport
+              <span class="beta-badge">BETA</span>
+            </a>
             <a
               href="https://www.moss.land/"
               target="_blank"
               rel="noreferrer noopener"
             >
-              Open Website
-            </a>
-            <a
-              href="https://github.com/MosslandOpenDevs/links"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              View Source
+              Official Website
             </a>
           </div>
         </section>
@@ -420,12 +489,19 @@
               </div>
             </div>
             <div class="list">
-              <a class="link" href="https://www.moss.land/" target="_blank" rel="noreferrer noopener" itemprop="url">
+              <a class="link" href="https://www.moss.land/" target="_blank" rel="noreferrer noopener">
                 <div class="link-copy">
                   <strong>Website</strong>
                   <span>www.moss.land</span>
                 </div>
                 <span class="chip">OPEN</span>
+              </a>
+              <a class="link featured" href="https://passport.moss.land/" target="_blank" rel="noreferrer noopener">
+                <div class="link-copy">
+                  <strong>Passport</strong>
+                  <span>passport.moss.land</span>
+                </div>
+                <span class="chip accent">BETA</span>
               </a>
               <a class="link" href="https://disclosure.moss.land/" target="_blank" rel="noreferrer noopener">
                 <div class="link-copy">
@@ -465,17 +541,10 @@
               </div>
             </div>
             <div class="list">
-              <a class="link" href="https://github.com/MosslandOpenDevs" target="_blank" rel="noreferrer noopener">
+              <a class="link" href="https://wa.moss.land/" target="_blank" rel="noreferrer noopener">
                 <div class="link-copy">
-                  <strong>MosslandOpenDevs</strong>
-                  <span>github.com/MosslandOpenDevs</span>
-                </div>
-                <span class="chip">GITHUB</span>
-              </a>
-              <a class="link" href="https://mait.moss.land/" target="_blank" rel="noreferrer noopener">
-                <div class="link-copy">
-                  <strong>MAIT</strong>
-                  <span>mait.moss.land</span>
+                  <strong>Mossverse</strong>
+                  <span>wa.moss.land</span>
                 </div>
                 <span class="chip">OPEN</span>
               </a>
@@ -486,6 +555,27 @@
                 </div>
                 <span class="chip">OPEN</span>
               </a>
+              <a class="link" href="https://mait.moss.land/" target="_blank" rel="noreferrer noopener">
+                <div class="link-copy">
+                  <strong>MAIT</strong>
+                  <span>mait.moss.land</span>
+                </div>
+                <span class="chip">OPEN</span>
+              </a>
+              <a class="link" href="https://github.com/MosslandOpenDevs" target="_blank" rel="noreferrer noopener">
+                <div class="link-copy">
+                  <strong>MosslandOpenDevs</strong>
+                  <span>github.com/MosslandOpenDevs</span>
+                </div>
+                <span class="chip">GITHUB</span>
+              </a>
+              <a class="link" href="https://algora.moss.land/" target="_blank" rel="noreferrer noopener">
+                <div class="link-copy">
+                  <strong>Algora</strong>
+                  <span>algora.moss.land</span>
+                </div>
+                <span class="chip beta">BETA</span>
+              </a>
             </div>
           </section>
 
@@ -494,6 +584,10 @@
               <div>
                 <h2>Market Data &amp; Exchanges (3rd-party)</h2>
                 <p>External pages. Listing status may change.</p>
+                <p class="note">
+                  <span lang="ko">제3자 거래소·시세 링크는 참고용이며, 거래 권유가 아닙니다.</span>
+                  <span lang="en">Third-party market links are provided for reference only and are not trading recommendations.</span>
+                </p>
               </div>
             </div>
             <div class="list">
