@@ -1,9 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
   <title>Mossland</title>
-  <rect width="64" height="64" rx="20" fill="#efe5d4" />
-  <rect x="7" y="7" width="50" height="50" rx="17" fill="#18261d" />
-  <path
-    d="M17 45V19h5.6L32 31.4 41.4 19H47v26h-5.7V28.9L32 41.1 22.7 28.9V45Z"
-    fill="#f7f1e7"
-  />
+  <defs>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#233b2f" />
+      <stop offset="1" stop-color="#14231b" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="url(#mark)" />
+  <text
+    x="32"
+    y="43"
+    text-anchor="middle"
+    font-family="'Avenir Next', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+    font-size="29"
+    font-weight="700"
+    letter-spacing="1"
+    fill="#f8f3ea"
+  >ML</text>
 </svg>

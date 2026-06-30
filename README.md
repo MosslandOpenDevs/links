@@ -9,7 +9,8 @@ references. It is deployed with AWS Amplify and served at `https://links.moss.la
 ## Files
 
 - `index.html` - main page (single file, inline CSS)
-- `favicon.svg` - site icon
+- `favicon.svg` - site icon (ML mark)
+- `apple-touch-icon.png` - 180×180 iOS home-screen icon
 - `og.png` - 1200×630 Open Graph / Twitter social card image
 - `amplify.yml` - Amplify build and deploy config (artifact list)
 - `customHttp.yml` - Amplify custom response headers (CSP, HSTS, etc.)

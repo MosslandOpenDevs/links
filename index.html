@@ -6,10 +6,11 @@
     <title>Mossland Official Links</title>
     <meta
       name="description"
-      content="Mossland 공식 링크 허브 — Passport, 공시, 커뮤니티, 거래소 링크를 한 곳에서. Official Mossland links — Passport, disclosures, community, and market references."
+      content="Mossland 공식 링크 허브 — Passport, 공시, 소식, 거래소 링크를 한 곳에서. Official Mossland links — Passport, disclosures, updates, and market references."
     />
     <meta name="theme-color" content="#1f3b2b" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="canonical" href="https://links.moss.land/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Mossland" />
@@ -18,7 +19,7 @@
     <meta property="og:title" content="Mossland Official Links" />
     <meta
       property="og:description"
-      content="Mossland 공식 링크 허브 — Passport, 공시, 커뮤니티, 거래소 링크. Official Mossland links."
+      content="Mossland 공식 링크 허브 — Passport, 공시, 소식, 거래소 링크. Official Mossland links."
     />
     <meta property="og:url" content="https://links.moss.land/" />
     <meta property="og:image" content="https://links.moss.land/og.png" />
@@ -31,7 +32,7 @@
     <meta name="twitter:title" content="Mossland Official Links" />
     <meta
       name="twitter:description"
-      content="Official Mossland links — Passport, disclosures, community, and market references."
+      content="Official Mossland links — Passport, disclosures, updates, and market references."
     />
     <meta name="twitter:image" content="https://links.moss.land/og.png" />
     <meta name="twitter:image:alt" content="Mossland Official Links" />
@@ -339,6 +340,23 @@
         font-weight: 600;
       }
 
+      .link-copy strong::after {
+        content: "↗";
+        display: inline-block;
+        margin-left: 6px;
+        font-size: 0.78em;
+        font-weight: 700;
+        color: var(--muted);
+        opacity: 0.5;
+        transition: transform 180ms ease, opacity 180ms ease;
+      }
+
+      .link:hover .link-copy strong::after,
+      .link:focus-visible .link-copy strong::after {
+        opacity: 0.9;
+        transform: translate(2px, -2px);
+      }
+
       .link-copy span {
         display: block;
         margin-top: 4px;
@@ -509,8 +527,8 @@
 
         <section class="hero" aria-labelledby="title">
           <h1 id="title">Mossland Official Links</h1>
-          <p lang="ko">Mossland 공식 링크 허브 — Passport, 공시, 커뮤니티, 거래소 링크를 한 곳에서.</p>
-          <p class="hero-sub" lang="en">Mossland's official link hub — Passport, disclosures, community, and market references.</p>
+          <p lang="ko">Mossland 공식 링크 허브 — Passport, 공시, 소식, 거래소 링크를 한 곳에서.</p>
+          <p class="hero-sub" lang="en">Mossland's official link hub — Passport, disclosures, updates, and market references.</p>
           <div class="hero-actions">
             <a
               href="https://passport.moss.land/"

@@ -9,5 +9,6 @@ frontend:
       - index.html
       - favicon.svg
       - og.png
+      - apple-touch-icon.png
   cache:
     paths: []
