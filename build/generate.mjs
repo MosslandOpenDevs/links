@@ -54,7 +54,7 @@ const NAV_IDS = ["official", "participation", "intelligence", "showcase", "labs"
 // genuine third-party. Documented in the on-page legend.
 function chipFor(s) {
   if (s.artifact) return { t: "자료", c: "chip muted" }; // dev data files
-  if (s.tier === "labs") return { t: s.status === "offline" ? "중단" : "실험실", c: "chip lab" };
+  if (s.tier === "labs") return { t: s.status === "offline" ? "연구" : "실험실", c: "chip lab" };
   if (s.owner === "third-party" || s.tier === "third_party") return { t: "제3자", c: "chip third" };
   if (s.tier === "official_beta") return { t: "베타", c: "chip accent" };
   if (s.status === "beta") return { t: "베타", c: "chip beta" };
