@@ -41,8 +41,8 @@ const SECTIONS = [
     id: "markets",
     nav: "시세·거래소",
     title: "시세·거래소",
-    titleEn: "Markets / Third-party",
-    note: { ko: "제3자 거래소·시세 링크는 참고용이며, 거래 권유가 아닙니다.", en: "Third-party market links are provided for reference only and are not trading recommendations." },
+    titleEn: "Markets",
+    note: { ko: "제3자 시세·거래소 링크는 참고용이며, 거래 권유가 아닙니다.", en: "Third-party market links are provided for reference only and are not trading recommendations." },
   },
 ];
 
@@ -56,8 +56,7 @@ function chipFor(s) {
   if (s.artifact) return { t: "자료", c: "chip muted" }; // dev data files
   if (s.tier === "labs") return { t: s.status === "offline" ? "연구" : "실험실", c: "chip lab" };
   if (s.owner === "third-party" || s.tier === "third_party") return { t: "제3자", c: "chip third" };
-  if (s.tier === "official_beta") return { t: "베타", c: "chip accent" };
-  if (s.status === "beta") return { t: "베타", c: "chip beta" };
+  if (s.tier === "official_beta" || s.status === "beta") return { t: "베타", c: "chip beta" };
   return { t: "공식", c: "chip" };
 }
 
@@ -107,7 +106,7 @@ ${items.map(card).join("\n")}
 
 function jsonLd() {
   const first = reg.services.filter(
-    (s) => s.owner === "mossland" && !["third_party", "registry"].includes(s.tier) && !["registry-json", "llms-txt", "sitemap"].includes(s.id)
+    (s) => s.owner === "mossland" && !s.hidden && !["third_party", "registry"].includes(s.tier) && !["registry-json", "llms-txt", "sitemap"].includes(s.id)
   );
   const sameAs = [...new Set(first.map((s) => s.url.replace(/\/$/, "")))];
   const org = {
@@ -145,10 +144,11 @@ const HEAD_META = `    <meta charset="UTF-8" />
     <title>Mossland 공식 링크 · Verified Links</title>
     <meta
       name="description"
-      content="Mossland의 공식 도메인과 생태계 앱, 실험실, 거래소 링크를 한곳에 모은 공식 안내 페이지. 여기에 없는 주소는 공식이 아닙니다. Official Mossland domains, ecosystem apps, labs, and exchange links in one place."
+      content="Mossland 공식 도메인·생태계 앱·실험실과 제3자 시세·거래소 링크를 한곳에 모은 공식 안내 페이지. 여기에 없는 주소는 공식이 아닙니다. Official Mossland domains, ecosystem apps, and labs, plus third-party market links."
     />
     <meta name="theme-color" content="#1f3b2b" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="canonical" href="https://links.moss.land/" />
     <meta property="og:type" content="website" />
@@ -183,17 +183,18 @@ const NAV = NAV_IDS.map((id) => {
 }).join("\n");
 
 const VERIFY = `          <div class="verify">
-            <strong lang="ko">이 페이지의 모든 링크는 Mossland가 직접 운영·검증한 공식 도메인입니다. 여기에 없는 주소는 공식이 아니니 주의하세요.</strong>
-            <span lang="en">Every link here is an official Mossland domain we operate and verify. If an address isn't listed here, treat it as unofficial.</span>
+            <strong lang="ko">‘공식’으로 표시된 링크는 Mossland가 직접 운영·검증한 도메인입니다. 시세·거래소는 제3자 링크이며, 여기에 없는 주소는 공식이 아니니 주의하세요.</strong>
+            <span lang="en">Links marked Official are domains Mossland operates and verifies; market links are third-party. If an address isn't listed here, treat it as unofficial.</span>
           </div>`;
 
 const LEGEND = `        <details class="legend">
           <summary>표시 안내 / What the chips mean</summary>
           <ul>
             <li><span class="chip">공식</span> Mossland 공식·검증 도메인과 채널 / Verified Mossland domains and channels</li>
-            <li><span class="chip accent">베타</span> 운영 중인 공식 베타 / Official service in open beta</li>
-            <li><span class="chip lab">실험실</span> 실험 단계 — 공식 제품·거버넌스 아님 / Experimental, not official</li>
+            <li><span class="chip beta">베타</span> 운영 중인 공식 베타 / Official service in open beta</li>
+            <li><span class="chip lab">실험실</span> <span class="chip lab">연구</span> 실험·비운영 단계, 공식 아님 / Experimental, not official products</li>
             <li><span class="chip third">제3자</span> Mossland 미검증 외부 링크 / Third-party, not verified by Mossland</li>
+            <li><span class="chip muted">자료</span> 개발자·데이터 파일 / Developer &amp; data files</li>
           </ul>
         </details>`;
 
@@ -208,9 +209,10 @@ ${STYLE}
 ${jsonLd()}
   </head>
   <body>
+    <a class="skip-link" href="#official"><span lang="ko">본문으로 건너뛰기</span> <span lang="en">Skip to links</span></a>
     <main class="page">
       <div class="shell">
-        <header class="topbar">
+        <header class="topbar" role="banner">
           <div class="brand">
             <div class="brand-mark" aria-hidden="true">ML</div>
             <div class="brand-copy">
@@ -225,8 +227,8 @@ ${NAV}
 
         <section class="hero" aria-labelledby="title">
           <h1 id="title"><span lang="ko">Mossland 공식 링크</span><span class="en" lang="en">Mossland Verified Links</span></h1>
-          <p lang="ko">Mossland의 공식 도메인과 생태계 앱, 실험실, 거래소 링크를 한곳에 모았습니다.</p>
-          <p class="hero-sub" lang="en">Official Mossland domains, ecosystem apps, labs, and exchange links — all in one place.</p>
+          <p lang="ko">Mossland 공식 도메인·생태계 앱·실험실과 제3자 시세·거래소 링크를 한곳에 모았습니다.</p>
+          <p class="hero-sub" lang="en">Official Mossland domains, ecosystem apps, and labs, plus third-party market links — all in one place.</p>
 ${VERIFY}
           <div class="hero-actions">
             <a href="https://passport.moss.land/" target="_blank" rel="noreferrer noopener">
@@ -245,8 +247,8 @@ ${renderSections()}
 
 ${LEGEND}
 
-        <footer class="footer">
-          <span>links.moss.land · Mossland 공식 링크</span>
+        <footer class="footer" role="contentinfo">
+          <span>links.moss.land · Mossland 공식 링크 모음</span>
           <a href="https://github.com/MosslandOpenDevs/links" target="_blank" rel="noreferrer noopener">
             MosslandOpenDevs/links
           </a>
@@ -268,6 +270,7 @@ const embedHtml = `<!DOCTYPE html>
     <meta name="robots" content="noindex" />
     <meta name="theme-color" content="#1f3b2b" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="canonical" href="https://links.moss.land/" />
     <style>
 ${STYLE}
@@ -277,7 +280,7 @@ ${STYLE}
     <main class="page">
       <div class="shell">
         <section class="hero" aria-labelledby="title">
-          <h1 id="title" class="kiosk"><span lang="ko">Mossland 검증 링크</span></h1>
+          <h1 id="title" class="kiosk"><span lang="ko">Mossland 공식 링크</span></h1>
 ${VERIFY}
         </section>
         <div class="sections">

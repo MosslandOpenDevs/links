@@ -32,7 +32,7 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 > Experimental. Not official products or governance — humans and MOC holders decide.
 - [MOSS.AO](https://ao.moss.land/): Engine
 - [Algora](https://algora.moss.land/en): Lab · AI Deliberation
-- [BRIDGE](https://bridge.moss.land/): Research · Offline
+- [BRIDGE](https://bridge.moss.land/): Physical AI Governance
 
 ## Developers
 - [GitHub](https://github.com/mossland): GitHub
@@ -41,14 +41,14 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 - [llms.txt](https://links.moss.land/llms.txt): AI-readable
 - [Sitemap](https://links.moss.land/sitemap.xml): Sitemap
 
-## Markets / Third-party
+## Markets
 > Third-party market links are provided for reference only and are not trading recommendations.
 - [CoinMarketCap](https://coinmarketcap.com/currencies/moss-coin/): Market Data
 - [CoinGecko](https://www.coingecko.com/en/coins/mossland): Market Data
 - [Upbit](https://www.upbit.com/exchange/CRIX.UPBIT.KRW-MOC): Exchange
 - [Bithumb](https://www.bithumb.com/react/trade/order/MOC-KRW): Exchange
 - [Coinone](https://coinone.co.kr/exchange/trade/moc/krw): Exchange
-- [GOPAX](https://www.gopax.co.kr/exchange?market=moc-krw): Exchange
+- [GOPAX](https://www.gopax.co.kr/exchange/MOC-KRW): Exchange
 
 ## Source of truth
 - [Ecosystem Registry (JSON)](https://links.moss.land/ecosystem-registry.json): structured, machine-readable registry of every Mossland service with tier, status, and Passport eligibility.

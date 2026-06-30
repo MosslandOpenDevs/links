@@ -70,6 +70,26 @@
         border: 0;
       }
 
+      .skip-link {
+        position: absolute;
+        left: 8px;
+        top: -56px;
+        z-index: 10;
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #f8f3ea;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: top 150ms ease;
+      }
+
+      .skip-link:focus-visible {
+        top: 8px;
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+
       .page {
         width: min(760px, calc(100% - 24px));
         margin: 0 auto;
@@ -393,13 +413,11 @@
         font-size: 0.78em;
         font-weight: 700;
         color: var(--muted);
-        opacity: 0.5;
-        transition: transform 180ms ease, opacity 180ms ease;
+        transition: transform 180ms ease;
       }
 
       .link:hover .link-copy strong .ext,
       .link:focus-visible .link-copy strong .ext {
-        opacity: 0.9;
         transform: translate(2px, -2px);
       }
 
@@ -417,8 +435,7 @@
         display: block;
         margin-top: 2px;
         color: var(--muted);
-        font-size: 0.76rem;
-        opacity: 0.72;
+        font-size: 0.78rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -460,7 +477,6 @@
       .chip.muted {
         background: transparent;
         color: var(--muted);
-        opacity: 0.65;
         font-weight: 600;
       }
 

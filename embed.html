@@ -9,6 +9,7 @@
     <meta name="robots" content="noindex" />
     <meta name="theme-color" content="#1f3b2b" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="canonical" href="https://links.moss.land/" />
     <style>
       :root {
@@ -81,6 +82,26 @@
         clip-path: inset(50%);
         white-space: nowrap;
         border: 0;
+      }
+
+      .skip-link {
+        position: absolute;
+        left: 8px;
+        top: -56px;
+        z-index: 10;
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #f8f3ea;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: top 150ms ease;
+      }
+
+      .skip-link:focus-visible {
+        top: 8px;
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
       }
 
       .page {
@@ -406,13 +427,11 @@
         font-size: 0.78em;
         font-weight: 700;
         color: var(--muted);
-        opacity: 0.5;
-        transition: transform 180ms ease, opacity 180ms ease;
+        transition: transform 180ms ease;
       }
 
       .link:hover .link-copy strong .ext,
       .link:focus-visible .link-copy strong .ext {
-        opacity: 0.9;
         transform: translate(2px, -2px);
       }
 
@@ -430,8 +449,7 @@
         display: block;
         margin-top: 2px;
         color: var(--muted);
-        font-size: 0.76rem;
-        opacity: 0.72;
+        font-size: 0.78rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -473,7 +491,6 @@
       .chip.muted {
         background: transparent;
         color: var(--muted);
-        opacity: 0.65;
         font-weight: 600;
       }
 
@@ -630,10 +647,10 @@
     <main class="page">
       <div class="shell">
         <section class="hero" aria-labelledby="title">
-          <h1 id="title" class="kiosk"><span lang="ko">Mossland 검증 링크</span></h1>
+          <h1 id="title" class="kiosk"><span lang="ko">Mossland 공식 링크</span></h1>
           <div class="verify">
-            <strong lang="ko">이 페이지의 모든 링크는 Mossland가 직접 운영·검증한 공식 도메인입니다. 여기에 없는 주소는 공식이 아니니 주의하세요.</strong>
-            <span lang="en">Every link here is an official Mossland domain we operate and verify. If an address isn't listed here, treat it as unofficial.</span>
+            <strong lang="ko">‘공식’으로 표시된 링크는 Mossland가 직접 운영·검증한 도메인입니다. 시세·거래소는 제3자 링크이며, 여기에 없는 주소는 공식이 아니니 주의하세요.</strong>
+            <span lang="en">Links marked Official are domains Mossland operates and verifies; market links are third-party. If an address isn't listed here, treat it as unofficial.</span>
           </div>
         </section>
         <div class="sections">
@@ -666,7 +683,7 @@
                   <span class="role">신원·참여 증명</span>
                   <span class="dom">passport.moss.land</span>
                 </span>
-                <span class="chip accent">베타</span>
+                <span class="chip beta">베타</span>
               </a>
               <a class="link" href="https://agora.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -706,7 +723,7 @@
               <a class="link" href="https://mait.moss.land/en" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
                   <strong>MAIT<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
-                  <span class="role">AI 비서</span>
+                  <span class="role">이해를 돕는 AI</span>
                   <span class="dom">mait.moss.land</span>
                 </span>
                 <span class="chip">공식</span>
@@ -741,7 +758,7 @@
               <a class="link" href="https://signalmap.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
                   <strong>Signal Map<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
-                  <span class="role">시장 신호 지도</span>
+                  <span class="role">여론·이슈 신호 지도</span>
                   <span class="dom">signalmap.moss.land</span>
                 </span>
                 <span class="chip beta">베타</span>
@@ -803,7 +820,7 @@
               <a class="link" href="https://algora.moss.land/en" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
                   <strong>Algora<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
-                  <span class="role">AI 토론 실험실</span>
+                  <span class="role">AI 거버넌스 토론</span>
                   <span class="dom">algora.moss.land</span>
                 </span>
                 <span class="chip lab">실험실</span>
@@ -811,7 +828,7 @@
               <a class="link" href="https://bridge.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
                   <strong>BRIDGE<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
-                  <span class="role">현실 검증 연구</span>
+                  <span class="role">현실세계 AI 거버넌스</span>
                   <span class="dom">bridge.moss.land</span>
                 </span>
                 <span class="chip lab">연구</span>
@@ -853,7 +870,7 @@
               <a class="link" href="https://links.moss.land/llms.txt" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
                   <strong>llms.txt<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
-                  <span class="role">AI용 요약</span>
+                  <span class="role">AI가 읽는 링크 목록</span>
                   <span class="dom">links.moss.land/llms.txt</span>
                 </span>
                 <span class="chip muted">자료</span>
@@ -872,8 +889,8 @@
           <section class="section" id="markets" aria-labelledby="h-markets">
             <div class="section-head">
               <div>
-                <h2 id="h-markets" lang="ko">시세·거래소 <span class="en">Markets / Third-party</span></h2>
-              <p class="note"><span lang="ko">제3자 거래소·시세 링크는 참고용이며, 거래 권유가 아닙니다.</span><span lang="en">Third-party market links are provided for reference only and are not trading recommendations.</span></p>
+                <h2 id="h-markets" lang="ko">시세·거래소 <span class="en">Markets</span></h2>
+              <p class="note"><span lang="ko">제3자 시세·거래소 링크는 참고용이며, 거래 권유가 아닙니다.</span><span lang="en">Third-party market links are provided for reference only and are not trading recommendations.</span></p>
               </div>
             </div>
             <div class="list">
@@ -917,7 +934,7 @@
                 </span>
                 <span class="chip third">제3자</span>
               </a>
-              <a class="link" href="https://www.gopax.co.kr/exchange?market=moc-krw" target="_blank" rel="noreferrer noopener">
+              <a class="link" href="https://www.gopax.co.kr/exchange/MOC-KRW" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
                   <strong>GOPAX<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
                   <span class="role">거래소</span>

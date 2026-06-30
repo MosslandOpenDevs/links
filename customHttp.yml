@@ -24,6 +24,10 @@ customHeaders:
     headers:
       - key: 'Content-Type'
         value: 'text/plain; charset=utf-8'
+  - pattern: '/sitemap.xml'
+    headers:
+      - key: 'Content-Type'
+        value: 'text/xml; charset=utf-8'
   # The ecosystem registry is a public, read-only, non-credentialed source of truth
   # consumed cross-origin by other Mossland properties (moss.land, passport, city, wa).
   # `*` is the only workable ACAO value here: Amplify serves a single static header
