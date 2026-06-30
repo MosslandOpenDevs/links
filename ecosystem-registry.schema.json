@@ -56,8 +56,13 @@
         "labelKo": { "type": "string", "description": "Public Korean tier/role label." },
         "section": {
           "type": ["string", "null"],
-          "enum": ["official", "participation", "intelligence", "showcase", "labs", "developers", "markets", null],
-          "description": "Which visible section the service renders in. null = registry-only, not rendered."
+          "enum": ["official", "participation", "ecosystem", "developers", "markets", null],
+          "description": "Primary visible section the service renders in. null = registry-only, not rendered."
+        },
+        "extraSections": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["official", "participation", "ecosystem", "developers", "markets"] },
+          "description": "Additional sections to also render this service in (e.g. Passport/Agora appear in both Official and Participation)."
         },
         "status": { "$ref": "#/$defs/status" },
         "passportEligible": {

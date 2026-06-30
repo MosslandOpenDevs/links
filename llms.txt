@@ -13,23 +13,16 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 - [X](https://x.com/TheMossland): Social
 
 ## Participation
-> You can also take part through Passport and Agora — see Official above.
 - [MAIT](https://mait.moss.land/en): AI Copilot
 - [Mossverse](https://wa.moss.land/): Beta · Mossverse
 
-## Intelligence
-> AI-generated reference context. Not an official position.
+## Ecosystem
+> Mossland's ecosystem services. Some (MOSS.AO, Algora, BRIDGE) are experimental or research-stage — not official products or governance.
 - [Alpha](https://alpha.moss.land/): Intelligence · AI-generated
 - [Signal Map](https://signalmap.moss.land/): Signal Map · Beta
-
-## Showcase
-> Explore and experience the Mossland world.
 - [City](https://city.moss.land/): Showcase
 - [NPC](https://npc.moss.land/): Showcase
 - [Recipe](https://recipe.moss.land/): Showcase
-
-## Labs
-> Experimental. Not official products or governance — humans and MOC holders decide.
 - [MOSS.AO](https://ao.moss.land/): Engine
 - [Algora](https://algora.moss.land/en): Lab · AI Deliberation
 - [BRIDGE](https://bridge.moss.land/): Physical AI Governance

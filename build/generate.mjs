@@ -14,27 +14,13 @@ const esc = (s) =>
 
 const SECTIONS = [
   { id: "official", nav: "공식", title: "공식", titleEn: "Official", note: null },
+  { id: "participation", nav: "참여", title: "참여", titleEn: "Participation", note: null },
   {
-    id: "participation",
-    nav: "참여",
-    title: "참여",
-    titleEn: "Participation",
-    note: { ko: "Passport와 Agora에서도 직접 참여할 수 있습니다 (위 공식 섹션 참조).", en: "You can also take part through Passport and Agora — see Official above." },
-  },
-  {
-    id: "intelligence",
-    nav: "AI 분석",
-    title: "AI 분석",
-    titleEn: "Intelligence",
-    note: { ko: "AI가 정리한 참고 정보입니다. 공식 입장이 아닙니다.", en: "AI-generated reference context. Not an official position." },
-  },
-  { id: "showcase", nav: "체험", title: "세계관 체험", titleEn: "Showcase", note: { ko: "Mossland 세계관을 둘러보고 체험하는 공간입니다.", en: "Explore and experience the Mossland world." } },
-  {
-    id: "labs",
-    nav: "실험실",
-    title: "실험실",
-    titleEn: "Labs",
-    note: { ko: "실험 단계입니다. 공식 제품이나 거버넌스가 아니며, 최종 결정과 실행은 사람과 MOC 홀더의 몫입니다.", en: "Experimental. Not official products or governance — humans and MOC holders decide." },
+    id: "ecosystem",
+    nav: "생태계",
+    title: "생태계",
+    titleEn: "Ecosystem",
+    note: { ko: "Mossland이 만든 생태계 서비스입니다. 일부(MOSS.AO·Algora·BRIDGE)는 실험·연구 단계로, 공식 제품이나 거버넌스가 아닙니다.", en: "Mossland's ecosystem services. Some (MOSS.AO, Algora, BRIDGE) are experimental or research-stage — not official products or governance." },
   },
   { id: "developers", nav: "개발자", title: "개발자", titleEn: "Developers", note: null },
   {
@@ -46,8 +32,8 @@ const SECTIONS = [
   },
 ];
 
-// Nav: keep it lean (~6 anchors). Show the high-traffic sections.
-const NAV_IDS = ["official", "participation", "intelligence", "showcase", "labs", "markets"];
+// Nav: lean anchor set, one per visible section.
+const NAV_IDS = ["official", "participation", "ecosystem", "developers", "markets"];
 
 // Chip = trust signal, data-driven (not id-string-driven). Color carries the
 // meaning: green = verified Mossland (on- or off-domain), amber = Labs, grey =
@@ -85,7 +71,7 @@ function renderSections() {
   const visible = reg.services.filter((s) => !s.hidden && s.section);
   const out = [];
   for (const meta of SECTIONS) {
-    const items = visible.filter((s) => s.section === meta.id);
+    const items = visible.filter((s) => s.section === meta.id || (s.extraSections || []).includes(meta.id));
     if (!items.length) continue;
     const noteHtml = meta.note
       ? `\n              <p class="note"><span lang="ko">${esc(meta.note.ko)}</span><span lang="en">${esc(meta.note.en)}</span></p>`
