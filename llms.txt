@@ -1,0 +1,63 @@
+# Mossland Verified Links
+
+> Mossland Verified Links — the official registry of verified Mossland domains, ecosystem apps, labs, community channels, and third-party market references. Anything not listed here should be treated as unofficial.
+
+Mossland is infrastructure for the AI civilization. This file lists the verified official domains so search engines and AI agents can resolve real Mossland services and avoid impersonators. The machine-readable source of truth is the JSON registry below.
+
+## Official
+- [Mossland](https://www.moss.land/): Official / 공식 입구
+- [Disclosure](https://disclosure.moss.land/): Official Records / 공식 기록 · 관보
+- [Passport](https://passport.moss.land/): Open Beta · Identity / 신원·참여 증명 · 오픈 베타
+- [Agora](https://agora.moss.land/): Public Decision Workbench / 공적 의사결정 작업대
+
+## Participation
+> Passport and Agora are participation surfaces too — see Official above.
+- [MAIT](https://mait.moss.land/en): AI Copilot / AI 비서·리서처
+- [Mossverse](https://wa.moss.land/): Beta · Mossverse / Mossverse 입장 · 베타
+
+## Intelligence
+> AI-generated reference context. Not an official position.
+- [Alpha](https://alpha.moss.land/): Intelligence · AI-generated / 인텔리전스 · AI 생성
+- [Signal Map](https://signalmap.moss.land/): Signal Map · Beta / 신호 지도 · 베타
+
+## Showcase
+> Worldbuilding and experiences.
+- [City](https://city.moss.land/): Showcase / 세계관 지도
+- [NPC](https://npc.moss.land/): Showcase / AI 주민 체험
+- [Recipe](https://recipe.moss.land/): Showcase / AI 레시피 갤러리
+
+## Labs
+> Experimental. Not official products or governance — humans and MOC holders decide.
+- [MOSS.AO](https://ao.moss.land/): Engine / 엔진룸
+- [Algora](https://algora.moss.land/en): Lab · AI Deliberation / AI 숙의 실험실
+- [BRIDGE](https://bridge.moss.land/): Research · Offline / 현실 검증 연구 · 오프라인
+
+## Developers
+- [GitHub](https://github.com/mossland): GitHub / 메인 GitHub
+- [MosslandOpenDevs](https://github.com/MosslandOpenDevs): GitHub / 오픈 개발
+- [Ecosystem Registry](https://links.moss.land/ecosystem-registry.json): JSON / 머신리더블 레지스트리
+- [llms.txt](https://links.moss.land/llms.txt): AI-readable / AI 판독용 요약
+- [Sitemap](https://links.moss.land/sitemap.xml): Sitemap / 사이트맵
+
+## Community
+- [Medium](https://medium.com/mossland-blog): Blog / 공식 블로그
+- [X](https://x.com/TheMossland): Social / 공식 X
+
+## Markets / Third-party
+> Third-party market links are provided for reference only and are not trading recommendations.
+- [CoinMarketCap](https://coinmarketcap.com/currencies/moss-coin/): Market Data / 시세 정보
+- [CoinGecko](https://www.coingecko.com/en/coins/mossland): Market Data / 시세 정보
+- [Upbit](https://www.upbit.com/exchange/CRIX.UPBIT.KRW-MOC): Exchange / 거래소
+- [Bithumb](https://www.bithumb.com/react/trade/order/MOC-KRW): Exchange / 거래소
+- [Coinone](https://coinone.co.kr/exchange/trade/moc/krw): Exchange / 거래소
+- [GOPAX](https://www.gopax.co.kr/exchange?market=moc-krw): Exchange / 거래소
+
+## Source of truth
+- [Ecosystem Registry (JSON)](https://links.moss.land/ecosystem-registry.json): structured, machine-readable registry of every Mossland service with tier, status, and Passport eligibility.
+- [Registry JSON Schema](https://links.moss.land/ecosystem-registry.schema.json): the contract for the registry.
+
+## Notes
+- Agora is a Public Decision Workbench, not a DAO governance app.
+- MAIT is an AI Copilot; it assists understanding and never decides or votes for users.
+- Labs (AO, Algora, BRIDGE) are experimental; not official products or governance.
+- Markets / third-party links are reference only and are not trading recommendations.

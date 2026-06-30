@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://links.moss.land/ecosystem-registry.schema.json",
+  "title": "Mossland Ecosystem Registry",
+  "description": "Machine-readable registry of verified Mossland domains, ecosystem apps, labs, channels, and third-party market references. Source of truth for links.moss.land and for Passport ecosystem-stamp domain verification.",
+  "type": "object",
+  "required": ["version", "owner", "services"],
+  "additionalProperties": true,
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": { "type": "string", "description": "Semantic version of the registry document." },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "owner": { "type": "string" },
+    "registry": { "type": "string", "format": "uri" },
+    "description": { "type": "string" },
+    "tiers": { "type": "object", "additionalProperties": { "type": "string" } },
+    "statuses": { "type": "object", "additionalProperties": { "type": "string" } },
+    "services": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/service" }
+    }
+  },
+  "$defs": {
+    "tier": {
+      "type": "string",
+      "enum": [
+        "official",
+        "official_beta",
+        "registry",
+        "companion",
+        "intelligence",
+        "showcase",
+        "world",
+        "runtime",
+        "labs",
+        "developer",
+        "channel",
+        "third_party"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["operational", "beta", "paused", "offline", "deprecated"]
+    },
+    "service": {
+      "type": "object",
+      "required": ["id", "name", "domain", "url", "tier", "status", "passportEligible"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "name": { "type": "string" },
+        "domain": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "tier": { "$ref": "#/$defs/tier" },
+        "label": { "type": "string", "description": "Public English tier/role label." },
+        "labelKo": { "type": "string", "description": "Public Korean tier/role label." },
+        "section": {
+          "type": ["string", "null"],
+          "enum": ["official", "participation", "intelligence", "showcase", "labs", "developers", "community", "markets", null],
+          "description": "Which visible section the service renders in. null = registry-only, not rendered."
+        },
+        "status": { "$ref": "#/$defs/status" },
+        "passportEligible": {
+          "type": "boolean",
+          "description": "Whether this domain may back a Passport ecosystem stamp. MUST be false for all third_party/market and off-domain channel entries."
+        },
+        "stampType": {
+          "type": ["string", "null"],
+          "description": "Namespaced Passport stamp id (e.g. identity_holder, intelligence_reader). null when not eligible."
+        },
+        "sourceOfTruth": { "type": ["string", "null"] },
+        "lastDataAt": { "type": ["string", "null"], "format": "date-time" },
+        "owner": { "type": "string" },
+        "featured": { "type": "boolean" },
+        "hidden": { "type": "boolean", "description": "If true, kept in the registry but not rendered on the page." },
+        "ticker": { "type": "string" },
+        "note": { "type": "string" },
+        "runtime": {
+          "type": "object",
+          "description": "Optional nested runtime app (e.g. play.wa under wa).",
+          "properties": {
+            "name": { "type": "string" },
+            "domain": { "type": "string" },
+            "url": { "type": "string", "format": "uri" },
+            "tier": { "$ref": "#/$defs/tier" },
+            "label": { "type": "string" }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "tier": { "const": "third_party" } } },
+          "then": { "properties": { "passportEligible": { "const": false } } }
+        },
+        {
+          "if": { "properties": { "tier": { "const": "channel" } } },
+          "then": { "properties": { "passportEligible": { "const": false } } }
+        }
+      ]
+    }
+  }
+}

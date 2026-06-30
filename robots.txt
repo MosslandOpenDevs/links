@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://links.moss.land/sitemap.xml
+
+# Machine-readable registry: https://links.moss.land/ecosystem-registry.json
+# AI-readable summary:       https://links.moss.land/llms.txt

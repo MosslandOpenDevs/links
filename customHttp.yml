@@ -7,7 +7,29 @@ customHeaders:
         value: 'strict-origin-when-cross-origin'
       - key: 'X-Content-Type-Options'
         value: 'nosniff'
+      - key: 'Cross-Origin-Opener-Policy'
+        value: 'same-origin-allow-popups'
       - key: 'Permissions-Policy'
         value: 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'
       - key: 'Strict-Transport-Security'
-        value: 'max-age=31536000'
+        value: 'max-age=63072000; includeSubDomains'
+  # The ecosystem registry is a public, read-only, non-credentialed source of truth
+  # consumed cross-origin by other Mossland properties (moss.land, passport, city, wa).
+  # `*` is the only workable ACAO value here: Amplify serves a single static header
+  # value and cannot echo the request Origin, and CORS forbids a space-separated list.
+  - pattern: '/ecosystem-registry.json'
+    headers:
+      - key: 'Access-Control-Allow-Origin'
+        value: '*'
+      - key: 'Cross-Origin-Resource-Policy'
+        value: 'cross-origin'
+      - key: 'Cache-Control'
+        value: 'public, max-age=300'
+  - pattern: '/ecosystem-registry.schema.json'
+    headers:
+      - key: 'Access-Control-Allow-Origin'
+        value: '*'
+      - key: 'Cross-Origin-Resource-Policy'
+        value: 'cross-origin'
+      - key: 'Cache-Control'
+        value: 'public, max-age=3600'

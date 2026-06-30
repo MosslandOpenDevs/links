@@ -1,16 +1,63 @@
 # links
 
-Official Mossland link hub for `https://links.moss.land`.
+Mossland **Verified Links** — the official link registry for `https://links.moss.land`.
 
-This repository contains the static landing page for Mossland official links —
-the Passport CTA, official channels, ecosystem surfaces, and third-party market
-references. It is deployed with AWS Amplify and served at `https://links.moss.land`.
+This repository is the verified-links registry for the Mossland ecosystem: the
+canonical list of official Mossland domains, ecosystem apps, labs, community
+channels, and third-party market references. Anything not listed here should be
+treated as unofficial. It is deployed with AWS Amplify and served at
+`https://links.moss.land`.
+
+## Source of truth
+
+[`ecosystem-registry.json`](ecosystem-registry.json) is the single source of
+truth. It describes every Mossland service with `tier`, `status`,
+`passportEligible`, `stampType`, and more (see
+[`ecosystem-registry.schema.json`](ecosystem-registry.schema.json) for the
+contract). Other Mossland properties (moss.land, Passport, City, WA) can fetch
+it cross-origin to verify "is this a real Mossland domain?" and to drive
+Passport ecosystem stamps.
+
+**`index.html`, `embed.html`, and `llms.txt` are generated from the registry.**
+Do not edit them by hand — edit the registry (or the template/CSS) and rebuild:
+
+```sh
+node build/generate.mjs
+```
 
 ## Files
 
-- `index.html` - main page (single file, inline CSS)
-- `favicon.svg` - site icon (ML mark)
-- `apple-touch-icon.png` - 180×180 iOS home-screen icon
-- `og.png` - 1200×630 Open Graph / Twitter social card image
-- `amplify.yml` - Amplify build and deploy config (artifact list)
-- `customHttp.yml` - Amplify custom response headers (CSP, HSTS, etc.)
+| File | Role |
+| --- | --- |
+| `ecosystem-registry.json` | **Source of truth** — every service, tier, status, Passport eligibility |
+| `ecosystem-registry.schema.json` | JSON Schema (draft 2020-12) contract for the registry |
+| `build/generate.mjs` | Generator — renders `index.html` + `embed.html` + `llms.txt` from the registry |
+| `build/style.css` | Stylesheet used by the generator (inlined into the HTML) |
+| `index.html` | Generated public page (do not edit by hand) |
+| `embed.html` | Generated chrome-less kiosk view for embedding in play.wa / Mossverse |
+| `llms.txt` | Generated AI-readable summary (llmstxt.org format) |
+| `robots.txt` / `sitemap.xml` | Crawlability |
+| `favicon.svg`, `apple-touch-icon.png`, `og.png` | Icons + 1200×630 social card |
+| `amplify.yml` | Amplify build (runs the generator) and artifact list |
+| `customHttp.yml` | Amplify response headers (CSP, HSTS, CORS for the registry, etc.) |
+
+## Conventions
+
+- **Tiers** (`official`, `official_beta`, `registry`, `companion`,
+  `intelligence`, `showcase`, `world`, `runtime`, `labs`, `developer`,
+  `channel`, `third_party`) drive both the visible chip/section and consumer
+  logic. Green chips = verified Mossland domain; amber = Labs (experimental);
+  grey = third-party / off-domain.
+- **Labs** (AO, Algora, BRIDGE) are rendered visually downranked and are never
+  presented as official products or governance.
+- **Markets / third-party** entries are `passportEligible: false` by contract —
+  exchange and price links live here, never in Passport.
+- **Media** is kept in the registry as `paused`/`hidden` until its data is
+  connected (per ecosystem strategy: do not surface empty services).
+
+## Adding or changing a link
+
+1. Edit `ecosystem-registry.json` (add/modify a service object).
+2. Run `node build/generate.mjs`.
+3. Commit the registry change **and** the regenerated `index.html` /
+   `embed.html` / `llms.txt`.

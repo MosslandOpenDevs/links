@@ -2,13 +2,23 @@ version: 1
 frontend:
   phases:
     build:
-      commands: []
+      commands:
+        # Regenerate index.html + embed.html from ecosystem-registry.json.
+        # Committed output is identical, so this is idempotent; `|| true` keeps the
+        # deploy from breaking if the generator ever fails (committed files ship).
+        - node build/generate.mjs || true
   artifacts:
     baseDirectory: .
     files:
       - index.html
+      - embed.html
       - favicon.svg
       - og.png
       - apple-touch-icon.png
+      - robots.txt
+      - sitemap.xml
+      - llms.txt
+      - ecosystem-registry.json
+      - ecosystem-registry.schema.json
   cache:
     paths: []
