@@ -457,6 +457,13 @@
         border: 1px solid rgba(29, 36, 27, 0.22);
       }
 
+      .chip.muted {
+        background: transparent;
+        color: var(--muted);
+        opacity: 0.65;
+        font-weight: 600;
+      }
+
       .link.featured {
         border-color: rgba(31, 59, 43, 0.22);
         background: linear-gradient(180deg, rgba(228, 240, 231, 0.92), var(--panel-strong));

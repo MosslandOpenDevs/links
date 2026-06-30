@@ -46,8 +46,11 @@ node build/generate.mjs
 - **Tiers** (`official`, `official_beta`, `registry`, `companion`,
   `intelligence`, `showcase`, `world`, `runtime`, `labs`, `developer`,
   `channel`, `third_party`) drive both the visible chip/section and consumer
-  logic. Green chips = verified Mossland domain; amber = Labs (experimental);
-  grey = third-party / off-domain.
+  logic. **Chip color is owner-driven**, so the trust signal stays correct:
+  green (`공식`/`베타`) = Mossland-owned and verified, including official
+  off-domain channels (X, Medium, GitHub); amber (`실험실`/`중단`) = Labs
+  (experimental); grey (`제3자`) = genuine third-party only (exchanges, price
+  trackers). Dev data files (registry/llms/sitemap) carry a muted `자료` chip.
 - **Labs** (AO, Algora, BRIDGE) are rendered visually downranked and are never
   presented as official products or governance.
 - **Markets / third-party** entries are `passportEligible: false` by contract —

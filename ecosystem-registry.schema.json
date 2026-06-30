@@ -56,7 +56,7 @@
         "labelKo": { "type": "string", "description": "Public Korean tier/role label." },
         "section": {
           "type": ["string", "null"],
-          "enum": ["official", "participation", "intelligence", "showcase", "labs", "developers", "community", "markets", null],
+          "enum": ["official", "participation", "intelligence", "showcase", "labs", "developers", "markets", null],
           "description": "Which visible section the service renders in. null = registry-only, not rendered."
         },
         "status": { "$ref": "#/$defs/status" },
@@ -73,6 +73,7 @@
         "owner": { "type": "string" },
         "featured": { "type": "boolean" },
         "hidden": { "type": "boolean", "description": "If true, kept in the registry but not rendered on the page." },
+        "artifact": { "type": "boolean", "description": "Developer data file (registry/llms/sitemap) — renders with a muted secondary chip, not a trust-tier chip." },
         "ticker": { "type": "string" },
         "note": { "type": "string" },
         "runtime": {

@@ -19,65 +19,58 @@ const SECTIONS = [
     nav: "참여",
     title: "참여",
     titleEn: "Participation",
-    note: { ko: "Passport·Agora도 참여 대상입니다 (위 공식 섹션 참조).", en: "Passport and Agora are participation surfaces too — see Official above." },
+    note: { ko: "Passport와 Agora에서도 직접 참여할 수 있습니다 (위 공식 섹션 참조).", en: "You can also take part through Passport and Agora — see Official above." },
   },
   {
     id: "intelligence",
-    nav: "인텔리전스",
-    title: "인텔리전스",
+    nav: "AI 분석",
+    title: "AI 분석",
     titleEn: "Intelligence",
-    note: { ko: "AI가 정리한 참고 정보입니다. 공식 판단이 아닙니다.", en: "AI-generated reference context. Not an official position." },
+    note: { ko: "AI가 정리한 참고 정보입니다. 공식 입장이 아닙니다.", en: "AI-generated reference context. Not an official position." },
   },
-  { id: "showcase", nav: "쇼케이스", title: "쇼케이스", titleEn: "Showcase", note: { ko: "세계관과 체험.", en: "Worldbuilding and experiences." } },
+  { id: "showcase", nav: "체험", title: "세계관 체험", titleEn: "Showcase", note: { ko: "Mossland 세계관을 둘러보고 체험하는 공간입니다.", en: "Explore and experience the Mossland world." } },
   {
     id: "labs",
     nav: "실험실",
     title: "실험실",
     titleEn: "Labs",
-    note: { ko: "실험 단계입니다. 공식 제품이나 거버넌스가 아니며, 최종 판단과 실행은 사람과 MOC 홀더에게 있습니다.", en: "Experimental. Not official products or governance — humans and MOC holders decide." },
+    note: { ko: "실험 단계입니다. 공식 제품이나 거버넌스가 아니며, 최종 결정과 실행은 사람과 MOC 홀더의 몫입니다.", en: "Experimental. Not official products or governance — humans and MOC holders decide." },
   },
   { id: "developers", nav: "개발자", title: "개발자", titleEn: "Developers", note: null },
-  { id: "community", nav: "커뮤니티", title: "커뮤니티", titleEn: "Community", note: null },
   {
     id: "markets",
-    nav: "시장",
-    title: "시장 · 제3자",
+    nav: "시세·거래소",
+    title: "시세·거래소",
     titleEn: "Markets / Third-party",
     note: { ko: "제3자 거래소·시세 링크는 참고용이며, 거래 권유가 아닙니다.", en: "Third-party market links are provided for reference only and are not trading recommendations." },
   },
 ];
 
-// Nav: keep it lean (strategy: ~5 on mobile). Show the high-traffic anchors.
+// Nav: keep it lean (~6 anchors). Show the high-traffic sections.
 const NAV_IDS = ["official", "participation", "intelligence", "showcase", "labs", "markets"];
 
+// Chip = trust signal, data-driven (not id-string-driven). Color carries the
+// meaning: green = verified Mossland (on- or off-domain), amber = Labs, grey =
+// genuine third-party. Documented in the on-page legend.
 function chipFor(s) {
-  if (s.tier === "official_beta") return { t: "OPEN BETA", c: "chip accent" };
-  if (s.tier === "labs") return { t: s.status === "offline" ? "OFFLINE" : s.id === "ao" ? "ENGINE" : "LAB", c: "chip lab" };
-  if (s.tier === "third_party") return { t: s.label === "Exchange" ? "TRADE" : "DATA", c: "chip third" };
-  if (s.tier === "channel") return { t: s.id === "medium" ? "BLOG" : "SOCIAL", c: "chip third" };
-  if (s.tier === "developer") {
-    const off = s.domain.startsWith("github.com");
-    const t = off ? "GITHUB" : s.id === "registry-json" ? "JSON" : s.id === "llms-txt" ? "TXT" : "XML";
-    return { t, c: off ? "chip third" : "chip" };
-  }
-  if (s.status === "beta") return { t: "BETA", c: "chip beta" }; // verified moss.land, beta
-  if (s.tier === "companion") return { t: "COPILOT", c: "chip" };
-  if (s.tier === "intelligence") return { t: "INTEL", c: "chip" };
-  if (s.tier === "showcase") return { t: "SHOWCASE", c: "chip" };
-  if (s.tier === "world") return { t: "BETA", c: "chip beta" };
-  return { t: "OFFICIAL", c: "chip" };
+  if (s.artifact) return { t: "자료", c: "chip muted" }; // dev data files
+  if (s.tier === "labs") return { t: s.status === "offline" ? "중단" : "실험실", c: "chip lab" };
+  if (s.owner === "third-party" || s.tier === "third_party") return { t: "제3자", c: "chip third" };
+  if (s.tier === "official_beta") return { t: "베타", c: "chip accent" };
+  if (s.status === "beta") return { t: "베타", c: "chip beta" };
+  return { t: "공식", c: "chip" };
 }
 
 function domLine(s) {
   let d = esc(s.domain);
   if (s.ticker) d += ` · ${esc(s.ticker)}`;
-  if (s.runtime) d += ` · 런타임 ${esc(s.runtime.domain)}`;
+  if (s.runtime) d += ` · 플레이 ${esc(s.runtime.domain)}`;
   return d;
 }
 
 function card(s) {
   const chip = chipFor(s);
-  const role = `${esc(s.labelKo || "")}${s.labelKo && s.label ? " · " : ""}${esc(s.label || "")}`;
+  const role = esc(s.labelKo || s.label || ""); // KR-primary, single clean line
   const cls = "link" + (s.featured ? " featured" : "");
   return `              <a class="${cls}" href="${esc(s.url)}" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -136,7 +129,7 @@ function jsonLd() {
       position: i + 1,
       name: s.name,
       url: s.url,
-      description: [s.labelKo, s.label].filter(Boolean).join(" · "),
+      description: s.label || s.labelKo,
     })),
   };
   return (
@@ -149,10 +142,10 @@ const STYLE = readFileSync(join(ROOT, "build", "style.css"), "utf8");
 
 const HEAD_META = `    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mossland Verified Links — 검증 링크 원장</title>
+    <title>Mossland 공식 링크 · Verified Links</title>
     <meta
       name="description"
-      content="Mossland의 공식 도메인·생태계 앱·실험실·시장 링크를 한 곳에서 확인하는 공식 검증 링크 레지스트리. 여기에 없는 주소는 공식이 아닙니다. The official registry of verified Mossland domains, ecosystem apps, labs, and market references."
+      content="Mossland의 공식 도메인과 생태계 앱, 실험실, 거래소 링크를 한곳에 모은 공식 안내 페이지. 여기에 없는 주소는 공식이 아닙니다. Official Mossland domains, ecosystem apps, labs, and exchange links in one place."
     />
     <meta name="theme-color" content="#1f3b2b" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -162,26 +155,26 @@ const HEAD_META = `    <meta charset="UTF-8" />
     <meta property="og:site_name" content="Mossland" />
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:locale:alternate" content="en_US" />
-    <meta property="og:title" content="Mossland Verified Links — 검증 링크 원장" />
+    <meta property="og:title" content="Mossland 공식 링크 · Verified Links" />
     <meta
       property="og:description"
-      content="진짜 Mossland 도메인만 모은 공식 검증 링크 원장 — Passport, 공시, 생태계 앱, 거래소 링크. The verified registry of real Mossland links."
+      content="진짜 Mossland 도메인만 모은 공식 링크 모음 — Passport, 공시, 생태계 앱, 거래소. The verified directory of real Mossland links."
     />
     <meta property="og:url" content="https://links.moss.land/" />
     <meta property="og:image" content="https://links.moss.land/og.png" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Mossland Verified Links — 검증 링크 원장" />
+    <meta property="og:image:alt" content="Mossland 공식 링크 · Verified Links" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@TheMossland" />
-    <meta name="twitter:title" content="Mossland Verified Links — 검증 링크 원장" />
+    <meta name="twitter:title" content="Mossland 공식 링크 · Verified Links" />
     <meta
       name="twitter:description"
-      content="진짜 Mossland 도메인만 모은 공식 검증 링크 원장. The verified registry of real Mossland links."
+      content="진짜 Mossland 도메인만 모은 공식 링크 모음. The verified directory of real Mossland links."
     />
     <meta name="twitter:image" content="https://links.moss.land/og.png" />
-    <meta name="twitter:image:alt" content="Mossland Verified Links — 검증 링크 원장" />
+    <meta name="twitter:image:alt" content="Mossland 공식 링크 · Verified Links" />
     <link rel="alternate" type="application/json" href="/ecosystem-registry.json" title="Mossland Ecosystem Registry" />`;
 
 const NAV = NAV_IDS.map((id) => {
@@ -190,18 +183,17 @@ const NAV = NAV_IDS.map((id) => {
 }).join("\n");
 
 const VERIFY = `          <div class="verify">
-            <strong lang="ko">이 페이지의 모든 링크는 Mossland가 직접 확인한 공식 도메인입니다. 여기에 없는 주소는 공식이 아닙니다.</strong>
-            <span lang="en">Every link here is an official Mossland domain we verify. If an address isn't listed here, treat it as unofficial.</span>
+            <strong lang="ko">이 페이지의 모든 링크는 Mossland가 직접 운영·검증한 공식 도메인입니다. 여기에 없는 주소는 공식이 아니니 주의하세요.</strong>
+            <span lang="en">Every link here is an official Mossland domain we operate and verify. If an address isn't listed here, treat it as unofficial.</span>
           </div>`;
 
 const LEGEND = `        <details class="legend">
-          <summary>등급 안내 / What the tiers mean</summary>
+          <summary>표시 안내 / What the chips mean</summary>
           <ul>
-            <li><span class="chip">OFFICIAL</span> Mossland 공식 도메인 / Official Mossland domain</li>
-            <li><span class="chip accent">OPEN BETA</span> 운영 중 공식 베타 / Official service in open beta</li>
-            <li><span class="chip beta">BETA</span> 검증된 도메인의 베타 / Beta of a verified domain</li>
-            <li><span class="chip lab">LAB</span> 실험실 — 공식 제품·거버넌스 아님 / Experimental, not official</li>
-            <li><span class="chip third">MARKET</span> 제3자 — Mossland 미검증 / Third-party, not verified</li>
+            <li><span class="chip">공식</span> Mossland 공식·검증 도메인과 채널 / Verified Mossland domains and channels</li>
+            <li><span class="chip accent">베타</span> 운영 중인 공식 베타 / Official service in open beta</li>
+            <li><span class="chip lab">실험실</span> 실험 단계 — 공식 제품·거버넌스 아님 / Experimental, not official</li>
+            <li><span class="chip third">제3자</span> Mossland 미검증 외부 링크 / Third-party, not verified by Mossland</li>
           </ul>
         </details>`;
 
@@ -232,9 +224,9 @@ ${NAV}
         </header>
 
         <section class="hero" aria-labelledby="title">
-          <h1 id="title"><span lang="ko">Mossland 검증 링크</span><span class="en" lang="en">Mossland Verified Links</span></h1>
-          <p lang="ko">Mossland의 공식 도메인·생태계 앱·실험실·시장 링크를 확인하는 공식 검증 링크 원장.</p>
-          <p class="hero-sub" lang="en">The official registry of verified Mossland domains, ecosystem apps, labs, and market references.</p>
+          <h1 id="title"><span lang="ko">Mossland 공식 링크</span><span class="en" lang="en">Mossland Verified Links</span></h1>
+          <p lang="ko">Mossland의 공식 도메인과 생태계 앱, 실험실, 거래소 링크를 한곳에 모았습니다.</p>
+          <p class="hero-sub" lang="en">Official Mossland domains, ecosystem apps, labs, and exchange links — all in one place.</p>
 ${VERIFY}
           <div class="hero-actions">
             <a href="https://passport.moss.land/" target="_blank" rel="noreferrer noopener">
@@ -254,7 +246,7 @@ ${renderSections()}
 ${LEGEND}
 
         <footer class="footer">
-          <span>links.moss.land · 검증 링크 원장</span>
+          <span>links.moss.land · Mossland 공식 링크</span>
           <a href="https://github.com/MosslandOpenDevs/links" target="_blank" rel="noreferrer noopener">
             MosslandOpenDevs/links
           </a>
@@ -313,8 +305,7 @@ function renderLlms() {
     lines.push(`## ${meta.titleEn}`);
     if (meta.note) lines.push(`> ${meta.note.en}`);
     for (const s of items) {
-      const label = [s.label, s.labelKo].filter(Boolean).join(" / ");
-      lines.push(`- [${s.name}](${s.url}): ${label}`);
+      lines.push(`- [${s.name}](${s.url}): ${s.label || s.labelKo}`);
     }
     lines.push("");
   }

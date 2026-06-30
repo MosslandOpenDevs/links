@@ -13,6 +13,17 @@ customHeaders:
         value: 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'
       - key: 'Strict-Transport-Security'
         value: 'max-age=63072000; includeSubDomains'
+  # Force UTF-8 on plain-text files. Without this Amplify serves charset-less
+  # text/plain, and the global nosniff header blocks encoding recovery, so any
+  # non-ASCII (e.g. Korean) renders as mojibake.
+  - pattern: '/llms.txt'
+    headers:
+      - key: 'Content-Type'
+        value: 'text/plain; charset=utf-8'
+  - pattern: '/robots.txt'
+    headers:
+      - key: 'Content-Type'
+        value: 'text/plain; charset=utf-8'
   # The ecosystem registry is a public, read-only, non-credentialed source of truth
   # consumed cross-origin by other Mossland properties (moss.land, passport, city, wa).
   # `*` is the only workable ACAO value here: Amplify serves a single static header
