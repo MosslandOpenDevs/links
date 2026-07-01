@@ -220,11 +220,11 @@
       }
 
       h1 .en {
-        margin-top: 8px;
+        margin-top: 10px;
         font-family: var(--body);
-        font-size: clamp(0.92rem, 3vw, 1.15rem);
+        font-size: clamp(1rem, 3.2vw, 1.35rem);
         font-weight: 600;
-        letter-spacing: 0.02em;
+        letter-spacing: 0.04em;
         color: var(--muted);
       }
 
@@ -347,6 +347,8 @@
 
       .section-head .note {
         margin: 8px 0 0;
+        padding-left: 10px;
+        border-left: 2px solid rgba(29, 36, 27, 0.15);
         font-size: 0.8rem;
         line-height: 1.55;
         color: var(--muted);
@@ -460,8 +462,9 @@
       }
 
       .chip.lab {
-        background: #f3e7cf;
+        background: transparent;
         color: #7a5a1e;
+        border: 1px solid rgba(122, 90, 30, 0.5);
       }
 
       .chip.third {
@@ -477,8 +480,14 @@
       }
 
       .link.featured {
-        border-color: rgba(31, 59, 43, 0.22);
+        border-color: rgba(31, 59, 43, 0.28);
         background: linear-gradient(180deg, rgba(228, 240, 231, 0.92), var(--panel-strong));
+        box-shadow: inset 0 0 0 1.5px rgba(31, 59, 43, 0.28);
+      }
+
+      .link.featured:hover,
+      .link.featured:focus-visible {
+        box-shadow: inset 0 0 0 1.5px rgba(31, 59, 43, 0.38), 0 18px 32px rgba(44, 46, 30, 0.08);
       }
 
       .hero-actions .beta-badge {
@@ -541,19 +550,31 @@
         position: relative;
         z-index: 1;
         display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 8px;
         margin-top: 18px;
         padding: 8px 6px 0;
         color: var(--muted);
         font-size: 0.84rem;
       }
 
-      .footer a {
+      .footer-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .footer-row a {
         display: inline-flex;
         align-items: center;
         min-height: 44px;
+      }
+
+      .footer-dev {
+        font-size: 0.8rem;
+        opacity: 0.85;
       }
 
       .footer a:hover {
@@ -602,7 +623,7 @@
         }
 
         .section-head,
-        .footer {
+        .footer-row {
           align-items: flex-start;
           flex-direction: column;
         }
@@ -634,7 +655,7 @@
           display: none;
         }
 
-        .footer a {
+        .footer-row a {
           display: inline-flex;
           align-items: center;
           min-height: 44px;
@@ -675,7 +696,7 @@
             <div class="list">
               <a class="link" href="https://www.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>Mossland<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>Mossland<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">공식 홈페이지</span>
                   <span class="dom">www.moss.land</span>
                 </span>
@@ -683,7 +704,7 @@
               </a>
               <a class="link" href="https://disclosure.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>Disclosure<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>Disclosure<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">공식 공시</span>
                   <span class="dom">disclosure.moss.land</span>
                 </span>
@@ -691,7 +712,7 @@
               </a>
               <a class="link" href="https://medium.com/mossland-blog" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>Medium<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>Medium<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">공식 블로그</span>
                   <span class="dom">medium.com/mossland-blog</span>
                 </span>
@@ -699,7 +720,7 @@
               </a>
               <a class="link" href="https://x.com/TheMossland" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>X<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>X<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">공식 X</span>
                   <span class="dom">x.com/TheMossland</span>
                 </span>
@@ -717,7 +738,7 @@
             <div class="list">
               <a class="link featured" href="https://passport.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>Passport<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>Passport<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">신원·참여 증명</span>
                   <span class="dom">passport.moss.land</span>
                 </span>
@@ -725,7 +746,7 @@
               </a>
               <a class="link" href="https://agora.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>Agora<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>Agora<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">공개 의사결정</span>
                   <span class="dom">agora.moss.land</span>
                 </span>
@@ -733,7 +754,7 @@
               </a>
               <a class="link" href="https://mait.moss.land/en" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>MAIT<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>MAIT<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">이해를 돕는 AI</span>
                   <span class="dom">mait.moss.land</span>
                 </span>
@@ -741,7 +762,7 @@
               </a>
               <a class="link" href="https://wa.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>Mossverse<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>Mossverse<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">Mossverse 입장</span>
                   <span class="dom">wa.moss.land · play.wa.moss.land</span>
                 </span>
@@ -760,7 +781,7 @@
             <div class="list">
               <a class="link" href="https://alpha.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>Alpha<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>Alpha<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">크립토·매크로·국제정세 큐레이션</span>
                   <span class="dom">alpha.moss.land</span>
                 </span>
@@ -768,7 +789,7 @@
               </a>
               <a class="link" href="https://signalmap.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>Signal Map<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>Signal Map<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">유튜버 여론·이슈 지도</span>
                   <span class="dom">signalmap.moss.land</span>
                 </span>
@@ -776,7 +797,7 @@
               </a>
               <a class="link" href="https://city.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>City<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>City<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">스스로 움직이는 AI 도시</span>
                   <span class="dom">city.moss.land</span>
                 </span>
@@ -784,7 +805,7 @@
               </a>
               <a class="link" href="https://npc.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>NPC<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>NPC<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">AI 주민과 대화</span>
                   <span class="dom">npc.moss.land</span>
                 </span>
@@ -792,7 +813,7 @@
               </a>
               <a class="link" href="https://recipe.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>Recipe<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>Recipe<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">AI 활용법·프롬프트 갤러리</span>
                   <span class="dom">recipe.moss.land</span>
                 </span>
@@ -800,7 +821,7 @@
               </a>
               <a class="link" href="https://ao.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>MOSS.AO<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>MOSS.AO<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">AI 에이전트 조율 엔진</span>
                   <span class="dom">ao.moss.land</span>
                 </span>
@@ -808,7 +829,7 @@
               </a>
               <a class="link" href="https://algora.moss.land/en" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>Algora<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>Algora<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">AI 에이전트 숙의</span>
                   <span class="dom">algora.moss.land</span>
                 </span>
@@ -816,7 +837,7 @@
               </a>
               <a class="link" href="https://bridge.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>BRIDGE<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>BRIDGE<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">현실세계 AI 거버넌스</span>
                   <span class="dom">bridge.moss.land</span>
                 </span>
@@ -834,7 +855,7 @@
             <div class="list">
               <a class="link" href="https://github.com/mossland" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>GitHub<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>GitHub<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">공식 GitHub</span>
                   <span class="dom">github.com/mossland</span>
                 </span>
@@ -842,35 +863,11 @@
               </a>
               <a class="link" href="https://github.com/MosslandOpenDevs" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>MosslandOpenDevs<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>MosslandOpenDevs<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">오픈소스 개발</span>
                   <span class="dom">github.com/MosslandOpenDevs</span>
                 </span>
                 <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
-              </a>
-              <a class="link" href="https://links.moss.land/ecosystem-registry.json" target="_blank" rel="noreferrer noopener">
-                <span class="link-copy">
-                  <strong>Ecosystem Registry<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
-                  <span class="role">레지스트리 데이터</span>
-                  <span class="dom">links.moss.land/ecosystem-registry.json</span>
-                </span>
-                <span class="chip muted" aria-label="자료 · 개발자 데이터 파일">자료</span>
-              </a>
-              <a class="link" href="https://links.moss.land/llms.txt" target="_blank" rel="noreferrer noopener">
-                <span class="link-copy">
-                  <strong>llms.txt<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
-                  <span class="role">AI가 읽는 링크 목록</span>
-                  <span class="dom">links.moss.land/llms.txt</span>
-                </span>
-                <span class="chip muted" aria-label="자료 · 개발자 데이터 파일">자료</span>
-              </a>
-              <a class="link" href="https://links.moss.land/sitemap.xml" target="_blank" rel="noreferrer noopener">
-                <span class="link-copy">
-                  <strong>Sitemap<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
-                  <span class="role">사이트맵</span>
-                  <span class="dom">links.moss.land/sitemap.xml</span>
-                </span>
-                <span class="chip muted" aria-label="자료 · 개발자 데이터 파일">자료</span>
               </a>
             </div>
           </section>
@@ -885,7 +882,7 @@
             <div class="list">
               <a class="link" href="https://coinmarketcap.com/currencies/moss-coin/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>CoinMarketCap<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>CoinMarketCap<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">시세 정보</span>
                   <span class="dom">coinmarketcap.com · MOC</span>
                 </span>
@@ -893,7 +890,7 @@
               </a>
               <a class="link" href="https://www.coingecko.com/en/coins/mossland" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>CoinGecko<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>CoinGecko<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">시세 정보</span>
                   <span class="dom">coingecko.com · MOC</span>
                 </span>
@@ -901,7 +898,7 @@
               </a>
               <a class="link" href="https://www.upbit.com/exchange/CRIX.UPBIT.KRW-MOC" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>Upbit<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>Upbit<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">거래소</span>
                   <span class="dom">upbit.com · MOC/KRW</span>
                 </span>
@@ -909,7 +906,7 @@
               </a>
               <a class="link" href="https://www.bithumb.com/react/trade/order/MOC-KRW" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>Bithumb<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>Bithumb<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">거래소</span>
                   <span class="dom">bithumb.com · MOC/KRW</span>
                 </span>
@@ -917,7 +914,7 @@
               </a>
               <a class="link" href="https://coinone.co.kr/exchange/trade/moc/krw" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>Coinone<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>Coinone<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">거래소</span>
                   <span class="dom">coinone.co.kr · MOC/KRW</span>
                 </span>
@@ -925,7 +922,7 @@
               </a>
               <a class="link" href="https://www.gopax.co.kr/exchange/MOC-KRW" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>GOPAX<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>GOPAX<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">거래소</span>
                   <span class="dom">gopax.co.kr · MOC/KRW</span>
                 </span>

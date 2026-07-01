@@ -62,7 +62,7 @@ function card(s) {
   const cls = "link" + (s.featured ? " featured" : "");
   return `              <a class="${cls}" href="${esc(s.url)}" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
-                  <strong>${esc(s.name)}<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
+                  <strong>${esc(s.name)}<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">${role}</span>
                   <span class="dom">${domLine(s)}</span>
                 </span>
@@ -74,7 +74,7 @@ function renderSections() {
   const visible = reg.services.filter((s) => !s.hidden && s.section);
   const out = [];
   for (const meta of SECTIONS) {
-    const items = visible.filter((s) => s.section === meta.id || (s.extraSections || []).includes(meta.id));
+    const items = visible.filter((s) => (s.section === meta.id || (s.extraSections || []).includes(meta.id)) && !s.artifact);
     if (!items.length) continue;
     const noteHtml = meta.note
       ? `\n              <p class="note"><span lang="ko">${esc(meta.note.ko)}</span><span lang="en">${esc(meta.note.en)}</span></p>`
@@ -101,12 +101,21 @@ function jsonLd() {
   const org = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": "https://www.moss.land/#org",
     name: "Mossland",
     url: "https://www.moss.land/",
     logo: "https://links.moss.land/apple-touch-icon.png",
     sameAs,
   };
-  const listed = reg.services.filter((s) => !s.hidden && s.section);
+  const website = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Mossland Verified Links",
+    url: "https://links.moss.land/",
+    inLanguage: ["ko", "en"],
+    publisher: { "@id": "https://www.moss.land/#org" },
+  };
+  const listed = reg.services.filter((s) => !s.hidden && s.section && !s.artifact);
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -120,10 +129,9 @@ function jsonLd() {
       description: s.label || s.labelKo,
     })),
   };
-  return (
-    `    <script type="application/ld+json">\n${JSON.stringify(org, null, 2)}\n    </script>\n` +
-    `    <script type="application/ld+json">\n${JSON.stringify(itemList, null, 2)}\n    </script>`
-  );
+  return [org, website, itemList]
+    .map((o) => `    <script type="application/ld+json">\n${JSON.stringify(o, null, 2)}\n    </script>`)
+    .join("\n");
 }
 
 const STYLE = readFileSync(join(ROOT, "build", "style.css"), "utf8");
@@ -154,7 +162,7 @@ const HEAD_META = `    <meta charset="UTF-8" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Mossland 공식 링크 · Verified Links" />
+    <meta property="og:image:alt" content="Mossland 공식 링크 안내 카드 — 검증된 도메인·채널 모음 / Mossland Verified Links social card" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@TheMossland" />
     <meta name="twitter:title" content="Mossland 공식 링크 · Verified Links" />
@@ -163,10 +171,14 @@ const HEAD_META = `    <meta charset="UTF-8" />
       content="진짜 Mossland 도메인만 모은 공식 링크 모음. The verified directory of real Mossland links."
     />
     <meta name="twitter:image" content="https://links.moss.land/og.png" />
-    <meta name="twitter:image:alt" content="Mossland 공식 링크 · Verified Links" />
+    <meta name="twitter:image:alt" content="Mossland 공식 링크 안내 카드 — 검증된 도메인·채널 모음 / Mossland Verified Links social card" />
     <link rel="alternate" type="application/json" href="/ecosystem-registry.json" title="Mossland Ecosystem Registry" />`;
 
 const lastVerified = String(reg.generatedAt).split("T")[0];
+const devLinks = reg.services
+  .filter((s) => s.artifact)
+  .map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noreferrer noopener">${esc(s.name)}</a>`)
+  .join(" · ");
 
 const NAV = NAV_IDS.map((id) => {
   const m = SECTIONS.find((x) => x.id === id);
@@ -178,7 +190,7 @@ const VERIFY = `          <div class="verify">
             <span lang="en">Apart from third-party market links, every link here is operated by Mossland. If an address isn't listed, treat it as unofficial — verify via official X (@TheMossland).</span>
           </div>`;
 
-const LEGEND = `        <details class="legend">
+const LEGEND = `        <details class="legend" open>
           <summary>표시 안내 / What the chips mean</summary>
           <ul>
             <li><span class="chip">공식</span> Mossland 공식·검증 도메인과 채널 / Verified Mossland domains and channels</li>
@@ -218,8 +230,8 @@ ${NAV}
 
         <section class="hero" aria-labelledby="title">
           <h1 id="title"><span lang="ko">Mossland 공식 링크</span><span class="en" lang="en">Mossland Verified Links</span></h1>
-          <p lang="ko">Mossland 공식 도메인·생태계 앱·실험실과 제3자 시세·거래소 링크를 한곳에 모았습니다.</p>
-          <p class="hero-sub" lang="en">Official Mossland domains, ecosystem apps, and labs, plus third-party market links — all in one place.</p>
+          <p lang="ko">Mossland는 AI 문명을 위한 참여 인프라입니다. 공식 도메인과 생태계 앱, 실험실, 그리고 제3자 시세·거래소 링크를 한곳에 모았습니다.</p>
+          <p class="hero-sub" lang="en">Mossland is infrastructure for the AI civilization. This page gathers its official domains, apps, and labs, plus third-party market links.</p>
 ${VERIFY}
           <div class="hero-actions">
             <a href="https://passport.moss.land/" target="_blank" rel="noreferrer noopener">
@@ -239,10 +251,11 @@ ${renderSections()}
 ${LEGEND}
 
         <footer class="footer" role="contentinfo">
-          <span>links.moss.land · 최종 확인 ${lastVerified}</span>
-          <a href="https://github.com/MosslandOpenDevs/links" target="_blank" rel="noreferrer noopener">
-            MosslandOpenDevs/links
-          </a>
+          <div class="footer-row">
+            <span>links.moss.land · 최종 확인 ${lastVerified}</span>
+            <a href="https://github.com/MosslandOpenDevs/links" target="_blank" rel="noreferrer noopener">MosslandOpenDevs/links</a>
+          </div>
+          <div class="footer-dev"><span lang="ko">개발 자료</span> · ${devLinks}</div>
         </footer>
       </div>
     </main>

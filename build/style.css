@@ -206,11 +206,11 @@
       }
 
       h1 .en {
-        margin-top: 8px;
+        margin-top: 10px;
         font-family: var(--body);
-        font-size: clamp(0.92rem, 3vw, 1.15rem);
+        font-size: clamp(1rem, 3.2vw, 1.35rem);
         font-weight: 600;
-        letter-spacing: 0.02em;
+        letter-spacing: 0.04em;
         color: var(--muted);
       }
 
@@ -333,6 +333,8 @@
 
       .section-head .note {
         margin: 8px 0 0;
+        padding-left: 10px;
+        border-left: 2px solid rgba(29, 36, 27, 0.15);
         font-size: 0.8rem;
         line-height: 1.55;
         color: var(--muted);
@@ -446,8 +448,9 @@
       }
 
       .chip.lab {
-        background: #f3e7cf;
+        background: transparent;
         color: #7a5a1e;
+        border: 1px solid rgba(122, 90, 30, 0.5);
       }
 
       .chip.third {
@@ -463,8 +466,14 @@
       }
 
       .link.featured {
-        border-color: rgba(31, 59, 43, 0.22);
+        border-color: rgba(31, 59, 43, 0.28);
         background: linear-gradient(180deg, rgba(228, 240, 231, 0.92), var(--panel-strong));
+        box-shadow: inset 0 0 0 1.5px rgba(31, 59, 43, 0.28);
+      }
+
+      .link.featured:hover,
+      .link.featured:focus-visible {
+        box-shadow: inset 0 0 0 1.5px rgba(31, 59, 43, 0.38), 0 18px 32px rgba(44, 46, 30, 0.08);
       }
 
       .hero-actions .beta-badge {
@@ -527,19 +536,31 @@
         position: relative;
         z-index: 1;
         display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 8px;
         margin-top: 18px;
         padding: 8px 6px 0;
         color: var(--muted);
         font-size: 0.84rem;
       }
 
-      .footer a {
+      .footer-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .footer-row a {
         display: inline-flex;
         align-items: center;
         min-height: 44px;
+      }
+
+      .footer-dev {
+        font-size: 0.8rem;
+        opacity: 0.85;
       }
 
       .footer a:hover {
@@ -588,7 +609,7 @@
         }
 
         .section-head,
-        .footer {
+        .footer-row {
           align-items: flex-start;
           flex-direction: column;
         }
@@ -620,7 +641,7 @@
           display: none;
         }
 
-        .footer a {
+        .footer-row a {
           display: inline-flex;
           align-items: center;
           min-height: 44px;
