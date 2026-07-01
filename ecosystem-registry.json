@@ -310,6 +310,23 @@
       "hidden": false
     },
     {
+      "id": "monitor",
+      "name": "Governance Monitor",
+      "domain": "monitor.moss.land",
+      "url": "https://monitor.moss.land/",
+      "tier": "labs",
+      "label": "Live dashboard for the AO·Algora·BRIDGE governance stack",
+      "labelKo": "AI 거버넌스 실시간 대시보드",
+      "section": "ecosystem",
+      "status": "operational",
+      "passportEligible": true,
+      "stampType": "monitor_observer",
+      "sourceOfTruth": null,
+      "lastDataAt": null,
+      "owner": "mossland",
+      "hidden": false
+    },
+    {
       "id": "github-mossland",
       "name": "GitHub",
       "domain": "github.com/mossland",

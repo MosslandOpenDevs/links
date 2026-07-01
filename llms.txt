@@ -27,6 +27,7 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 - [MOSS.AO](https://ao.moss.land/): AI agent orchestration engine
 - [Algora](https://algora.moss.land/en): Multi-agent governance deliberation (lab)
 - [BRIDGE](https://bridge.moss.land/): Physical AI governance research
+- [Governance Monitor](https://monitor.moss.land/): Live dashboard for the AO·Algora·BRIDGE governance stack
 
 ## Developers
 - [GitHub](https://github.com/mossland): Official Mossland org on GitHub
