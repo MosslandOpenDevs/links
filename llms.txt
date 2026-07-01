@@ -7,12 +7,12 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 ## Official
 - [Mossland](https://www.moss.land/): Official
 - [Disclosure](https://disclosure.moss.land/): Official Records
-- [Passport](https://passport.moss.land/): Open Beta · Identity
-- [Agora](https://agora.moss.land/): Public Decision Workbench
 - [Medium](https://medium.com/mossland-blog): Blog
 - [X](https://x.com/TheMossland): Social
 
 ## Participation
+- [Passport](https://passport.moss.land/): Open Beta · Identity
+- [Agora](https://agora.moss.land/): Public Decision Workbench
 - [MAIT](https://mait.moss.land/en): AI Copilot
 - [Mossverse](https://wa.moss.land/): Beta · Mossverse
 

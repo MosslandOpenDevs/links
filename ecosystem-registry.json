@@ -69,7 +69,7 @@
       "tier": "official_beta",
       "label": "Open Beta · Identity",
       "labelKo": "신원·참여 증명",
-      "section": "official",
+      "section": "participation",
       "status": "beta",
       "passportEligible": true,
       "stampType": "identity_holder",
@@ -77,10 +77,7 @@
       "lastDataAt": null,
       "owner": "mossland",
       "featured": true,
-      "hidden": false,
-      "extraSections": [
-        "participation"
-      ]
+      "hidden": false
     },
     {
       "id": "agora",
@@ -90,17 +87,14 @@
       "tier": "official",
       "label": "Public Decision Workbench",
       "labelKo": "공개 의사결정",
-      "section": "official",
+      "section": "participation",
       "status": "operational",
       "passportEligible": true,
       "stampType": "public_decision_participant",
       "sourceOfTruth": null,
       "lastDataAt": null,
       "owner": "mossland",
-      "hidden": false,
-      "extraSections": [
-        "participation"
-      ]
+      "hidden": false
     },
     {
       "id": "links",
