@@ -39,17 +39,20 @@ const NAV_IDS = ["official", "participation", "ecosystem", "developers", "market
 // meaning: green = verified Mossland (on- or off-domain), amber = Labs, grey =
 // genuine third-party. Documented in the on-page legend.
 function chipFor(s) {
-  if (s.artifact) return { t: "자료", c: "chip muted" }; // dev data files
-  if (s.tier === "labs") return { t: s.status === "offline" ? "연구" : "실험실", c: "chip lab" };
-  if (s.owner === "third-party" || s.tier === "third_party") return { t: "제3자", c: "chip third" };
-  if (s.tier === "official_beta" || s.status === "beta") return { t: "베타", c: "chip beta" };
-  return { t: "공식", c: "chip" };
+  if (s.artifact) return { t: "자료", c: "chip muted", aria: "자료 · 개발자 데이터 파일" };
+  if (s.tier === "labs")
+    return s.status === "offline"
+      ? { t: "연구", c: "chip lab", aria: "연구 · 비운영 연구 단계" }
+      : { t: "실험실", c: "chip lab", aria: "실험실 · 공식 제품 아님" };
+  if (s.owner === "third-party" || s.tier === "third_party") return { t: "제3자", c: "chip third", aria: "제3자 · Mossland 미검증" };
+  if (s.tier === "official_beta" || s.status === "beta") return { t: "베타", c: "chip beta", aria: "베타 · 운영 중인 공식 베타" };
+  return { t: "공식", c: "chip", aria: "공식 · 검증된 Mossland 링크" };
 }
 
 function domLine(s) {
   let d = esc(s.domain);
   if (s.ticker) d += ` · ${esc(s.ticker)}`;
-  if (s.runtime) d += ` · 플레이 ${esc(s.runtime.domain)}`;
+  if (s.runtime) d += ` · ${esc(s.runtime.domain)}`;
   return d;
 }
 
@@ -63,7 +66,7 @@ function card(s) {
                   <span class="role">${role}</span>
                   <span class="dom">${domLine(s)}</span>
                 </span>
-                <span class="${chip.c}">${esc(chip.t)}</span>
+                <span class="${chip.c}" aria-label="${esc(chip.aria)}">${esc(chip.t)}</span>
               </a>`;
 }
 
@@ -130,7 +133,7 @@ const HEAD_META = `    <meta charset="UTF-8" />
     <title>Mossland 공식 링크 · Verified Links</title>
     <meta
       name="description"
-      content="Mossland 공식 도메인·생태계 앱·실험실과 제3자 시세·거래소 링크를 한곳에 모은 공식 안내 페이지. 여기에 없는 주소는 공식이 아닙니다. Official Mossland domains, ecosystem apps, and labs, plus third-party market links."
+      content="Mossland 공식 도메인·생태계 앱·실험실과 제3자 시세·거래소 링크 모음. 여기에 없는 주소는 공식이 아닙니다. Official Mossland domains, apps, labs & markets."
     />
     <meta name="theme-color" content="#1f3b2b" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -162,6 +165,8 @@ const HEAD_META = `    <meta charset="UTF-8" />
     <meta name="twitter:image" content="https://links.moss.land/og.png" />
     <meta name="twitter:image:alt" content="Mossland 공식 링크 · Verified Links" />
     <link rel="alternate" type="application/json" href="/ecosystem-registry.json" title="Mossland Ecosystem Registry" />`;
+
+const lastVerified = String(reg.generatedAt).split("T")[0];
 
 const NAV = NAV_IDS.map((id) => {
   const m = SECTIONS.find((x) => x.id === id);
@@ -218,11 +223,11 @@ ${NAV}
 ${VERIFY}
           <div class="hero-actions">
             <a href="https://passport.moss.land/" target="_blank" rel="noreferrer noopener">
-              Open Passport
-              <span class="beta-badge">BETA</span>
+              Passport 열기
+              <span class="beta-badge">베타</span>
             </a>
             <a href="https://www.moss.land/" target="_blank" rel="noreferrer noopener">
-              Official Website
+              공식 홈페이지
             </a>
           </div>
         </section>
@@ -234,7 +239,7 @@ ${renderSections()}
 ${LEGEND}
 
         <footer class="footer" role="contentinfo">
-          <span>links.moss.land · Mossland 공식 링크 모음</span>
+          <span>links.moss.land · 최종 확인 ${lastVerified}</span>
           <a href="https://github.com/MosslandOpenDevs/links" target="_blank" rel="noreferrer noopener">
             MosslandOpenDevs/links
           </a>
@@ -311,8 +316,20 @@ function renderLlms() {
   return lines.join("\n");
 }
 
+const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://links.moss.land/</loc>
+    <lastmod>${lastVerified}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
+`;
+
 writeFileSync(join(ROOT, "index.html"), indexHtml);
 writeFileSync(join(ROOT, "embed.html"), embedHtml);
 writeFileSync(join(ROOT, "llms.txt"), renderLlms());
+writeFileSync(join(ROOT, "sitemap.xml"), sitemapXml);
 const count = reg.services.filter((s) => !s.hidden && s.section).length;
 console.log(`Generated index.html + embed.html + llms.txt — ${count} visible links across ${SECTIONS.length} sections.`);

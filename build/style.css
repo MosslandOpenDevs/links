@@ -8,6 +8,7 @@
         --muted: #5b6153;
         --accent: #1f3b2b;
         --accent-soft: #e5dcc9;
+        --grad-accent: linear-gradient(135deg, #233b2f, #14231b);
         --shadow: 0 30px 80px rgba(44, 46, 30, 0.12);
         --radius-xl: 32px;
         --radius-lg: 22px;
@@ -140,7 +141,7 @@
         display: grid;
         place-items: center;
         border-radius: 15px;
-        background: linear-gradient(135deg, #233b2f, #14231b);
+        background: var(--grad-accent);
         color: #f8f3ea;
         font-weight: 700;
         letter-spacing: 0.08em;
@@ -194,7 +195,7 @@
       h1 {
         margin: 18px 0 10px;
         font-family: var(--display);
-        font-size: clamp(2.2rem, 8.5vw, 4.9rem);
+        font-size: clamp(1.7rem, 8.5vw, 4.9rem);
         line-height: 0.95;
         letter-spacing: -0.04em;
         text-wrap: balance;
@@ -214,7 +215,7 @@
       }
 
       h1.kiosk {
-        font-size: clamp(1.8rem, 6vw, 2.6rem);
+        font-size: clamp(1.5rem, 6vw, 2.6rem);
       }
 
       .hero p {
@@ -282,7 +283,7 @@
       }
 
       .hero-actions a:first-child {
-        background: linear-gradient(135deg, #233b2f, #14231b);
+        background: var(--grad-accent);
         color: #f8f3ea;
       }
 
@@ -318,7 +319,7 @@
       .section-head h2 {
         margin: 0;
         font-family: var(--display);
-        font-size: 1.75rem;
+        font-size: clamp(1.35rem, 4.5vw, 1.75rem);
         letter-spacing: -0.03em;
       }
 
@@ -574,13 +575,35 @@
         }
 
         .nav {
+          width: 100%;
           justify-content: flex-start;
+          gap: 6px;
+        }
+
+        .nav a {
+          padding: 10px 14px;
+          display: inline-flex;
+          align-items: center;
+          min-height: 44px;
         }
 
         .section-head,
         .footer {
           align-items: flex-start;
           flex-direction: column;
+        }
+
+        /* Let long KR labels/domains wrap instead of ellipsis-clipping on phones */
+        .link {
+          align-items: flex-start;
+        }
+
+        .link-copy .role,
+        .link-copy .dom {
+          white-space: normal;
+          overflow: visible;
+          text-overflow: clip;
+          overflow-wrap: anywhere;
         }
 
         .hero-actions {

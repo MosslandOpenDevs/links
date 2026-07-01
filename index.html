@@ -7,7 +7,7 @@
     <title>Mossland 공식 링크 · Verified Links</title>
     <meta
       name="description"
-      content="Mossland 공식 도메인·생태계 앱·실험실과 제3자 시세·거래소 링크를 한곳에 모은 공식 안내 페이지. 여기에 없는 주소는 공식이 아닙니다. Official Mossland domains, ecosystem apps, and labs, plus third-party market links."
+      content="Mossland 공식 도메인·생태계 앱·실험실과 제3자 시세·거래소 링크 모음. 여기에 없는 주소는 공식이 아닙니다. Official Mossland domains, apps, labs & markets."
     />
     <meta name="theme-color" content="#1f3b2b" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -50,6 +50,7 @@
         --muted: #5b6153;
         --accent: #1f3b2b;
         --accent-soft: #e5dcc9;
+        --grad-accent: linear-gradient(135deg, #233b2f, #14231b);
         --shadow: 0 30px 80px rgba(44, 46, 30, 0.12);
         --radius-xl: 32px;
         --radius-lg: 22px;
@@ -182,7 +183,7 @@
         display: grid;
         place-items: center;
         border-radius: 15px;
-        background: linear-gradient(135deg, #233b2f, #14231b);
+        background: var(--grad-accent);
         color: #f8f3ea;
         font-weight: 700;
         letter-spacing: 0.08em;
@@ -236,7 +237,7 @@
       h1 {
         margin: 18px 0 10px;
         font-family: var(--display);
-        font-size: clamp(2.2rem, 8.5vw, 4.9rem);
+        font-size: clamp(1.7rem, 8.5vw, 4.9rem);
         line-height: 0.95;
         letter-spacing: -0.04em;
         text-wrap: balance;
@@ -256,7 +257,7 @@
       }
 
       h1.kiosk {
-        font-size: clamp(1.8rem, 6vw, 2.6rem);
+        font-size: clamp(1.5rem, 6vw, 2.6rem);
       }
 
       .hero p {
@@ -324,7 +325,7 @@
       }
 
       .hero-actions a:first-child {
-        background: linear-gradient(135deg, #233b2f, #14231b);
+        background: var(--grad-accent);
         color: #f8f3ea;
       }
 
@@ -360,7 +361,7 @@
       .section-head h2 {
         margin: 0;
         font-family: var(--display);
-        font-size: 1.75rem;
+        font-size: clamp(1.35rem, 4.5vw, 1.75rem);
         letter-spacing: -0.03em;
       }
 
@@ -616,13 +617,35 @@
         }
 
         .nav {
+          width: 100%;
           justify-content: flex-start;
+          gap: 6px;
+        }
+
+        .nav a {
+          padding: 10px 14px;
+          display: inline-flex;
+          align-items: center;
+          min-height: 44px;
         }
 
         .section-head,
         .footer {
           align-items: flex-start;
           flex-direction: column;
+        }
+
+        /* Let long KR labels/domains wrap instead of ellipsis-clipping on phones */
+        .link {
+          align-items: flex-start;
+        }
+
+        .link-copy .role,
+        .link-copy .dom {
+          white-space: normal;
+          overflow: visible;
+          text-overflow: clip;
+          overflow-wrap: anywhere;
         }
 
         .hero-actions {
@@ -919,11 +942,11 @@
           </div>
           <div class="hero-actions">
             <a href="https://passport.moss.land/" target="_blank" rel="noreferrer noopener">
-              Open Passport
-              <span class="beta-badge">BETA</span>
+              Passport 열기
+              <span class="beta-badge">베타</span>
             </a>
             <a href="https://www.moss.land/" target="_blank" rel="noreferrer noopener">
-              Official Website
+              공식 홈페이지
             </a>
           </div>
         </section>
@@ -942,7 +965,7 @@
                   <span class="role">공식 홈페이지</span>
                   <span class="dom">www.moss.land</span>
                 </span>
-                <span class="chip">공식</span>
+                <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
               </a>
               <a class="link" href="https://disclosure.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -950,7 +973,7 @@
                   <span class="role">공식 공시</span>
                   <span class="dom">disclosure.moss.land</span>
                 </span>
-                <span class="chip">공식</span>
+                <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
               </a>
               <a class="link" href="https://medium.com/mossland-blog" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -958,7 +981,7 @@
                   <span class="role">공식 블로그</span>
                   <span class="dom">medium.com/mossland-blog</span>
                 </span>
-                <span class="chip">공식</span>
+                <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
               </a>
               <a class="link" href="https://x.com/TheMossland" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -966,7 +989,7 @@
                   <span class="role">공식 X</span>
                   <span class="dom">x.com/TheMossland</span>
                 </span>
-                <span class="chip">공식</span>
+                <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
               </a>
             </div>
           </section>
@@ -984,7 +1007,7 @@
                   <span class="role">신원·참여 증명</span>
                   <span class="dom">passport.moss.land</span>
                 </span>
-                <span class="chip beta">베타</span>
+                <span class="chip beta" aria-label="베타 · 운영 중인 공식 베타">베타</span>
               </a>
               <a class="link" href="https://agora.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -992,7 +1015,7 @@
                   <span class="role">공개 의사결정</span>
                   <span class="dom">agora.moss.land</span>
                 </span>
-                <span class="chip">공식</span>
+                <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
               </a>
               <a class="link" href="https://mait.moss.land/en" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -1000,15 +1023,15 @@
                   <span class="role">이해를 돕는 AI</span>
                   <span class="dom">mait.moss.land</span>
                 </span>
-                <span class="chip">공식</span>
+                <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
               </a>
               <a class="link" href="https://wa.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
                   <strong>Mossverse<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
                   <span class="role">Mossverse 입장</span>
-                  <span class="dom">wa.moss.land · 플레이 play.wa.moss.land</span>
+                  <span class="dom">wa.moss.land · play.wa.moss.land</span>
                 </span>
-                <span class="chip beta">베타</span>
+                <span class="chip beta" aria-label="베타 · 운영 중인 공식 베타">베타</span>
               </a>
             </div>
           </section>
@@ -1027,7 +1050,7 @@
                   <span class="role">크립토·매크로·국제정세 큐레이션</span>
                   <span class="dom">alpha.moss.land</span>
                 </span>
-                <span class="chip">공식</span>
+                <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
               </a>
               <a class="link" href="https://signalmap.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -1035,7 +1058,7 @@
                   <span class="role">유튜버 여론·이슈 지도</span>
                   <span class="dom">signalmap.moss.land</span>
                 </span>
-                <span class="chip beta">베타</span>
+                <span class="chip beta" aria-label="베타 · 운영 중인 공식 베타">베타</span>
               </a>
               <a class="link" href="https://city.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -1043,7 +1066,7 @@
                   <span class="role">스스로 움직이는 AI 도시</span>
                   <span class="dom">city.moss.land</span>
                 </span>
-                <span class="chip">공식</span>
+                <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
               </a>
               <a class="link" href="https://npc.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -1051,7 +1074,7 @@
                   <span class="role">AI 주민과 대화</span>
                   <span class="dom">npc.moss.land</span>
                 </span>
-                <span class="chip">공식</span>
+                <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
               </a>
               <a class="link" href="https://recipe.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -1059,7 +1082,7 @@
                   <span class="role">AI 활용법·프롬프트 갤러리</span>
                   <span class="dom">recipe.moss.land</span>
                 </span>
-                <span class="chip">공식</span>
+                <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
               </a>
               <a class="link" href="https://ao.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -1067,7 +1090,7 @@
                   <span class="role">AI 에이전트 조율 엔진</span>
                   <span class="dom">ao.moss.land</span>
                 </span>
-                <span class="chip lab">실험실</span>
+                <span class="chip lab" aria-label="실험실 · 공식 제품 아님">실험실</span>
               </a>
               <a class="link" href="https://algora.moss.land/en" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -1075,7 +1098,7 @@
                   <span class="role">AI 에이전트 숙의</span>
                   <span class="dom">algora.moss.land</span>
                 </span>
-                <span class="chip lab">실험실</span>
+                <span class="chip lab" aria-label="실험실 · 공식 제품 아님">실험실</span>
               </a>
               <a class="link" href="https://bridge.moss.land/" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -1083,7 +1106,7 @@
                   <span class="role">현실세계 AI 거버넌스</span>
                   <span class="dom">bridge.moss.land</span>
                 </span>
-                <span class="chip lab">연구</span>
+                <span class="chip lab" aria-label="연구 · 비운영 연구 단계">연구</span>
               </a>
             </div>
           </section>
@@ -1101,7 +1124,7 @@
                   <span class="role">공식 GitHub</span>
                   <span class="dom">github.com/mossland</span>
                 </span>
-                <span class="chip">공식</span>
+                <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
               </a>
               <a class="link" href="https://github.com/MosslandOpenDevs" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -1109,7 +1132,7 @@
                   <span class="role">오픈소스 개발</span>
                   <span class="dom">github.com/MosslandOpenDevs</span>
                 </span>
-                <span class="chip">공식</span>
+                <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
               </a>
               <a class="link" href="https://links.moss.land/ecosystem-registry.json" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -1117,7 +1140,7 @@
                   <span class="role">레지스트리 데이터</span>
                   <span class="dom">links.moss.land/ecosystem-registry.json</span>
                 </span>
-                <span class="chip muted">자료</span>
+                <span class="chip muted" aria-label="자료 · 개발자 데이터 파일">자료</span>
               </a>
               <a class="link" href="https://links.moss.land/llms.txt" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -1125,7 +1148,7 @@
                   <span class="role">AI가 읽는 링크 목록</span>
                   <span class="dom">links.moss.land/llms.txt</span>
                 </span>
-                <span class="chip muted">자료</span>
+                <span class="chip muted" aria-label="자료 · 개발자 데이터 파일">자료</span>
               </a>
               <a class="link" href="https://links.moss.land/sitemap.xml" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -1133,7 +1156,7 @@
                   <span class="role">사이트맵</span>
                   <span class="dom">links.moss.land/sitemap.xml</span>
                 </span>
-                <span class="chip muted">자료</span>
+                <span class="chip muted" aria-label="자료 · 개발자 데이터 파일">자료</span>
               </a>
             </div>
           </section>
@@ -1152,7 +1175,7 @@
                   <span class="role">시세 정보</span>
                   <span class="dom">coinmarketcap.com · MOC</span>
                 </span>
-                <span class="chip third">제3자</span>
+                <span class="chip third" aria-label="제3자 · Mossland 미검증">제3자</span>
               </a>
               <a class="link" href="https://www.coingecko.com/en/coins/mossland" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
@@ -1160,39 +1183,39 @@
                   <span class="role">시세 정보</span>
                   <span class="dom">coingecko.com · MOC</span>
                 </span>
-                <span class="chip third">제3자</span>
+                <span class="chip third" aria-label="제3자 · Mossland 미검증">제3자</span>
               </a>
               <a class="link" href="https://www.upbit.com/exchange/CRIX.UPBIT.KRW-MOC" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
                   <strong>Upbit<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
                   <span class="role">거래소</span>
-                  <span class="dom">upbit.com · MOC / KRW</span>
+                  <span class="dom">upbit.com · MOC/KRW</span>
                 </span>
-                <span class="chip third">제3자</span>
+                <span class="chip third" aria-label="제3자 · Mossland 미검증">제3자</span>
               </a>
               <a class="link" href="https://www.bithumb.com/react/trade/order/MOC-KRW" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
                   <strong>Bithumb<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
                   <span class="role">거래소</span>
-                  <span class="dom">bithumb.com · MOC / KRW</span>
+                  <span class="dom">bithumb.com · MOC/KRW</span>
                 </span>
-                <span class="chip third">제3자</span>
+                <span class="chip third" aria-label="제3자 · Mossland 미검증">제3자</span>
               </a>
               <a class="link" href="https://coinone.co.kr/exchange/trade/moc/krw" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
                   <strong>Coinone<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
                   <span class="role">거래소</span>
-                  <span class="dom">coinone.co.kr · MOC / KRW</span>
+                  <span class="dom">coinone.co.kr · MOC/KRW</span>
                 </span>
-                <span class="chip third">제3자</span>
+                <span class="chip third" aria-label="제3자 · Mossland 미검증">제3자</span>
               </a>
               <a class="link" href="https://www.gopax.co.kr/exchange/MOC-KRW" target="_blank" rel="noreferrer noopener">
                 <span class="link-copy">
                   <strong>GOPAX<span class="ext" aria-hidden="true">↗</span><span class="sr-only"> (새 창에서 열림 / opens in a new tab)</span></strong>
                   <span class="role">거래소</span>
-                  <span class="dom">gopax.co.kr · MOC / KRW</span>
+                  <span class="dom">gopax.co.kr · MOC/KRW</span>
                 </span>
-                <span class="chip third">제3자</span>
+                <span class="chip third" aria-label="제3자 · Mossland 미검증">제3자</span>
               </a>
             </div>
           </section>
@@ -1210,7 +1233,7 @@
         </details>
 
         <footer class="footer" role="contentinfo">
-          <span>links.moss.land · Mossland 공식 링크 모음</span>
+          <span>links.moss.land · 최종 확인 2026-07-01</span>
           <a href="https://github.com/MosslandOpenDevs/links" target="_blank" rel="noreferrer noopener">
             MosslandOpenDevs/links
           </a>
