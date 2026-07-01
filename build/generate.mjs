@@ -35,16 +35,19 @@ const SECTIONS = [
 // Nav: lean anchor set, one per visible section.
 const NAV_IDS = ["official", "participation", "ecosystem", "developers", "markets"];
 
-// Chip = trust signal, data-driven (not id-string-driven). Color carries the
-// meaning: green = verified Mossland (on- or off-domain), amber = Labs, grey =
-// genuine third-party. Documented in the on-page legend.
+// Chip = trust signal. Color carries the meaning: green = verified Mossland
+// (on- or off-domain), amber = experimental/pre-launch stage, grey = third-party.
+// The amber STAGE (실험실/연구/준비중) is an explicit registry field, deliberately
+// decoupled from operational `status` (offline/paused are uptime, not a stage).
+const STAGE_ARIA = {
+  실험실: "실험실 · 공식 제품 아님",
+  연구: "연구 · 비운영 연구 단계",
+  준비중: "준비중 · 초기 데이터 단계, 미출시",
+};
 function chipFor(s) {
   if (s.artifact) return { t: "자료", c: "chip muted", aria: "자료 · 개발자 데이터 파일" };
-  if (s.status === "paused") return { t: "준비중", c: "chip lab", aria: "준비중 · 초기 데이터 단계, 미출시" };
-  if (s.tier === "labs")
-    return s.status === "offline"
-      ? { t: "연구", c: "chip lab", aria: "연구 · 비운영 연구 단계" }
-      : { t: "실험실", c: "chip lab", aria: "실험실 · 공식 제품 아님" };
+  if (s.chip) return { t: s.chip, c: "chip lab", aria: STAGE_ARIA[s.chip] || s.chip };
+  if (s.tier === "labs") return { t: "실험실", c: "chip lab", aria: STAGE_ARIA["실험실"] };
   if (s.owner === "third-party" || s.tier === "third_party") return { t: "제3자", c: "chip third", aria: "제3자 · Mossland 미검증" };
   if (s.tier === "official_beta" || s.status === "beta") return { t: "베타", c: "chip beta", aria: "베타 · 운영 중인 공식 베타" };
   return { t: "공식", c: "chip", aria: "공식 · 검증된 Mossland 링크" };

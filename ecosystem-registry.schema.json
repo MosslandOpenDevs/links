@@ -79,6 +79,7 @@
         "featured": { "type": "boolean" },
         "hidden": { "type": "boolean", "description": "If true, kept in the registry but not rendered on the page." },
         "artifact": { "type": "boolean", "description": "Developer data file (registry/llms/sitemap) — renders with a muted secondary chip, not a trust-tier chip." },
+        "chip": { "type": "string", "enum": ["실험실", "연구", "준비중"], "description": "Explicit amber stage chip (Lab/Research/Coming-soon). Decoupled from operational `status`; overrides the derived chip. Labs-tier without this defaults to 실험실." },
         "ticker": { "type": "string" },
         "note": { "type": "string" },
         "runtime": {

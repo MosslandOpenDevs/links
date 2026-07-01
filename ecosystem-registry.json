@@ -204,7 +204,8 @@
       "lastDataAt": null,
       "owner": "mossland",
       "hidden": false,
-      "note": "Pre-launch / data-seeding (0 channels·videos·topics). Rendered with a 준비중 chip; set status=beta once media.moss.land shows live data."
+      "note": "Pre-launch / data-seeding (0 channels·videos·topics). Rendered with a 준비중 chip; set status=beta once media.moss.land shows live data.",
+      "chip": "준비중"
     },
     {
       "id": "city",
@@ -306,7 +307,8 @@
       "sourceOfTruth": null,
       "lastDataAt": null,
       "owner": "mossland",
-      "hidden": false
+      "hidden": false,
+      "chip": "연구"
     },
     {
       "id": "github-mossland",
