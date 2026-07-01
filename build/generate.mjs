@@ -141,7 +141,7 @@ const HEAD_META = `    <meta charset="UTF-8" />
     <title>Mossland 공식 링크 · Verified Links</title>
     <meta
       name="description"
-      content="Mossland 공식 도메인·생태계 앱·실험실과 제3자 시세·거래소 링크 모음. 여기에 없는 주소는 공식이 아닙니다. Official Mossland domains, apps, labs & markets."
+      content="Mossland 공식 도메인·생태계 앱과 제3자 시세·거래소 링크 모음. 여기에 없는 주소는 공식이 아닙니다. Official Mossland domains, apps & markets."
     />
     <meta name="theme-color" content="#1f3b2b" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -230,8 +230,8 @@ ${NAV}
 
         <section class="hero" aria-labelledby="title">
           <h1 id="title"><span lang="ko">Mossland 공식 링크</span><span class="en" lang="en">Mossland Verified Links</span></h1>
-          <p lang="ko">Mossland는 AI 문명을 위한 참여 인프라입니다. 공식 도메인과 생태계 앱, 실험실, 그리고 제3자 시세·거래소 링크를 한곳에 모았습니다.</p>
-          <p class="hero-sub" lang="en">Mossland is infrastructure for the AI civilization. This page gathers its official domains, apps, and labs, plus third-party market links.</p>
+          <p lang="ko">Mossland는 AI 문명을 위한 참여 인프라입니다. 공식 도메인과 생태계 앱, 그리고 제3자 시세·거래소 링크를 한곳에 모았습니다.</p>
+          <p class="hero-sub" lang="en">Mossland is infrastructure for the AI civilization. This page gathers its official domains, ecosystem apps, and third-party market links.</p>
 ${VERIFY}
           <div class="hero-actions">
             <a href="https://passport.moss.land/" target="_blank" rel="noreferrer noopener">

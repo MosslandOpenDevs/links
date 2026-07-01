@@ -14,7 +14,7 @@
     "showcase": "세계관·체험 쇼케이스 / Worldbuilding & experience showcase",
     "world": "Mossverse 가상세계 / Mossverse virtual world",
     "runtime": "실행 앱 / World runtime app",
-    "labs": "실험실 — 공식 제품·거버넌스 아님 / Experimental lab, not an official product or governance",
+    "labs": "실험 — 공식 제품·거버넌스 아님 / Experimental, not an official product or governance",
     "developer": "개발자 리소스 / Developer resource",
     "channel": "커뮤니티 채널 / Community channel (off-domain)",
     "third_party": "제3자 — Mossland 미검증 / Third-party, not verified by Mossland"
@@ -204,7 +204,7 @@
       "lastDataAt": null,
       "owner": "mossland",
       "hidden": false,
-      "note": "Live but empty — data-seeding (0 channels/videos/topics; site shows \"초기 데이터 단계\", \"Live · last analysis\"). Explicit 초기단계 chip while empty; drop the chip once it shows real data and it falls through to the 베타 chip (status=beta).",
+      "note": "Live but empty — data-seeding (0 channels/videos/topics; site shows \"초기 데이터 단계\", \"Live · last analysis\"). Explicit 실험 chip while empty; drop the chip once it shows real data and it falls through to the 베타 chip (status=beta).",
       "chip": "실험"
     },
     {
