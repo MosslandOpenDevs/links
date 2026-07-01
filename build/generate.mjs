@@ -20,7 +20,7 @@ const SECTIONS = [
     nav: "생태계",
     title: "생태계",
     titleEn: "Ecosystem",
-    note: { ko: "Mossland의 생태계 서비스입니다. '실험실'·'연구'·'실험'으로 표시된 서비스는 아직 완성된 공식 제품이나 거버넌스가 아닙니다.", en: "Mossland's ecosystem services. Anything marked 실험실 (Lab), 연구 (Research), or 실험 (Experimental) is not yet a finished official product or governance." },
+    note: { ko: "Mossland의 생태계 서비스입니다. '실험'으로 표시된 서비스는 아직 완성된 공식 제품이나 거버넌스가 아닙니다.", en: "Mossland's ecosystem services. Anything marked 실험 (Experimental) is not yet a finished official product or governance." },
   },
   { id: "developers", nav: "개발자", title: "개발자", titleEn: "Developers", note: null },
   {
@@ -36,18 +36,14 @@ const SECTIONS = [
 const NAV_IDS = ["official", "participation", "ecosystem", "developers", "markets"];
 
 // Chip = trust signal. Color carries the meaning: green = verified Mossland
-// (on- or off-domain), amber = experimental/pre-launch stage, grey = third-party.
-// The amber STAGE (실험실/연구/준비중) is an explicit registry field, deliberately
-// decoupled from operational `status` (offline/paused are uptime, not a stage).
-const STAGE_ARIA = {
-  실험실: "실험실 · 공식 제품 아님",
-  연구: "연구 · 비운영 연구 단계",
-  실험: "실험 · 초기 단계, 데이터 수집 중",
-};
+// (on- or off-domain), amber = experimental / not-yet-finished, grey = third-party.
+// One amber word ("실험") for everything not-yet-official — the specifics of each
+// service live in its role line, so the chip doesn't sub-categorize. Labs-tier
+// gets it by default; a non-labs service opts in via `chip: "실험"` (e.g. media).
+const AMBER_ARIA = "실험 · 아직 완성된 공식 제품 아님";
 function chipFor(s) {
   if (s.artifact) return { t: "자료", c: "chip muted", aria: "자료 · 개발자 데이터 파일" };
-  if (s.chip) return { t: s.chip, c: "chip lab", aria: STAGE_ARIA[s.chip] || s.chip };
-  if (s.tier === "labs") return { t: "실험실", c: "chip lab", aria: STAGE_ARIA["실험실"] };
+  if (s.chip || s.tier === "labs") return { t: "실험", c: "chip lab", aria: AMBER_ARIA };
   if (s.owner === "third-party" || s.tier === "third_party") return { t: "제3자", c: "chip third", aria: "제3자 · Mossland 미검증" };
   if (s.tier === "official_beta" || s.status === "beta") return { t: "베타", c: "chip beta", aria: "베타 · 운영 중인 공식 베타" };
   return { t: "공식", c: "chip", aria: "공식 · 검증된 Mossland 링크" };

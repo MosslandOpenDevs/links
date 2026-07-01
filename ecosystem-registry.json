@@ -307,8 +307,7 @@
       "sourceOfTruth": null,
       "lastDataAt": null,
       "owner": "mossland",
-      "hidden": false,
-      "chip": "연구"
+      "hidden": false
     },
     {
       "id": "github-mossland",
