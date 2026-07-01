@@ -11,15 +11,16 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 - [X](https://x.com/TheMossland): Social
 
 ## Participation
-- [Passport](https://passport.moss.land/): Wallet verification & governance
+- [Passport](https://passport.moss.land/): Wallet verification · participation record
 - [Agora](https://agora.moss.land/): Public Decision Workbench
-- [MAIT](https://mait.moss.land/en): AI agent for Mossland DAO & metaverse
+- [MAIT](https://mait.moss.land/en): DAO proposal & voting assistant
 - [Mossverse](https://wa.moss.land/): Web3 virtual world where your wallet is your identity
 
 ## Ecosystem
-> Mossland's ecosystem services. Anything marked 실험실 (Lab) or 연구 (Research) is experimental or research-stage — not an official product or governance.
+> Mossland's ecosystem services. Anything marked 실험실 (Lab), 연구 (Research), or 준비중 (Coming soon) is not yet an official product or governance.
 - [Alpha](https://alpha.moss.land/): Crypto, macro & geopolitics media curation
 - [Signal Map](https://signalmap.moss.land/): YouTuber opinion & issue map
+- [Media](https://media.moss.land/): Media stance map (by issue)
 - [City](https://city.moss.land/): Self-running AI city
 - [NPC](https://npc.moss.land/): Chat with AI residents
 - [Recipe](https://recipe.moss.land/): Recreate trending AI outputs (prompt gallery)
