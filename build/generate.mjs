@@ -20,7 +20,7 @@ const SECTIONS = [
     nav: "생태계",
     title: "생태계",
     titleEn: "Ecosystem",
-    note: { ko: "Mossland의 생태계 서비스입니다. 일부(MOSS.AO·Algora·BRIDGE)는 실험·연구 단계로, 공식 제품이나 거버넌스가 아닙니다.", en: "Mossland's ecosystem services. Some (MOSS.AO, Algora, BRIDGE) are experimental or research-stage — not official products or governance." },
+    note: { ko: "Mossland의 생태계 서비스입니다. '실험실'·'연구'로 표시된 서비스는 실험·연구 단계이며, 공식 제품이나 거버넌스가 아닙니다.", en: "Mossland's ecosystem services. Anything marked 실험실 (Lab) or 연구 (Research) is experimental or research-stage — not an official product or governance." },
   },
   { id: "developers", nav: "개발자", title: "개발자", titleEn: "Developers", note: null },
   {
