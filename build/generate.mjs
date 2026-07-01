@@ -20,7 +20,7 @@ const SECTIONS = [
     nav: "생태계",
     title: "생태계",
     titleEn: "Ecosystem",
-    note: { ko: "Mossland의 생태계 서비스입니다. '실험실'·'연구'·'초기단계'로 표시된 서비스는 아직 완성된 공식 제품이나 거버넌스가 아닙니다.", en: "Mossland's ecosystem services. Anything marked 실험실 (Lab), 연구 (Research), or 초기단계 (Early stage) is not yet a finished official product or governance." },
+    note: { ko: "Mossland의 생태계 서비스입니다. '실험실'·'연구'·'실험'으로 표시된 서비스는 아직 완성된 공식 제품이나 거버넌스가 아닙니다.", en: "Mossland's ecosystem services. Anything marked 실험실 (Lab), 연구 (Research), or 실험 (Experimental) is not yet a finished official product or governance." },
   },
   { id: "developers", nav: "개발자", title: "개발자", titleEn: "Developers", note: null },
   {
@@ -42,7 +42,7 @@ const NAV_IDS = ["official", "participation", "ecosystem", "developers", "market
 const STAGE_ARIA = {
   실험실: "실험실 · 공식 제품 아님",
   연구: "연구 · 비운영 연구 단계",
-  초기단계: "초기단계 · 라이브지만 데이터 수집 중, 아직 결과 없음",
+  실험: "실험 · 초기 단계, 데이터 수집 중",
 };
 function chipFor(s) {
   if (s.artifact) return { t: "자료", c: "chip muted", aria: "자료 · 개발자 데이터 파일" };

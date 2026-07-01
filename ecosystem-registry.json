@@ -205,7 +205,7 @@
       "owner": "mossland",
       "hidden": false,
       "note": "Live but empty — data-seeding (0 channels/videos/topics; site shows \"초기 데이터 단계\", \"Live · last analysis\"). Explicit 초기단계 chip while empty; drop the chip once it shows real data and it falls through to the 베타 chip (status=beta).",
-      "chip": "초기단계"
+      "chip": "실험"
     },
     {
       "id": "city",

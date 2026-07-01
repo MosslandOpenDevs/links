@@ -17,7 +17,7 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 - [Mossverse](https://wa.moss.land/): Web3 virtual world where your wallet is your identity
 
 ## Ecosystem
-> Mossland's ecosystem services. Anything marked 실험실 (Lab), 연구 (Research), or 초기단계 (Early stage) is not yet a finished official product or governance.
+> Mossland's ecosystem services. Anything marked 실험실 (Lab), 연구 (Research), or 실험 (Experimental) is not yet a finished official product or governance.
 - [Alpha](https://alpha.moss.land/): Crypto, macro & geopolitics media curation
 - [Signal Map](https://signalmap.moss.land/): YouTuber opinion & issue map
 - [Media](https://media.moss.land/): Media stance map (by issue)
