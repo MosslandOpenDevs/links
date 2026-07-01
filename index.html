@@ -349,20 +349,6 @@
         scroll-margin-top: 24px;
       }
 
-      .section.labs {
-        background: rgba(243, 237, 224, 0.5);
-        border-style: dashed;
-        border-color: rgba(122, 90, 30, 0.28);
-      }
-
-      .section.labs .link {
-        background: rgba(255, 251, 244, 0.62);
-      }
-
-      .section.labs .section-head h2 {
-        font-size: 1.5rem;
-      }
-
       .section-head {
         display: flex;
         align-items: center;
@@ -494,11 +480,6 @@
         letter-spacing: 0.04em;
       }
 
-      .chip.accent {
-        background: linear-gradient(135deg, #233b2f, #14231b);
-        color: #f8f3ea;
-      }
-
       .chip.beta {
         background: transparent;
         color: var(--accent);
@@ -543,7 +524,6 @@
       .hero .hero-sub {
         margin-top: 4px;
         font-size: 0.9rem;
-        opacity: 0.85;
       }
 
       .legend {
@@ -558,6 +538,9 @@
       .legend summary {
         cursor: pointer;
         padding: 8px 0;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
         font-weight: 600;
         color: var(--text);
       }
@@ -592,6 +575,12 @@
         padding: 8px 6px 0;
         color: var(--muted);
         font-size: 0.84rem;
+      }
+
+      .footer a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
       }
 
       .footer a:hover {
@@ -753,91 +742,91 @@
       "position": 7,
       "name": "Alpha",
       "url": "https://alpha.moss.land/",
-      "description": "Intelligence · AI-generated"
+      "description": "Crypto, macro & geopolitics media curation"
     },
     {
       "@type": "ListItem",
       "position": 8,
       "name": "Signal Map",
       "url": "https://signalmap.moss.land/",
-      "description": "Signal Map · Beta"
+      "description": "YouTuber opinion & issue map"
     },
     {
       "@type": "ListItem",
       "position": 9,
       "name": "City",
       "url": "https://city.moss.land/",
-      "description": "Showcase"
+      "description": "Self-running AI city"
     },
     {
       "@type": "ListItem",
       "position": 10,
       "name": "NPC",
       "url": "https://npc.moss.land/",
-      "description": "Showcase"
+      "description": "Chat with AI residents"
     },
     {
       "@type": "ListItem",
       "position": 11,
       "name": "Recipe",
       "url": "https://recipe.moss.land/",
-      "description": "Showcase"
+      "description": "AI how-to & prompt gallery"
     },
     {
       "@type": "ListItem",
       "position": 12,
       "name": "MOSS.AO",
       "url": "https://ao.moss.land/",
-      "description": "Engine"
+      "description": "AI agent orchestration engine"
     },
     {
       "@type": "ListItem",
       "position": 13,
       "name": "Algora",
       "url": "https://algora.moss.land/en",
-      "description": "Lab · AI Deliberation"
+      "description": "AI agent deliberation"
     },
     {
       "@type": "ListItem",
       "position": 14,
       "name": "BRIDGE",
       "url": "https://bridge.moss.land/",
-      "description": "Physical AI Governance"
+      "description": "Physical AI governance research"
     },
     {
       "@type": "ListItem",
       "position": 15,
       "name": "GitHub",
       "url": "https://github.com/mossland",
-      "description": "GitHub"
+      "description": "Official Mossland org on GitHub"
     },
     {
       "@type": "ListItem",
       "position": 16,
       "name": "MosslandOpenDevs",
       "url": "https://github.com/MosslandOpenDevs",
-      "description": "GitHub"
+      "description": "Open-source dev org on GitHub"
     },
     {
       "@type": "ListItem",
       "position": 17,
       "name": "Ecosystem Registry",
       "url": "https://links.moss.land/ecosystem-registry.json",
-      "description": "JSON"
+      "description": "Ecosystem registry data (JSON)"
     },
     {
       "@type": "ListItem",
       "position": 18,
       "name": "llms.txt",
       "url": "https://links.moss.land/llms.txt",
-      "description": "AI-readable"
+      "description": "AI-readable link list"
     },
     {
       "@type": "ListItem",
       "position": 19,
       "name": "Sitemap",
       "url": "https://links.moss.land/sitemap.xml",
-      "description": "Sitemap"
+      "description": "XML sitemap"
     },
     {
       "@type": "ListItem",
@@ -925,8 +914,8 @@
           <p lang="ko">Mossland 공식 도메인·생태계 앱·실험실과 제3자 시세·거래소 링크를 한곳에 모았습니다.</p>
           <p class="hero-sub" lang="en">Official Mossland domains, ecosystem apps, and labs, plus third-party market links — all in one place.</p>
           <div class="verify">
-            <strong lang="ko">‘공식’으로 표시된 링크는 Mossland가 직접 운영·검증한 도메인입니다. 시세·거래소는 제3자 링크이며, 여기에 없는 주소는 공식이 아니니 주의하세요.</strong>
-            <span lang="en">Links marked Official are domains Mossland operates and verifies; market links are third-party. If an address isn't listed here, treat it as unofficial.</span>
+            <strong lang="ko">시세·거래소(제3자)를 뺀 이 페이지의 모든 링크는 Mossland가 직접 운영합니다. 여기에 없는 주소는 공식이 아니니, 의심되면 공식 X(@TheMossland)로 확인하세요.</strong>
+            <span lang="en">Apart from third-party market links, every link here is operated by Mossland. If an address isn't listed, treat it as unofficial — verify via official X (@TheMossland).</span>
           </div>
           <div class="hero-actions">
             <a href="https://passport.moss.land/" target="_blank" rel="noreferrer noopener">
@@ -1028,7 +1017,7 @@
             <div class="section-head">
               <div>
                 <h2 id="h-ecosystem" lang="ko">생태계 <span class="en">Ecosystem</span></h2>
-              <p class="note"><span lang="ko">Mossland이 만든 생태계 서비스입니다. 일부(MOSS.AO·Algora·BRIDGE)는 실험·연구 단계로, 공식 제품이나 거버넌스가 아닙니다.</span><span lang="en">Mossland's ecosystem services. Some (MOSS.AO, Algora, BRIDGE) are experimental or research-stage — not official products or governance.</span></p>
+              <p class="note"><span lang="ko">Mossland의 생태계 서비스입니다. 일부(MOSS.AO·Algora·BRIDGE)는 실험·연구 단계로, 공식 제품이나 거버넌스가 아닙니다.</span><span lang="en">Mossland's ecosystem services. Some (MOSS.AO, Algora, BRIDGE) are experimental or research-stage — not official products or governance.</span></p>
               </div>
             </div>
             <div class="list">

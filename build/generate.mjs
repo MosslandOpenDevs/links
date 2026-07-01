@@ -20,7 +20,7 @@ const SECTIONS = [
     nav: "생태계",
     title: "생태계",
     titleEn: "Ecosystem",
-    note: { ko: "Mossland이 만든 생태계 서비스입니다. 일부(MOSS.AO·Algora·BRIDGE)는 실험·연구 단계로, 공식 제품이나 거버넌스가 아닙니다.", en: "Mossland's ecosystem services. Some (MOSS.AO, Algora, BRIDGE) are experimental or research-stage — not official products or governance." },
+    note: { ko: "Mossland의 생태계 서비스입니다. 일부(MOSS.AO·Algora·BRIDGE)는 실험·연구 단계로, 공식 제품이나 거버넌스가 아닙니다.", en: "Mossland's ecosystem services. Some (MOSS.AO, Algora, BRIDGE) are experimental or research-stage — not official products or governance." },
   },
   { id: "developers", nav: "개발자", title: "개발자", titleEn: "Developers", note: null },
   {
@@ -76,7 +76,7 @@ function renderSections() {
     const noteHtml = meta.note
       ? `\n              <p class="note"><span lang="ko">${esc(meta.note.ko)}</span><span lang="en">${esc(meta.note.en)}</span></p>`
       : "";
-    out.push(`          <section class="section${meta.id === "labs" ? " labs" : ""}" id="${meta.id}" aria-labelledby="h-${meta.id}">
+    out.push(`          <section class="section" id="${meta.id}" aria-labelledby="h-${meta.id}">
             <div class="section-head">
               <div>
                 <h2 id="h-${meta.id}" lang="ko">${esc(meta.title)} <span class="en">${esc(meta.titleEn)}</span></h2>${noteHtml}
@@ -169,8 +169,8 @@ const NAV = NAV_IDS.map((id) => {
 }).join("\n");
 
 const VERIFY = `          <div class="verify">
-            <strong lang="ko">‘공식’으로 표시된 링크는 Mossland가 직접 운영·검증한 도메인입니다. 시세·거래소는 제3자 링크이며, 여기에 없는 주소는 공식이 아니니 주의하세요.</strong>
-            <span lang="en">Links marked Official are domains Mossland operates and verifies; market links are third-party. If an address isn't listed here, treat it as unofficial.</span>
+            <strong lang="ko">시세·거래소(제3자)를 뺀 이 페이지의 모든 링크는 Mossland가 직접 운영합니다. 여기에 없는 주소는 공식이 아니니, 의심되면 공식 X(@TheMossland)로 확인하세요.</strong>
+            <span lang="en">Apart from third-party market links, every link here is operated by Mossland. If an address isn't listed, treat it as unofficial — verify via official X (@TheMossland).</span>
           </div>`;
 
 const LEGEND = `        <details class="legend">

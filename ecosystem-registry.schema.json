@@ -62,7 +62,7 @@
         "extraSections": {
           "type": "array",
           "items": { "type": "string", "enum": ["official", "participation", "ecosystem", "developers", "markets"] },
-          "description": "Additional sections to also render this service in (e.g. Passport/Agora appear in both Official and Participation)."
+          "description": "Additional sections to also render this service in. Currently unused; reserved for a service that must appear in more than one section."
         },
         "status": { "$ref": "#/$defs/status" },
         "passportEligible": {

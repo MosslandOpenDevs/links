@@ -18,21 +18,21 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 
 ## Ecosystem
 > Mossland's ecosystem services. Some (MOSS.AO, Algora, BRIDGE) are experimental or research-stage — not official products or governance.
-- [Alpha](https://alpha.moss.land/): Intelligence · AI-generated
-- [Signal Map](https://signalmap.moss.land/): Signal Map · Beta
-- [City](https://city.moss.land/): Showcase
-- [NPC](https://npc.moss.land/): Showcase
-- [Recipe](https://recipe.moss.land/): Showcase
-- [MOSS.AO](https://ao.moss.land/): Engine
-- [Algora](https://algora.moss.land/en): Lab · AI Deliberation
-- [BRIDGE](https://bridge.moss.land/): Physical AI Governance
+- [Alpha](https://alpha.moss.land/): Crypto, macro & geopolitics media curation
+- [Signal Map](https://signalmap.moss.land/): YouTuber opinion & issue map
+- [City](https://city.moss.land/): Self-running AI city
+- [NPC](https://npc.moss.land/): Chat with AI residents
+- [Recipe](https://recipe.moss.land/): AI how-to & prompt gallery
+- [MOSS.AO](https://ao.moss.land/): AI agent orchestration engine
+- [Algora](https://algora.moss.land/en): AI agent deliberation
+- [BRIDGE](https://bridge.moss.land/): Physical AI governance research
 
 ## Developers
-- [GitHub](https://github.com/mossland): GitHub
-- [MosslandOpenDevs](https://github.com/MosslandOpenDevs): GitHub
-- [Ecosystem Registry](https://links.moss.land/ecosystem-registry.json): JSON
-- [llms.txt](https://links.moss.land/llms.txt): AI-readable
-- [Sitemap](https://links.moss.land/sitemap.xml): Sitemap
+- [GitHub](https://github.com/mossland): Official Mossland org on GitHub
+- [MosslandOpenDevs](https://github.com/MosslandOpenDevs): Open-source dev org on GitHub
+- [Ecosystem Registry](https://links.moss.land/ecosystem-registry.json): Ecosystem registry data (JSON)
+- [llms.txt](https://links.moss.land/llms.txt): AI-readable link list
+- [Sitemap](https://links.moss.land/sitemap.xml): XML sitemap
 
 ## Markets
 > Third-party market links are provided for reference only and are not trading recommendations.

@@ -46,16 +46,18 @@ node build/generate.mjs
 - **Tiers** (`official`, `official_beta`, `registry`, `companion`,
   `intelligence`, `showcase`, `world`, `runtime`, `labs`, `developer`,
   `channel`, `third_party`) drive both the visible chip/section and consumer
-  logic. **Chip color is owner-driven**, so the trust signal stays correct:
-  green (`공식`/`베타`) = Mossland-owned and verified, including official
-  off-domain channels (X, Medium, GitHub); amber (`실험실`/`연구`) = genuinely
-  experimental/research services (AO, Algora, BRIDGE — they self-declare it);
-  grey (`제3자`) = genuine third-party only (exchanges, price trackers). Dev
-  data files (registry/llms/sitemap) carry a muted `자료` chip.
-- **Sections** are presentation, separate from `tier`. A service may render in
-  more than one via `extraSections` (e.g. Passport/Agora in both 공식 and 참여).
-  The 생태계 (Ecosystem) section holds non-core services; experimental ones are
-  marked only by their amber chip, so operational apps (Alpha, City…) stay 공식.
+  logic. **Chip text/color is derived from tier/status/artifact** (not the id
+  string); the one branch that also consults `owner` is the third-party check.
+  The intent it encodes: green (`공식`/`베타`) = Mossland-owned and verified,
+  including official off-domain channels (X, Medium, GitHub); amber
+  (`실험실`/`연구`) = genuinely experimental/research services (AO, Algora,
+  BRIDGE — they self-declare it); grey (`제3자`) = genuine third-party only
+  (exchanges, price trackers). Dev data files carry a muted `자료` chip.
+- **Sections** are presentation, separate from `tier`. Each service renders in
+  one `section`; the optional `extraSections` array can render it in more (the
+  mechanism exists but is currently unused). The 생태계 (Ecosystem) section holds
+  non-core services; experimental ones are marked only by their amber chip, so
+  operational apps (Alpha, City…) stay 공식.
 - **Markets / third-party** entries are `passportEligible: false` by contract —
   exchange and price links live here, never in Passport.
 - **Media** is kept in the registry as `paused`/`hidden` until its data is
