@@ -197,15 +197,15 @@
       "label": "Media stance map (by issue)",
       "labelKo": "이슈별 미디어 성향 지도",
       "section": "ecosystem",
-      "status": "paused",
+      "status": "beta",
       "passportEligible": false,
       "stampType": null,
       "sourceOfTruth": null,
       "lastDataAt": null,
       "owner": "mossland",
       "hidden": false,
-      "note": "Pre-launch / data-seeding (0 channels·videos·topics). Rendered with a 준비중 chip; set status=beta once media.moss.land shows live data.",
-      "chip": "준비중"
+      "note": "Live but empty — data-seeding (0 channels/videos/topics; site shows \"초기 데이터 단계\", \"Live · last analysis\"). Explicit 초기단계 chip while empty; drop the chip once it shows real data and it falls through to the 베타 chip (status=beta).",
+      "chip": "초기단계"
     },
     {
       "id": "city",
