@@ -322,7 +322,6 @@ function renderLlms() {
   lines.push("");
   lines.push("## Notes");
   lines.push("- Agora is a Public Decision Workbench, not a DAO governance app.");
-  lines.push("- MAIT is an AI Copilot; it assists understanding and never decides or votes for users.");
   lines.push("- Labs (AO, Algora, BRIDGE) are experimental; not official products or governance.");
   lines.push("- Markets / third-party links are reference only and are not trading recommendations.");
   lines.push("");

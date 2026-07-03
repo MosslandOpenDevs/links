@@ -9,7 +9,6 @@
     "official": "Mossland 공식 도메인 / Official Mossland domain",
     "official_beta": "운영 중인 공식 베타 / Official service in open beta",
     "registry": "공식 링크 모음 / The verified-links registry itself",
-    "companion": "AI 비서 / AI copilot companion",
     "intelligence": "AI 생성 분석 / AI-generated intelligence",
     "showcase": "세계관·체험 쇼케이스 / Worldbuilding & experience showcase",
     "world": "Mossverse 가상세계 / Mossverse virtual world",
@@ -112,23 +111,6 @@
       "lastDataAt": null,
       "owner": "mossland",
       "hidden": true
-    },
-    {
-      "id": "mait",
-      "name": "MAIT",
-      "domain": "mait.moss.land",
-      "url": "https://mait.moss.land/en",
-      "tier": "companion",
-      "label": "DAO proposal & voting assistant",
-      "labelKo": "DAO 투표를 돕는 AI 비서",
-      "section": "participation",
-      "status": "operational",
-      "passportEligible": true,
-      "stampType": "ai_copilot_user",
-      "sourceOfTruth": null,
-      "lastDataAt": null,
-      "owner": "mossland",
-      "hidden": false
     },
     {
       "id": "wa",
