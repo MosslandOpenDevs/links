@@ -13,7 +13,6 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 ## Participation
 - [Passport](https://passport.moss.land/): Wallet verification · participation record
 - [Agora](https://agora.moss.land/): Public Decision Workbench
-- [MAIT](https://mait.moss.land/en): DAO proposal & voting assistant
 - [Mossverse](https://wa.moss.land/): Web3 virtual world where your wallet is your identity
 
 ## Ecosystem
@@ -51,6 +50,5 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 
 ## Notes
 - Agora is a Public Decision Workbench, not a DAO governance app.
-- MAIT is an AI Copilot; it assists understanding and never decides or votes for users.
 - Labs (AO, Algora, BRIDGE) are experimental; not official products or governance.
 - Markets / third-party links are reference only and are not trading recommendations.

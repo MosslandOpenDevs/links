@@ -55,7 +55,7 @@ The page renders five sections (`section` field), in order:
 1. **공식 / Official** — canonical Mossland domains (Website, Disclosure) plus
    official off-domain channels (Medium, X).
 2. **참여 / Participation** — things you actively use: Passport (featured), Agora,
-   MAIT, Mossverse.
+   Mossverse.
 3. **생태계 / Ecosystem** — the broader service family: intelligence (Alpha,
    Signal Map, Media), showcase (City, NPC, Recipe), and the experimental
    governance stack (MOSS.AO, Algora, BRIDGE, Governance Monitor).
