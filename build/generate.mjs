@@ -326,7 +326,7 @@ function renderLlms() {
   lines.push("- [Registry JSON Schema](https://links.moss.land/ecosystem-registry.schema.json): the contract for the registry.");
   lines.push("");
   lines.push("## Notes");
-  lines.push("- Agora is Mossland's public decision layer: proposals and voting use gasless EIP-712 wallet signatures (no on-chain transaction), weighted by MOC snapshot.");
+  lines.push("- Agora is Mossland's public decision layer: proposals and voting use gasless EIP-712 wallet signatures (no on-chain transaction), weighted by each voter's delegated MOC voting power at a fixed snapshot block (ERC20Votes getPastVotes, with a balanceOf fallback for holders who have never delegated). Unless a proposal explicitly says otherwise, Mossland DAO treats an Agora result as its binding decision of record.");
   lines.push("- Labs (AO, Algora, BRIDGE) are experimental; not official products or governance.");
   lines.push("- Markets / third-party links are reference only and are not trading recommendations.");
   lines.push("");

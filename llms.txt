@@ -12,7 +12,7 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 
 ## Participation
 - [Passport](https://passport.moss.land/): Wallet verification · participation record
-- [Agora](https://agora.moss.land/): Public Decision Workbench
+- [Agora](https://agora.moss.land/): Public Decision Layer
 - [Mossverse](https://wa.moss.land/): Web3 virtual world where your wallet is your identity
 
 ## Ecosystem
@@ -49,6 +49,6 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 - [Registry JSON Schema](https://links.moss.land/ecosystem-registry.schema.json): the contract for the registry.
 
 ## Notes
-- Agora is Mossland's public decision layer: proposals and voting use gasless EIP-712 wallet signatures (no on-chain transaction), weighted by MOC snapshot.
+- Agora is Mossland's public decision layer: proposals and voting use gasless EIP-712 wallet signatures (no on-chain transaction), weighted by each voter's delegated MOC voting power at a fixed snapshot block (ERC20Votes getPastVotes, with a balanceOf fallback for holders who have never delegated). Unless a proposal explicitly says otherwise, Mossland DAO treats an Agora result as its binding decision of record.
 - Labs (AO, Algora, BRIDGE) are experimental; not official products or governance.
 - Markets / third-party links are reference only and are not trading recommendations.
