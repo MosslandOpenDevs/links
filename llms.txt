@@ -49,6 +49,6 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 - [Registry JSON Schema](https://links.moss.land/ecosystem-registry.schema.json): the contract for the registry.
 
 ## Notes
-- Agora is a Public Decision Workbench, not a DAO governance app.
+- Agora is Mossland's public decision layer: proposals and voting use gasless EIP-712 wallet signatures (no on-chain transaction), weighted by MOC snapshot.
 - Labs (AO, Algora, BRIDGE) are experimental; not official products or governance.
 - Markets / third-party links are reference only and are not trading recommendations.
