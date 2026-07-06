@@ -40,7 +40,7 @@
     },
     "status": {
       "type": "string",
-      "enum": ["operational", "beta", "paused", "offline", "deprecated"]
+      "enum": ["operational", "degraded", "beta", "paused", "offline", "deprecated"]
     },
     "service": {
       "type": "object",
@@ -72,6 +72,11 @@
         "stampType": {
           "type": ["string", "null"],
           "description": "Namespaced Passport stamp id (e.g. identity_holder, intelligence_reader). null when not eligible."
+        },
+        "stampClass": {
+          "type": ["string", "null"],
+          "enum": ["core", "governance", "participation", "connect", "lab", "showcase", null],
+          "description": "Significance tier of the Passport stamp this service backs, so stamps can be weighted rather than treated as a flat attendance log. core=identity/holder, governance=binding decision acts, participation=recurring community activity, connect=lightweight verified-domain visit, lab=experimental observer, showcase=experience visit. null when not passportEligible."
         },
         "sourceOfTruth": { "type": ["string", "null"] },
         "lastDataAt": { "type": ["string", "null"], "format": "date-time" },

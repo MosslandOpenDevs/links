@@ -35,16 +35,19 @@ const SECTIONS = [
 // Nav: lean anchor set, one per visible section.
 const NAV_IDS = ["official", "participation", "ecosystem", "developers", "markets"];
 
-// Chip = trust signal. Color carries the meaning: green = verified Mossland
-// (on- or off-domain), amber = experimental / not-yet-finished, grey = third-party.
-// One amber word ("실험") for everything not-yet-official — the specifics of each
-// service live in its role line, so the chip doesn't sub-categorize. Labs-tier
-// gets it by default; a non-labs service opts in via `chip: "실험"` (e.g. media).
+// Chip = trust + category signal. Filled green ("공식") = official Mossland pillar;
+// outlined chips = verified Mossland but not an official product: "베타" (open beta),
+// "인텔리전스" (AI analysis/data), "쇼케이스" (experiential demo/world), "실험" (labs,
+// not-yet-finished); grey "제3자" = third-party. Precedence is order-sensitive: the
+// "실험" override (chip:"실험" or labs tier) wins over the tier chips, so an empty
+// intelligence service (e.g. media) shows 실험 until it has real data.
 const AMBER_ARIA = "실험 · 아직 완성된 공식 제품 아님";
 function chipFor(s) {
   if (s.artifact) return { t: "자료", c: "chip muted", aria: "자료 · 개발자 데이터 파일" };
   if (s.chip || s.tier === "labs") return { t: "실험", c: "chip lab", aria: AMBER_ARIA };
   if (s.owner === "third-party" || s.tier === "third_party") return { t: "제3자", c: "chip third", aria: "제3자 · Mossland 미검증" };
+  if (s.tier === "showcase") return { t: "쇼케이스", c: "chip show", aria: "쇼케이스 · 검증된 Mossland 체험형 데모" };
+  if (s.tier === "intelligence") return { t: "인텔리전스", c: "chip intel", aria: "인텔리전스 · 검증된 Mossland AI 분석·데이터" };
   if (s.tier === "official_beta" || s.status === "beta") return { t: "베타", c: "chip beta", aria: "베타 · 운영 중인 공식 베타" };
   return { t: "공식", c: "chip", aria: "공식 · 검증된 Mossland 링크" };
 }
@@ -195,6 +198,8 @@ const LEGEND = `        <details class="legend" open>
           <ul>
             <li><span class="chip">공식</span> Mossland 공식·검증 도메인과 채널 / Verified Mossland domains and channels</li>
             <li><span class="chip beta">베타</span> 운영 중인 공식 베타 / Official service in open beta</li>
+            <li><span class="chip intel">인텔리전스</span> Mossland AI 분석·데이터 서비스 / Mossland AI intelligence &amp; data</li>
+            <li><span class="chip show">쇼케이스</span> 체험형 데모·월드 쇼케이스 / Experiential demo &amp; world showcase</li>
             <li><span class="chip lab">실험</span> 아직 완성된 공식 제품 아님 / Experimental, not a finished official product</li>
             <li><span class="chip third">제3자</span> Mossland 미검증 외부 링크 / Third-party, not verified by Mossland</li>
             <li><span class="chip muted">자료</span> 개발자·데이터 파일 / Developer &amp; data files</li>
@@ -321,7 +326,7 @@ function renderLlms() {
   lines.push("- [Registry JSON Schema](https://links.moss.land/ecosystem-registry.schema.json): the contract for the registry.");
   lines.push("");
   lines.push("## Notes");
-  lines.push("- Agora is a Public Decision Workbench, not a DAO governance app.");
+  lines.push("- Agora is Mossland's public decision layer: proposals and voting use gasless EIP-712 wallet signatures (no on-chain transaction), weighted by MOC snapshot.");
   lines.push("- Labs (AO, Algora, BRIDGE) are experimental; not official products or governance.");
   lines.push("- Markets / third-party links are reference only and are not trading recommendations.");
   lines.push("");
