@@ -8,4 +8,4 @@ on: [push, pull_request]
 
 jobs:
   assurance:
-    uses: MosslandOpenDevs/agentic-assurance-profile/.github/workflows/adopter-validate.yml@8377ecd0223d7c66234af5bc9ce102646881482d
+    uses: MosslandOpenDevs/agentic-assurance-profile/.github/workflows/adopter-validate.yml@3ba48728f1d72a94655a6c74aa5b122cc55e0f64
