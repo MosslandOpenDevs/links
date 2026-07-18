@@ -74,6 +74,13 @@ human_review:
     - "profile set: added data-curation, with its two 6.4 gaps recorded openly"
     - "public claim wording refined so it no longer over-states control of off-domain platforms"
     - "residual review of all 7 entries: 2 RESOLVED by remediation, 4 ACCEPTED with rationale, 1 (RES-CURATION-002) deliberately left OPEN"
+    - >-
+      amplify.yml `|| true` (ship committed files even if the generator fails) confirmed
+      as INTENDED resilience. This replaces the earlier grounding: the draft had cited the
+      amplify.yml code comment, but that comment entered in an AI-co-authored commit
+      (d688deb), and PROFILE.md 7 excludes AI-generated explanation as evidence by itself.
+      The accepted side effect is that a generator failure on Amplify is silent in the
+      deploy log; committed output is known-good because CI verifies it at merge time.
   outstanding:
     - sign-off on purpose and non-goals, and on the behaviour classification in assurance/SYSTEM.md section 9
     - approval of the critical invariants (INV-PHISH-001, INV-REG-001) as human-approved intent — intent.authority is still null on every invariant

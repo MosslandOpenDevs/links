@@ -99,16 +99,21 @@ Material public claims are registered with stable IDs in `assurance/CLAIMS.yaml`
 | `passportEligible:false` enforced for third_party/channel in schema | INTENDED | `ecosystem-registry.schema.json:102-111` | VERIFIED |
 | `media` shows explicit 실험 chip while empty | INTENDED | `ecosystem-registry.json` media `chip:"실험"`; `README.md:95-97` | VERIFIED |
 | `alpha` paused / `ao` degraded recorded as of 2026-07-06 | INTENDED (point-in-time data) | `ecosystem-registry.json` notes | VERIFIED (as of that date) |
-| Amplify runs generator with `|| true`, shipping committed files even on generator failure | INTENDED (resilience) | `amplify.yml:7-9` | VERIFIED |
+| Amplify runs generator with `\|\| true`, shipping committed files even on generator failure | INTENDED (resilience) — owner-confirmed 2026-07-18 [^amplify] | Owner confirmation recorded in `.agentic-assurance/adoption.yaml` `human_review` | VERIFIED |
 | JSON-LD blocks not escaped against script-element termination | ACCIDENTAL — **remediated 2026-07-18** | `build/generate.mjs` jsonLd() now escapes `<`; `RES-RENDER-JSONLD-001` RESOLVED | VERIFIED |
 | No CI validation of registry against its schema | ACCIDENTAL — **remediated 2026-07-18** | `.github/workflows/registry.yml`; `RES-CI-VALIDATION-001` RESOLVED | VERIFIED |
 
 Current production behavior is evidence of current behavior, not automatic proof of intended behavior.
 
+**Evidence provenance caveat.** Rows above grounded in machine-checkable artifacts — schema constraints, served response headers, command output, code behaviour — are solid. Rows grounded in *prose* (code comments, README descriptions, registry `note` fields) are weaker, because this repository's prose was largely written in AI-co-authored commits and PROFILE.md §7 excludes AI-generated explanation as evidence by itself. Tracked as `RES-PROVENANCE-001`.
+
+[^amplify]: **Why the code comment is not cited as the evidence here.** `amplify.yml:6-8` states the rationale ("`|| true` keeps the deploy from breaking if the generator ever fails"), and the first draft of this table cited it. But `git blame` puts those lines in `d688deb`, a commit carrying `Co-Authored-By: Claude Opus 4.8` — so the rationale is plausibly AI-authored, and PROFILE.md §7 is explicit that *an AI-generated explanation is not evidence by itself*. Citing it would have been circular: one agent asserts intent in a comment, another agent cites that assertion as proof of human intent — exactly what §15 forbids. The classification was therefore re-grounded on an explicit owner confirmation. Note the design is coherent now that `.github/workflows/registry.yml` verifies the committed output at merge time: what Amplify ships on generator failure is known-good, already-validated output. The bounded side effect the owner accepted is that a generator failure on Amplify is silent in the deploy log.
+
 ## 10. Known unknowns
 
 - Whether "unlisted ⇒ unofficial" is intended as a strong guarantee or a best-effort heuristic — resolved by the §4.3 intent review. Tracked as a limitation on `CLAIM-PHISH-001`.
-- Whether the omission of registry-schema CI validation is deliberate scope or simply unbuilt — currently classified ACCIDENTAL; `RES-CI-VALIDATION-001`.
+- ~~Whether the omission of registry-schema CI validation is deliberate scope or simply unbuilt~~ — settled 2026-07-18: classified ACCIDENTAL and remediated (`RES-CI-VALIDATION-001` RESOLVED).
+- How much of this repository's prose-based evidence actually reflects human intent rather than agent narrative — `RES-PROVENANCE-001`. Resolved per row by re-grounding on a machine-checkable artifact or an explicit owner confirmation.
 - What the intended semantics of the tier/chip/`stampClass` rubric are over time — there is no rubric version history, so past classifications cannot be interpreted against the rubric that produced them (`RES-CURATION-002`).
 - ~~Whether `data-curation` should be added~~ — decided 2026-07-18: added, with its PROFILE.md §6.4 gaps recorded as `RES-CURATION-001` and `RES-CURATION-002`.
 - ~~Whether a specific named person should be the recorded `human_owner`~~ — decided 2026-07-18: authority rests with the MosslandOpenDevs maintainers as a body.

@@ -223,3 +223,35 @@ residuals:
     # whose consequence leaves this repository. stampClass feeds Passport's stamp
     # weighting, so a silent rubric change alters another system's behaviour. The
     # owner chose remediation (introduce a versioned rubric) over acceptance.
+
+  # --- Recorded 2026-07-18, after the residual review, when grounding the
+  # --- amplify.yml classification exposed a systemic evidence-provenance problem.
+
+  - id: RES-PROVENANCE-001
+    summary: >-
+      Much of this repository's explanatory prose — code comments, README
+      descriptions, registry `note` fields — was written in AI-co-authored commits.
+      PROFILE.md section 7 excludes AI-generated explanation as evidence by itself,
+      so any intent classification grounded in that prose is weaker than it looks:
+      one agent asserts a rationale, a later agent cites the assertion as proof of
+      human intent. Found while grounding the amplify.yml `|| true` classification,
+      whose only evidence was a comment introduced in an AI-co-authored commit
+      (d688deb); that one was re-grounded on explicit owner confirmation, but the
+      same pattern applies wherever prose is the sole evidence — for example the
+      README chips table cited by INV-PHISH-001.
+    private_detail_location: null
+    affected_claims: []
+    affected_invariants:
+      - INV-PHISH-001
+    impact: medium
+    uncertainty: medium
+    mitigation:
+      - "Classifications grounded in machine-checkable artifacts — schema constraints, served response headers, command output, code behaviour — are unaffected; these carry most of assurance/SYSTEM.md section 9."
+      - "Where prose was the only ground, the classification was re-grounded on explicit owner confirmation and the substitution recorded (see the amplify.yml footnote in assurance/SYSTEM.md section 9)."
+      - "Staged remediation: audit the remaining prose-grounded rows in section 9 and either re-ground them on a machine-checkable artifact or obtain owner confirmation per row."
+    status: OPEN
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: null
+    accepted_at: null
+    review_after: 2026-10-18
