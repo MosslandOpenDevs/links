@@ -13,12 +13,14 @@ job is anti-phishing: telling a visitor which domains are genuinely Mossland's.
 ## Source of truth
 
 [`ecosystem-registry.json`](ecosystem-registry.json) is the single source of
-truth. Each service carries `tier`, `status`, `section`, `chip`,
-`passportEligible`, `stampType`, `labelKo`/`label`, and more (see
+truth. Each service is keyed by a stable `id` and carries `name`, `domain`,
+`url`, `tier`, `status` and `passportEligible` (required), plus optional
+`section`, `stampType`/`stampClass`, `labelKo`/`label`, `chip` and more (see
 [`ecosystem-registry.schema.json`](ecosystem-registry.schema.json) for the
-contract). Other Mossland properties (moss.land, Passport, City, WA) can fetch
-it cross-origin (CORS `*`) to verify "is this a real Mossland domain?" and to
-drive Passport ecosystem stamps.
+contract). The same file also holds the classification `rubric` and its
+`rubricVersion`. Other Mossland properties (moss.land, Passport, City, WA) can
+fetch it cross-origin (CORS `*`) to verify "is this a real Mossland domain?" and
+to drive Passport ecosystem stamps.
 
 **`index.html`, `embed.html`, `llms.txt`, and `sitemap.xml` are generated from
 the registry.** Do not edit them by hand — edit the registry (or the
@@ -28,16 +30,30 @@ template/CSS in `build/`) and rebuild:
 node build/generate.mjs
 ```
 
-The generator is pure Node (no dependencies) and idempotent; Amplify runs it on
-every deploy.
+**CI enforces this, it is not just convention.**
+[`.github/workflows/registry.yml`](.github/workflows/registry.yml) runs on every
+push and pull request: it validates the registry against the schema and fails
+the build if the committed pages are not byte-identical to a fresh generator
+run. Check locally before pushing:
+
+```sh
+node build/generate.mjs && git diff --exit-code   # projection is clean
+python .github/scripts/validate-registry.py       # registry contract + rubric
+```
+
+The validator needs `pip install "jsonschema[format-nongpl]"`.
+
+The generator is pure Node (no dependencies) and idempotent. Amplify re-runs it
+on deploy, but with `|| true` — so what actually ships is the committed output,
+and the CI check at merge time is what guarantees it matches the registry.
 
 ## Files
 
 | File | Role |
 | --- | --- |
-| `ecosystem-registry.json` | **Source of truth** — every service and its fields |
+| `ecosystem-registry.json` | **Source of truth** — every service and its fields, plus the classification `rubric` / `rubricVersion` that drives the chips and legend |
 | `ecosystem-registry.schema.json` | JSON Schema (draft 2020-12) contract for the registry |
-| `assurance/RUBRIC.md` | The classification rubric of record — chip precedence, `stampClass` meanings, changelog, and version-bump rules |
+| `assurance/RUBRIC.md` | Rubric changelog, precedence table, and version-bump rules (the rubric *itself* is data in the registry) |
 | `build/generate.mjs` | Generator — renders `index.html` + `embed.html` + `llms.txt` + `sitemap.xml` from the registry, deriving chips and legend from the registry's `rubric` |
 | `build/style.css` | Stylesheet, inlined into the generated HTML |
 | `index.html` | Generated public page (do not edit by hand) |
@@ -48,6 +64,13 @@ every deploy.
 | `favicon.svg`, `apple-touch-icon.png`, `og.png` | Icons + 1200×630 social card |
 | `amplify.yml` | Amplify build (runs the generator) and artifact list |
 | `customHttp.yml` | Amplify response headers (CSP, HSTS, COOP, CORS for the registry, UTF-8 charset for .txt/.xml, etc.) |
+| `.github/` | CI and templates — `workflows/registry.yml` (schema + projection checks), `workflows/assurance.yml` (assurance validator), `scripts/validate-registry.py`, issue forms and the PR template |
+| `AGENTS.md` | **Read first.** Agent/contributor instructions, build commands, and conventions |
+| `AGENTIC_ASSURANCE.md` | How this repo adopts the OpenDevs Agentic Assurance Profile; §7 defines the material-change workflow |
+| `.agentic-assurance/adoption.yaml` | The pinned upstream profile, adopted profile set, and named human owner |
+| `assurance/` | As-built system spec, invariants, claims, defeaters, residuals, threat model, and bound evidence |
+| `SECURITY.md` | Vulnerability reporting — **never** a public Issue |
+| `LICENSE` | MIT |
 
 ## Sections
 
@@ -71,7 +94,7 @@ not the chip. There are seven chips:
 
 | Chip | Color | Meaning | Driven by |
 | --- | --- | --- | --- |
-| `공식` | green, filled | Verified Mossland domain or official channel | default |
+| `공식` | green on sand — the only filled chip | Verified Mossland domain or official channel | default |
 | `베타` | green outline | Official service in open beta | `tier: official_beta` or `status: beta` |
 | `인텔리전스` | teal outline | Mossland AI intelligence & data | `tier: intelligence` |
 | `쇼케이스` | purple outline | Experiential demo & world showcase | `tier: showcase` |
@@ -84,10 +107,15 @@ not the chip. There are seven chips:
 > `rubric`, versioned by `rubricVersion`, and `build/generate.mjs` renders both the
 > chips and the on-page legend from it. Nothing checks this table against the
 > rubric, so if they ever disagree, the registry wins — see
-> [`assurance/RUBRIC.md`](assurance/RUBRIC.md) for the rubric of record, its
-> precedence order, and the version-bump rules.
+> [`assurance/RUBRIC.md`](assurance/RUBRIC.md) for the changelog, the full
+> precedence table, and the version-bump rules.
 >
-> It has drifted before: until 2026-07-18 this table claimed "five chips" and
+> **Changing what a chip or `stampClass` means requires bumping `rubricVersion`**
+> per `RUBRIC.md` §3, and counts as a material change under
+> [`AGENTIC_ASSURANCE.md`](AGENTIC_ASSURANCE.md) §7. No check can catch a missed
+> bump: Passport relies on it to know when `stampClass` meanings moved.
+>
+> This table has drifted before — until 2026-07-18 it claimed "five chips" and
 > omitted `인텔리전스` and `쇼케이스`, which the page had been rendering all along.
 > That drift is what motivated moving the rubric into data.
 
@@ -102,22 +130,65 @@ non-labs service (e.g. `media`, which is live but still data-seeding).
   `intelligence`, `showcase`, `world`, `runtime`, `labs`, `developer`,
   `channel`, `third_party`) is the service's nature; it drives the chip and
   Passport logic. Chip derivation is data-driven (never keyed on service id).
+  Note `companion` is in the schema enum but has no entry in the registry's
+  `tiers` glossary and no service uses it — dead, pending a decision to define
+  or drop it.
 - **Sections are presentation, separate from `tier`.** Each service renders in
   one `section`; the optional `extraSections` array can render it in more (the
   mechanism exists but is currently unused — Passport/Agora live in 참여 only).
-- **Markets / third-party** entries are `passportEligible: false` by contract —
-  exchange and price links live here, never in Passport.
+- **`third_party` and `channel`** entries are `passportEligible: false` by
+  contract. Both are pinned by the schema's `allOf`, and CI rejects a violation
+  (`INV-PASSPORT-001`): exchange and price links *and* off-domain channels
+  (Medium, X) never back a Passport stamp.
 - **Empty-but-live services** (e.g. Media: live but 0 data) get an explicit
-  `chip: "실험"` while empty; drop the chip once real data appears and they fall
-  through to `베타` (`status: beta`).
+  `chip: "실험"` while empty; drop the chip once real data appears and it falls
+  through to its **tier** chip — for `media` (`tier: intelligence`) that is
+  `인텔리전스`, not `베타`, because `인텔리전스` outranks `베타` in the precedence
+  order (see [`assurance/RUBRIC.md`](assurance/RUBRIC.md) §4.1).
 - **Always ground descriptions in the live site.** Several labels were corrected
   by actually rendering each service (many are client-side SPAs whose homepage is
   an empty shell — check `/about` or render with JS), not by guessing.
 
 ## Adding or changing a service
 
+> Contributors and agents: read [`AGENTS.md`](AGENTS.md) first. This repo adopts
+> the OpenDevs Agentic Assurance Profile
+> ([`AGENTIC_ASSURANCE.md`](AGENTIC_ASSURANCE.md)). Adding a service is routine.
+> Changing what the registry **means** — a tier or chip's semantics,
+> `passportEligible`, `stampClass`, the rubric, or the `customHttp.yml` headers —
+> is a *material change* under §7, which means reading and updating the affected
+> artifacts in [`assurance/`](assurance/) as part of the same change.
+
 1. Edit `ecosystem-registry.json` (add/modify a service object). Base the
-   `labelKo`/`label` on what the live site actually says it is.
-2. Run `node build/generate.mjs`.
-3. Commit the registry change **and** the regenerated `index.html`,
-   `embed.html`, `llms.txt`, and `sitemap.xml`.
+   `labelKo`/`label` on what the live site actually says it is. Bump `version`
+   for any change to the service set, and refresh `generatedAt` when you have
+   re-verified the links — it renders as the page's 최종 확인 date and the
+   sitemap's `lastmod`.
+2. If the entry needs a `stampClass` or chip the registry's `rubric` does not
+   already declare, add it there too and bump `rubricVersion` per
+   [`assurance/RUBRIC.md`](assurance/RUBRIC.md) §3 — CI fails on an undeclared
+   `stampClass` or an orphan chip.
+3. Run `node build/generate.mjs`.
+4. Validate locally: `git diff --exit-code` (after regenerating) and
+   `python .github/scripts/validate-registry.py`.
+5. Commit the registry change **and** the regenerated `index.html`,
+   `embed.html`, `llms.txt`, and `sitemap.xml`. CI re-runs the generator and
+   fails the build if they differ.
+6. **Open a pull request** using the PR template. Registry edits are curation
+   judgements about which domains are genuinely Mossland's, so they are
+   reviewed — not pushed straight to `main`. That review is the human control
+   behind `INV-PHISH-001`, the anti-phishing invariant.
+
+## Security
+
+**Never open a public Issue for a suspected vulnerability** — including a listed
+domain that is not genuinely Mossland's, or a missing official domain. Both are
+security issues for an anti-phishing registry.
+
+Use GitHub's **Report a vulnerability** button under the repository's Security
+tab. See [`SECURITY.md`](SECURITY.md) for scope and what a useful report
+contains.
+
+## License
+
+MIT — see [`LICENSE`](LICENSE).

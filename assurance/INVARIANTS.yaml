@@ -29,7 +29,7 @@ invariants:
       - "build/generate.mjs chipFor(): the 제3자 chip is emitted iff owner === 'third-party' || tier === 'third_party'; every other entry (including owner 'mossland' channel/developer entries) renders as a verified Mossland chip. Since 2026-07-18 that rule is not hard-coded but read from ecosystem-registry.json rubric.chips.precedence, versioned by rubricVersion (assurance/RUBRIC.md), and CI rejects an inconsistent rubric."
       - "ecosystem-registry.json owner field: all non-market entries declare owner 'mossland'."
     verification:
-      - Manual curation review on each registry pull request (README.md 'Adding or changing a service').
+      - "Manual curation review on each registry pull request (README.md 'Adding or changing a service', step 6). Until 2026-07-18 that README section documented only edit-generate-commit and never mentioned pull requests or review, so this reference pointed at a control the document did not actually contain; the step was added to make the reference true."
       - "Live-domain verification recorded via the footer '최종 확인' date (build/generate.mjs line 180, 260); last verified 2026-07-06 (ecosystem-registry.json generatedAt)."
     evidence:
       - "build/generate.mjs:45-53 (chip derivation; owner 'mossland' channel/developer entries fall through to the verified-Mossland chip)"
