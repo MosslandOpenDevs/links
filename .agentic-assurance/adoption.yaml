@@ -5,11 +5,12 @@
 # record of that PROFILE.md section 4.3 review and what remains outstanding.
 upstream:
   repository: MosslandOpenDevs/agentic-assurance-profile
-  # v0.1.0-rc.1 is the latest published tag; its VERSION file reads v0.1.0-rc.1,
-  # which the adopter validator requires to match this pin exactly. (HEAD of the
-  # profile's default branch reads v0.1.0-dev, which is forbidden in an adopter pin.)
-  version: v0.1.0-rc.1
-  commit: 8377ecd0223d7c66234af5bc9ce102646881482d
+  # Pinned to the v0.1.0 release — the commit the v0.1.0 tag points to
+  # (git rev-list -n1 v0.1.0), whose VERSION file reads v0.1.0. Upgraded from
+  # the rc.1 pin per ADOPTION.md §2.1; this also corrects the earlier pin,
+  # which referenced the release PR branch commit rather than the tag commit.
+  version: v0.1.0
+  commit: 3ba48728f1d72a94655a6c74aa5b122cc55e0f64
 
 project:
   name: Mossland Verified Links
