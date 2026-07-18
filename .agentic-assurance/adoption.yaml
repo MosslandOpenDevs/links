@@ -85,8 +85,13 @@ human_review:
       non-goal "not a general CMS" (generated files are never hand-edited) confirmed as
       deliberate. It is the structural precondition for INV-REG-001 and the anti-phishing
       claim, and is machine-enforced by the registry.yml projection gate.
+    - >-
+      all four non-goals in assurance/SYSTEM.md section 2 confirmed as deliberate
+      (not a general CMS / not a price feed / not a Passport-eligibility grantor for
+      third parties / not a live uptime monitor). The uptime-monitor entry rests on
+      owner confirmation rather than a machine-checkable control, since it is inferred
+      from an absence; it is also the basis on which RES-STATUS-DRIFT-001 was accepted.
   outstanding:
-    - sign-off on the three remaining non-goals in assurance/SYSTEM.md section 2 (not a price feed / not a Passport-eligibility grantor for third parties / not a live uptime monitor)
-    - sign-off on the behaviour classification in assurance/SYSTEM.md section 9 (the amplify.yml row is confirmed; the other nine are not)
+    - sign-off on the behaviour classification in assurance/SYSTEM.md section 9 (the amplify.yml row is confirmed; the other nine are under owner review)
     - approval of the critical invariants (INV-PHISH-001, INV-REG-001) as human-approved intent — intent.authority is still null on every invariant
     - "repository settings the agent cannot change: enable GitHub Private Vulnerability Reporting, create the assurance/* and needs-human-approval issue labels"
