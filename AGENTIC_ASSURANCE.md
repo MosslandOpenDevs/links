@@ -4,7 +4,7 @@
 >
 > **Purpose:** Connect this repository (`links.moss.land`) to the shared OpenDevs assurance profile without duplicating the upstream standard locally.
 >
-> **Status:** The PROFILE.md §4.3 intent review is **complete as of 2026-07-18** — purpose and non-goals, critical claims and invariants, the behaviour classification, and the residual register were all reviewed and decided by the repository owner (recorded in `.agentic-assurance/adoption.yaml` `human_review`). One trust-critical obligation remains outstanding: GitHub Private Vulnerability Reporting must be enabled on the repository. See §12.
+> **Status:** The PROFILE.md §4.3 intent review is **complete as of 2026-07-18** — purpose and non-goals, critical claims and invariants, the behaviour classification, and the residual register were all reviewed and decided by the repository owner (recorded in `.agentic-assurance/adoption.yaml` `human_review`). Private vulnerability reporting is enabled and verified (`EV-INTAKE-001`). See §12 for the completion-criteria table.
 
 ---
 
@@ -153,6 +153,10 @@ This adoption is **not** complete merely because these documents exist. Status a
 | Critical claims and invariants stated, with enforcement/evidence or explicit `UNKNOWN` | ✅ 7 invariants, 5 claims; `intent.authority` set on each |
 | Residual register active and owned | ✅ 8 residuals — 2 RESOLVED, 4 ACCEPTED with rationale, 2 OPEN |
 | Material-change workflow references the assurance artifacts | ✅ `.github/PULL_REQUEST_TEMPLATE.md` |
-| Private vulnerability reporting (required for a public `trust-critical` adopter, PROFILE.md §6.3) | ⏳ **outstanding** — `SECURITY.md` and the issue-template contact link route to it, but the repository setting must be enabled |
+| Private vulnerability reporting (required for a public `trust-critical` adopter, PROFILE.md §6.3) | ✅ enabled 2026-07-18, verified by API (`EV-INTAKE-001`) |
 
-Conformance means the system's promises, controls, evidence, and remaining doubt are inspectable — **not** that the system is bug-free or universally secure. Two residuals remain deliberately open (`RES-CURATION-002`, `RES-PROVENANCE-001`).
+All six criteria are met, so the owner **may** describe this bounded revision as conforming to the pinned profile (PROFILE.md §17). That remains the owner's statement to make, not the drafting agent's.
+
+Two residuals stay deliberately open — `RES-CURATION-002` (no versioned classification rubric) and `RES-PROVENANCE-001` (prose-grounded evidence). Neither is critical-impact, so neither blocks §17, but both remain open and owned rather than being closed for tidiness.
+
+Conformance means the project's promises, controls, evidence, counterarguments, and remaining uncertainty are represented according to the pinned profile. It does **not** mean this system is secure or bug-free.

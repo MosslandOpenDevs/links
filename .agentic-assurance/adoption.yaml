@@ -101,13 +101,16 @@ human_review:
       rows rest on machine-checkable evidence, one on generator code logic, and three on
       prose; the prose-grounded rows stay tracked by RES-PROVENANCE-001 for later
       re-grounding even though they are approved.
-  outstanding:
-    # Not review items — repository settings the agent cannot change.
     - >-
-      enable GitHub Private Vulnerability Reporting for MosslandOpenDevs/links. SECURITY.md
-      and the issue-template contact link already route to it, and PROFILE.md 6.3 requires
-      private vulnerability reporting for a public trust-critical adopter, so this is a
-      conformance prerequisite rather than a preference.
-    - create the issue labels the adopter forms reference — assurance/gap, assurance/evidence, assurance/residual, needs-human-approval — since GitHub silently drops labels that do not exist
+      repository settings completed 2026-07-18 and verified by API, not by assertion:
+      GitHub Private Vulnerability Reporting is enabled (satisfying the PROFILE.md 6.3
+      private-reporting obligation for a public trust-critical adopter), and all six
+      labels referenced by the adopter issue forms exist. Recorded as
+      assurance/evidence/EVIDENCE.md EV-INTAKE-001.
+  outstanding: []
+  # Nothing outstanding from the section 4.3 review. Two residuals remain deliberately
+  # OPEN by decision, not by omission: RES-CURATION-002 (versioned rubric) and
+  # RES-PROVENANCE-001 (prose-grounded evidence). Neither is critical-impact, so neither
+  # blocks the conformance criteria in PROFILE.md 17 — but both stay open and owned.
     - approval of the critical invariants (INV-PHISH-001, INV-REG-001) as human-approved intent — intent.authority is still null on every invariant
     - "repository settings the agent cannot change: enable GitHub Private Vulnerability Reporting, create the assurance/* and needs-human-approval issue labels"

@@ -54,3 +54,22 @@ register's references from going stale on every commit.
   - `content-type: application/json`
 
 **Result:** the served responses match `customHttp.yml` exactly, including the scoped CORS `*` on the registry and the `frame-ancestors` allow-list.
+
+---
+
+## EV-INTAKE-001 — private security intake is live
+
+Evidence for the `trust-critical` obligation that a public adopter has private vulnerability reporting (PROFILE.md §6.3, and the prerequisite in `docs/ADOPTION.md` §1).
+
+- **Command:**
+  ```sh
+  gh api repos/MosslandOpenDevs/links/private-vulnerability-reporting
+  gh label list --repo MosslandOpenDevs/links
+  ```
+- **Captured:** 2026-07-18.
+- **Observed:**
+  - Private Vulnerability Reporting → `{"enabled":true}`; repository `visibility: public`, `has_issues: true`.
+  - The contact link in `.github/ISSUE_TEMPLATE/config.yml` points at `https://github.com/MosslandOpenDevs/links/security/advisories/new`, which the enabled setting makes reachable — so `SECURITY.md`'s "do not open a public issue" routing now terminates somewhere real.
+  - All six labels referenced by the adopter issue forms exist: `bug`, `enhancement`, `assurance/gap`, `assurance/evidence`, `assurance/residual`, `needs-human-approval`. GitHub silently drops references to labels that do not exist, so their presence is what keeps a residual-review issue carrying its `needs-human-approval` flag.
+- **Supports:** the PROFILE.md §6.3 private-reporting obligation; the disclosure routing asserted in `SECURITY.md` and `AGENTIC_ASSURANCE.md` §9.
+- **Note:** this records that the channel exists and is reachable, not that any report has been handled through it.
