@@ -31,13 +31,12 @@ The pinned upstream profile defines the terms and generic obligations. This file
 
 ## 2. Pinned upstream profile
 
-The declaration lives in [`.agentic-assurance/adoption.yaml`](.agentic-assurance/adoption.yaml). Current pin:
+The declaration lives in [`.agentic-assurance/adoption.yaml`](.agentic-assurance/adoption.yaml) — **the pin's only home**. Read `upstream.version` and `upstream.commit` there; this document deliberately does not restate the values. (This file used to carry a copy of the pin; it went stale across two re-pins because re-pin changes touch `adoption.yaml` and the workflow, not prose, and the validator does not read markdown. The upstream profile's template now instructs exactly this — keep concrete pin values out of prose.)
 
 ```yaml
 upstream:
   repository: MosslandOpenDevs/agentic-assurance-profile
-  version: v0.1.0-rc.1
-  commit: 8377ecd0223d7c66234af5bc9ce102646881482d
+  # version + commit: see .agentic-assurance/adoption.yaml — not restated here
 
 project:
   name: Mossland Verified Links
@@ -148,7 +147,7 @@ This adoption is **not** complete merely because these documents exist. Status a
 
 | Criterion | State |
 |---|---|
-| Upstream pin resolves to a real version and commit | ✅ `v0.1.0-rc.1` @ `8377ecd`, checked in CI |
+| Upstream pin resolves to a real version and commit | ✅ pinned in `.agentic-assurance/adoption.yaml`; tag-commit agreement and caller @-ref agreement checked in CI |
 | Human-approved purpose and non-goals recorded | ✅ owner review 2026-07-18 (`assurance/SYSTEM.md` §2) |
 | Critical claims and invariants stated, with enforcement/evidence or explicit `UNKNOWN` | ✅ 7 invariants, 5 claims; `intent.authority` set on each |
 | Residual register active and owned | ✅ 8 residuals — 2 RESOLVED, 4 ACCEPTED with rationale, 2 OPEN |

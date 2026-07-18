@@ -4,8 +4,13 @@
 # with that pin (docs/ADOPTION.md §3.4 of the pinned profile).
 name: assurance
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+    # 'edited' matters: the drift check reads the PR description, and the
+    # default types would leave a stale verdict when the description changes.
+    types: [opened, synchronize, reopened, edited, ready_for_review]
 
 jobs:
   assurance:
-    uses: MosslandOpenDevs/agentic-assurance-profile/.github/workflows/adopter-validate.yml@53ca2f51f4dc2e36790dd83eb53dacce07080e1a
+    uses: MosslandOpenDevs/agentic-assurance-profile/.github/workflows/adopter-validate.yml@6de26c28573bd1d145dad75529debb8a89d0d5d2
