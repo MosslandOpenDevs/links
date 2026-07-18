@@ -1,0 +1,114 @@
+version: 1
+# Public claim register for links.moss.land.
+# Draft — public claim wording and limitations are pending the human intent review
+# (PROFILE.md sections 3 and 4.3). Proof tiers are set so claim wording does not
+# exceed the strength of the available evidence (PROFILE.md section 8).
+claims:
+  - id: CLAIM-PHISH-001
+    text: >-
+      Apart from third-party market links, every link on links.moss.land is operated
+      by Mossland; an address that is not listed here should be treated as unofficial.
+    scope: The links.moss.land directory as generated from ecosystem-registry.json v1.0.0.
+    proof_tier: OPERATOR_ATTESTED
+    invariants:
+      - INV-PHISH-001
+      - INV-REG-001
+    evidence:
+      - "build/generate.mjs:191-194 (on-page VERIFY statement)"
+      - "build/generate.mjs:236-239 (hero copy), :237 (h1 'Mossland Verified Links')"
+    limitations:
+      - Completeness and correctness of the list depend on human curation; there is no automated authenticity proof.
+      - "'Not listed' means 'not verified here', not proof that an address is malicious."
+      - The registry is verified periodically, not continuously; between verifications it can be stale.
+      - "The on-page phrase 'operated by Mossland' also covers official off-domain channels/accounts (Medium, X, GitHub) that are Mossland-controlled presences rather than Mossland-run infrastructure. Whether to refine this wording is an open owner decision."
+    defeaters:
+      - DEF-PHISH-001
+    residuals:
+      - RES-VERIFY-001
+    status: INFERRED
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+
+  - id: CLAIM-REG-001
+    text: >-
+      ecosystem-registry.json is the single machine-readable source of truth for
+      links.moss.land; it can be fetched cross-origin by any client, and the rendered
+      page is a deterministic projection of it.
+    scope: ecosystem-registry.json and the build/generate.mjs projection.
+    proof_tier: INDEPENDENTLY_VERIFIABLE
+    invariants:
+      - INV-REG-001
+      - INV-CORS-001
+    evidence:
+      - "assurance/evidence/EVIDENCE.md EV-PROJECTION-b53be92 (regenerate-and-diff clean at b53be92: the committed pages are byte-identical to a fresh generator run)"
+      - "assurance/evidence/EVIDENCE.md EV-HEADERS-2026-07-18 (registry served cross-origin: access-control-allow-origin '*')"
+      - "customHttp.yml:35-42 (registry CORS block); build/generate.mjs (pure, dependency-free generator anyone can re-run)"
+      - "README.md:13-21 ('single source of truth ... Other Mossland properties can fetch it cross-origin')"
+    limitations:
+      - Independent verifiability covers the projection and fetchability, not the authenticity judgement of each domain (that is CLAIM-PHISH-001, OPERATOR_ATTESTED).
+      - Projection purity is verified at the current revision (b53be92); no CI step prevents future drift (DEF-REG-001, RES-CI-VALIDATION-001).
+    defeaters:
+      - DEF-REG-001
+    residuals:
+      - RES-CI-VALIDATION-001
+    status: VERIFIED
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+
+  - id: CLAIM-PASSPORT-001
+    text: >-
+      Third-party market links and off-domain channels are never Passport-eligible.
+    scope: passportEligible fields of ecosystem-registry.json (tiers third_party and channel).
+    proof_tier: INDEPENDENTLY_VERIFIABLE
+    invariants:
+      - INV-PASSPORT-001
+    evidence:
+      - "ecosystem-registry.schema.json:102-111 (third_party and channel forced to passportEligible false)"
+      - "ecosystem-registry.json (public data: no third_party or channel entry is passportEligible)"
+    limitations:
+      - The schema constraint is publicly checkable but is not yet enforced by CI on every change (RES-CI-VALIDATION-001).
+    defeaters:
+      - DEF-PASSPORT-001
+    residuals:
+      - RES-CI-VALIDATION-001
+    status: VERIFIED
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+
+  - id: CLAIM-PASSPORT-002
+    text: >-
+      Only Mossland-controlled domains and official Mossland accounts back a Passport
+      ecosystem stamp.
+    scope: passportEligible / stampType / stampClass fields of ecosystem-registry.json.
+    proof_tier: OPERATOR_ATTESTED
+    invariants:
+      - INV-PASSPORT-001
+    evidence:
+      - "ecosystem-registry.json (all 11 passportEligible entries — disclosure, passport, agora, wa, signalmap, city, npc, recipe, algora, bridge, monitor — have owner 'mossland')"
+    limitations:
+      - "This holds by curation, not by schema: the schema forbids only third_party/channel eligibility, so an entry of another tier on a non-Mossland domain marked passportEligible true would still validate. Binding passportEligible:true to owner 'mossland' in the schema would make this independently verifiable (RES-CI-VALIDATION-001)."
+    defeaters:
+      - DEF-PASSPORT-001
+    residuals:
+      - RES-CI-VALIDATION-001
+    status: INFERRED
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+
+  - id: CLAIM-MARKET-001
+    text: >-
+      Third-party market and exchange links are provided for reference only and are
+      not trading recommendations.
+    scope: The 시세·거래소 (Markets) section of links.moss.land.
+    proof_tier: OPERATOR_ATTESTED
+    invariants:
+      - INV-MARKET-001
+    evidence:
+      - "build/generate.mjs:31 (markets section note), :331 (llms.txt note)"
+    limitations:
+      - This is a disclosure statement, not a control; it does not restrict user action.
+    defeaters: []
+    residuals: []
+    status: VERIFIED
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)

@@ -1,0 +1,125 @@
+version: 1
+# Residual register for links.moss.land — known limitations and remaining doubt
+# (PROFILE.md sections 2 and 12). All entries are OPEN: none has been accepted by
+# the human owner yet. An agent must not accept a critical residual on the owner's
+# behalf. Critical/high residuals require an explicit named acceptance authority and
+# date before status may become ACCEPTED (residuals.schema.json allOf).
+residuals:
+  - id: RES-VERIFY-001
+    summary: >-
+      Domain authenticity and service statuses are established by periodic manual
+      verification, not continuous monitoring. Between verifications the directory can
+      be stale — a domain's control or a service's status could change without the
+      page reflecting it.
+    private_detail_location: null
+    affected_claims:
+      - CLAIM-PHISH-001
+    affected_invariants:
+      - INV-PHISH-001
+    impact: medium
+    uncertainty: medium
+    mitigation:
+      - "The footer shows the last-verified date ('최종 확인', build/generate.mjs:180,260)."
+      - Registry edits go through pull-request review grounded in the live site (README.md 'Always ground descriptions in the live site').
+    status: OPEN
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: null
+    accepted_at: null
+    review_after: 2026-10-18
+
+  - id: RES-CI-VALIDATION-001
+    summary: >-
+      No continuous validation runs on change. Neither JSON Schema validation of
+      ecosystem-registry.json against its schema, nor a check that the committed
+      generated files match a fresh `node build/generate.mjs` run, is wired into CI.
+      Registry, projection, and Passport-eligibility invariants therefore rely on
+      author discipline.
+    private_detail_location: null
+    affected_claims:
+      - CLAIM-REG-001
+      - CLAIM-PASSPORT-001
+      - CLAIM-PASSPORT-002
+    affected_invariants:
+      - INV-REG-001
+      - INV-PASSPORT-001
+    impact: medium
+    uncertainty: low
+    mitigation:
+      - The generator is pure and idempotent, so a local regenerate-and-diff catches projection drift (evidenced once at b53be92, EV-PROJECTION-b53be92).
+      - Pull-request review.
+      - "Staged remediation: add registry schema validation and a generated-output diff to the new .github/workflows/assurance.yml (or a sibling workflow). See the handoff plan."
+      - "Consider a schema constraint binding passportEligible:true to owner 'mossland', which would make CLAIM-PASSPORT-002 independently verifiable rather than curation-attested."
+    status: OPEN
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: null
+    accepted_at: null
+    review_after: 2026-10-18
+
+  - id: RES-HEADERS-001
+    summary: >-
+      The deployed security headers were confirmed once by a manual capture
+      (2026-07-18, EV-HEADERS-2026-07-18) but are not verified by an automated,
+      continuous check; their ongoing presence depends on AWS Amplify honouring
+      customHttp.yml, and a later platform/config change could drop them undetected.
+    private_detail_location: null
+    affected_claims: []
+    affected_invariants:
+      - INV-CORS-001
+      - INV-FRAME-001
+    impact: low
+    uncertainty: low
+    mitigation:
+      - Headers are declared centrally in customHttp.yml and reviewed on change.
+      - "Confirmed live once (assurance/evidence/EVIDENCE.md EV-HEADERS-2026-07-18)."
+      - "Staged remediation: add a post-deploy header assertion (CSP/HSTS/CORS/frame-ancestors) for links.moss.land so the check is continuous, not one-time."
+    status: OPEN
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: null
+    accepted_at: null
+    review_after: 2026-10-18
+
+  - id: RES-RENDER-JSONLD-001
+    summary: >-
+      The JSON-LD structured-data blocks are not escaped against early termination of
+      the script element. The risk is bounded by trusted curated input and CSP
+      script-src 'self', but a defence-in-depth escape is not yet applied.
+    private_detail_location: null
+    affected_claims: []
+    affected_invariants:
+      - INV-RENDER-001
+    impact: low
+    uncertainty: low
+    mitigation:
+      - "CSP script-src 'self' blocks injected inline/external scripts (customHttp.yml:5)."
+      - Registry input is trusted, Mossland-curated data.
+      - "Staged remediation: escape the script-closing sequence when serializing JSON-LD in build/generate.mjs (jsonLd)."
+    status: OPEN
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: null
+    accepted_at: null
+    review_after: 2026-10-18
+
+  - id: RES-STATUS-DRIFT-001
+    summary: >-
+      The registry records point-in-time operational facts for ecosystem services
+      (for example alpha 'paused', ao 'degraded', media empty/'실험' as of 2026-07-06).
+      These states drift, so the status and notes fields can lag the live services.
+    private_detail_location: null
+    affected_claims: []
+    affected_invariants:
+      - INV-MARKET-001
+    impact: low
+    uncertainty: medium
+    mitigation:
+      - Statuses are re-verified against the live services when the registry is updated.
+      - "The ecosystem section carries a note that '실험' services are not finished official products (build/generate.mjs:23)."
+    status: OPEN
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: null
+    accepted_at: null
+    review_after: 2026-10-18

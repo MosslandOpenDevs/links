@@ -1,0 +1,63 @@
+# OpenDevs Agentic Assurance Profile — adoption declaration for links.moss.land.
+# See AGENTIC_ASSURANCE.md (repo root) and the pinned profile at the commit below.
+# DRAFT: the profile selection and human_owner below are proposals pending human
+# review (PROFILE.md section 4.3 / docs/REVIEW-GUIDE.md). Nothing here is accepted
+# until the repository owner reviews it.
+upstream:
+  repository: MosslandOpenDevs/agentic-assurance-profile
+  # v0.1.0-rc.1 is the latest published tag; its VERSION file reads v0.1.0-rc.1,
+  # which the adopter validator requires to match this pin exactly. (HEAD of the
+  # profile's default branch reads v0.1.0-dev, which is forbidden in an adopter pin.)
+  version: v0.1.0-rc.1
+  commit: 8377ecd0223d7c66234af5bc9ce102646881482d
+
+project:
+  name: Mossland Verified Links
+  repository: MosslandOpenDevs/links
+  # Governing body for this repository. Replace with a specific named person or
+  # body if the owner prefers. The contents of ecosystem-registry.json (the
+  # authenticity source of truth) are ultimately governed by Mossland DAO via
+  # Agora (agora.moss.land); see assurance/SYSTEM.md section 5.
+  human_owner: MosslandOpenDevs maintainers (Mossland)
+
+profiles:
+  - core            # substantially AI-agent-built repository
+  - service         # deployed website + public read-only registry (AWS Amplify)
+  - trust-critical  # anti-phishing / domain-authenticity is the page's core purpose
+  # - data-curation # candidate: the registry is curated, classified data. Provisional
+  #                 # profile (validator warns); left for the owner to decide (see handoff).
+
+specification_workflow:
+  system: existing
+  # GitHub pull requests. The change workflow is documented in README.md
+  # ("Source of truth" and "Adding or changing a service").
+  root: README.md
+
+paths:
+  system: assurance/SYSTEM.md
+  invariants: assurance/INVARIANTS.yaml
+  claims: assurance/CLAIMS.yaml
+  defeaters: assurance/DEFEATERS.yaml
+  residuals: assurance/RESIDUALS.yaml
+  threat_model: assurance/THREAT_MODEL.md
+  evidence: assurance/evidence
+
+security:
+  policy: SECURITY.md
+  public_assurance_root: assurance
+  # Non-actionable label only. Suspected vulnerabilities go to GitHub Private
+  # Vulnerability Reporting / a draft Security Advisory, never a public Issue.
+  restricted_record: external_private_system
+
+issue_integration:
+  stable_id_required: true
+  public_security_issues_allowed: false
+  closing_requires_artifact_update: true
+
+# No human review has occurred yet. When the owner completes the section 4.3
+# review, record it here, for example:
+# human_review:
+#   date: 2026-07-18
+#   reviewer: <named owner or body>
+#   record: <path to the durable review record, e.g. the merged PR>
+#   notes: <review outcome summary>
