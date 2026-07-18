@@ -83,7 +83,7 @@ Material public claims are registered with stable IDs in `assurance/CLAIMS.yaml`
 - **Idempotent regeneration** — `node build/generate.mjs && git diff --exit-code` reproduces committed output (evidence bound to a commit). This is the primary reproducible check today.
 - **JSON Schema validation** — `ecosystem-registry.json` can be validated against `ecosystem-registry.schema.json` by any consumer; **not yet wired into CI** (`RES-CI-VALIDATION-001`).
 - **Manual live-site verification** — descriptions/statuses grounded in the live services, recorded via the footer "최종 확인" date (`build/generate.mjs:180`).
-- **Bound evidence records** — `assurance/evidence/EVIDENCE.md`: `EV-PROJECTION-b53be92` (regenerate-and-diff proves the committed pages are a pure projection at `b53be92`) and `EV-HEADERS-2026-07-18` (live capture proves the deployed CSP/HSTS/CORS/frame-ancestors match `customHttp.yml`).
+- **Bound evidence records** — `assurance/evidence/EVIDENCE.md`: `EV-PROJECTION-001` (regenerate-and-diff proves the committed pages are a pure projection; re-captured on each generator/registry change, latest `7dbfc80`) and `EV-HEADERS-001` (live capture proves the deployed CSP/HSTS/CORS/frame-ancestors match `customHttp.yml`).
 - **Gap:** no automated tests, no schema-validation CI, no *continuous* deployed-header assertion. This adoption adds `.github/workflows/assurance.yml` (profile-artifact validation); registry-schema, projection-diff, and continuous header checks are staged remediation (`RES-CI-VALIDATION-001`, `RES-HEADERS-001`).
 
 ## 9. Behavior classification
@@ -92,7 +92,7 @@ Material public claims are registered with stable IDs in `assurance/CLAIMS.yaml`
 |---|---|---|---|
 | Non-third-party listings render as verified Mossland; page states unlisted ⇒ unofficial | INTENDED | `build/generate.mjs:45-53, 191-194` | INFERRED |
 | Official off-domain channels/accounts (Medium, X, GitHub; owner mossland) render the 공식 chip, not 제3자 | INTENDED | `build/generate.mjs:45-53`; README chips table ('Verified Mossland domain or official channel') | VERIFIED |
-| Rendered pages are a pure projection of the registry | INTENDED | `EV-PROJECTION-b53be92`; `build/generate.mjs:76-97` | VERIFIED (at b53be92) |
+| Rendered pages are a pure projection of the registry | INTENDED | `EV-PROJECTION-001`; `build/generate.mjs:76-97` | VERIFIED (at latest capture) |
 | Registry JSON served cross-origin with `ACAO: *` (public, read-only) | INTENDED | `customHttp.yml:35-42` | VERIFIED |
 | `passportEligible:false` enforced for third_party/channel in schema | INTENDED | `ecosystem-registry.schema.json:102-111` | VERIFIED |
 | `media` shows explicit 실험 chip while empty | INTENDED | `ecosystem-registry.json` media `chip:"실험"`; `README.md:95-97` | VERIFIED |

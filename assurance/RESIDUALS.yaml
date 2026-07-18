@@ -46,7 +46,7 @@ residuals:
     impact: medium
     uncertainty: low
     mitigation:
-      - The generator is pure and idempotent, so a local regenerate-and-diff catches projection drift (evidenced once at b53be92, EV-PROJECTION-b53be92).
+      - The generator is pure and idempotent, so a local regenerate-and-diff catches projection drift; captures are recorded in assurance/evidence/EVIDENCE.md EV-PROJECTION-001, but only for revisions where someone ran it by hand.
       - Pull-request review.
       - "Staged remediation: add registry schema validation and a generated-output diff to the new .github/workflows/assurance.yml (or a sibling workflow). See the handoff plan."
       - "Consider a schema constraint binding passportEligible:true to owner 'mossland', which would make CLAIM-PASSPORT-002 independently verifiable rather than curation-attested."
@@ -60,7 +60,7 @@ residuals:
   - id: RES-HEADERS-001
     summary: >-
       The deployed security headers were confirmed once by a manual capture
-      (2026-07-18, EV-HEADERS-2026-07-18) but are not verified by an automated,
+      (2026-07-18, EV-HEADERS-001) but are not verified by an automated,
       continuous check; their ongoing presence depends on AWS Amplify honouring
       customHttp.yml, and a later platform/config change could drop them undetected.
     private_detail_location: null
@@ -72,7 +72,7 @@ residuals:
     uncertainty: low
     mitigation:
       - Headers are declared centrally in customHttp.yml and reviewed on change.
-      - "Confirmed live once (assurance/evidence/EVIDENCE.md EV-HEADERS-2026-07-18)."
+      - "Confirmed live once (assurance/evidence/EVIDENCE.md EV-HEADERS-001)."
       - "Staged remediation: add a post-deploy header assertion (CSP/HSTS/CORS/frame-ancestors) for links.moss.land so the check is continuous, not one-time."
     status: OPEN
     disclosure: PUBLIC
@@ -143,7 +143,7 @@ residuals:
     impact: medium
     uncertainty: low
     mitigation:
-      - "The distinction is documented narratively in assurance/SYSTEM.md section 3 (fact vs judgement field lists) as an interim measure."
+      - "The distinction is documented narratively in assurance/SYSTEM.md section 3.1 (fact vs judgement field table) as an interim measure."
       - README.md documents what each tier and chip means, so the judgements are at least explained.
       - "Staged remediation: mark judgement fields explicitly in ecosystem-registry.schema.json (or group them under a nested object), and populate lastDataAt / sourceOfTruth for entries whose data is observed."
     status: OPEN

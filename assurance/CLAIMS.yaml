@@ -41,13 +41,13 @@ claims:
       - INV-REG-001
       - INV-CORS-001
     evidence:
-      - "assurance/evidence/EVIDENCE.md EV-PROJECTION-b53be92 (regenerate-and-diff clean at b53be92: the committed pages are byte-identical to a fresh generator run)"
-      - "assurance/evidence/EVIDENCE.md EV-HEADERS-2026-07-18 (registry served cross-origin: access-control-allow-origin '*')"
+      - "assurance/evidence/EVIDENCE.md EV-PROJECTION-001 (regenerate-and-diff; latest capture clean at 7dbfc80 — the committed pages are byte-identical to a fresh generator run)"
+      - "assurance/evidence/EVIDENCE.md EV-HEADERS-001 (registry served cross-origin: access-control-allow-origin '*')"
       - "customHttp.yml:35-42 (registry CORS block); build/generate.mjs (pure, dependency-free generator anyone can re-run)"
       - "README.md:13-21 ('single source of truth ... Other Mossland properties can fetch it cross-origin')"
     limitations:
       - Independent verifiability covers the projection and fetchability, not the authenticity judgement of each domain (that is CLAIM-PHISH-001, OPERATOR_ATTESTED).
-      - Projection purity is verified at the current revision (b53be92); no CI step prevents future drift (DEF-REG-001, RES-CI-VALIDATION-001).
+      - Projection purity is verified at the latest captured revision only; no CI step prevents future drift (DEF-REG-001, RES-CI-VALIDATION-001).
     defeaters:
       - DEF-REG-001
     residuals:

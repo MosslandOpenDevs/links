@@ -33,7 +33,7 @@ invariants:
     evidence:
       - "build/generate.mjs:45-53 (chip derivation; owner 'mossland' channel/developer entries fall through to the verified-Mossland chip)"
       - "README.md chips table (the 공식 chip means 'Verified Mossland domain or official channel')"
-      - "build/generate.mjs:191-194 (VERIFY copy: 'every link here is operated by Mossland')"
+      - "build/generate.mjs:191-194 (VERIFY copy: 'every link here is either an official Mossland domain or an official account Mossland operates')"
     defeaters:
       - DEF-PHISH-001
     residuals:
@@ -61,9 +61,9 @@ invariants:
     enforcement:
       - "build/generate.mjs renders exclusively from reg.services (lines 10, 76-97, 121-134, 181-184); README.md states the outputs must not be hand-edited."
     verification:
-      - "Idempotent regeneration bound to a revision: at b53be92, `node build/generate.mjs` then `git diff --quiet` exits 0 (committed output byte-identical to the generator's output). See assurance/evidence/EVIDENCE.md EV-PROJECTION-b53be92."
+      - "Idempotent regeneration bound to a revision: `node build/generate.mjs` then `git diff --quiet` exits 0 (committed output byte-identical to the generator's output). Re-run on every change to the registry or generator; captures are listed in assurance/evidence/EVIDENCE.md EV-PROJECTION-001."
     evidence:
-      - "assurance/evidence/EVIDENCE.md EV-PROJECTION-b53be92 (regenerate-and-diff, clean at b53be92, captured 2026-07-18)"
+      - "assurance/evidence/EVIDENCE.md EV-PROJECTION-001 (regenerate-and-diff; latest capture clean at 7dbfc80, 2026-07-18)"
       - "build/generate.mjs:76-97 (renderSections reads reg.services)"
       - "README.md:23-32 ('generated from the registry ... Do not edit them by hand')"
     defeaters:
@@ -156,9 +156,9 @@ invariants:
     enforcement:
       - "customHttp.yml lines 35-50: ACAO '*' and Cross-Origin-Resource-Policy 'cross-origin' are scoped to /ecosystem-registry.json and /ecosystem-registry.schema.json only; the global default-src 'self' / connect-src 'self' CSP (line 5) governs everything else."
     verification:
-      - "Live response headers captured 2026-07-18 (assurance/evidence/EVIDENCE.md EV-HEADERS-2026-07-18): /ecosystem-registry.json returns ACAO '*'; a normal page carries connect-src 'self' and form-action 'none'."
+      - "Live response headers captured 2026-07-18 (assurance/evidence/EVIDENCE.md EV-HEADERS-001): /ecosystem-registry.json returns ACAO '*'; a normal page carries connect-src 'self' and form-action 'none'."
     evidence:
-      - "assurance/evidence/EVIDENCE.md EV-HEADERS-2026-07-18 (served-response capture)"
+      - "assurance/evidence/EVIDENCE.md EV-HEADERS-001 (served-response capture)"
       - "customHttp.yml:31-50 (registry CORS block, scoped by path pattern)"
       - "customHttp.yml:5 (connect-src 'self', form-action 'none')"
     defeaters:
@@ -187,9 +187,9 @@ invariants:
     enforcement:
       - "customHttp.yml:5 CSP frame-ancestors 'self' https://wa.moss.land https://*.wa.moss.land."
     verification:
-      - "Live response header captured 2026-07-18 (assurance/evidence/EVIDENCE.md EV-HEADERS-2026-07-18): GET / returns the frame-ancestors allow-list exactly as declared."
+      - "Live response header captured 2026-07-18 (assurance/evidence/EVIDENCE.md EV-HEADERS-001): GET / returns the frame-ancestors allow-list exactly as declared."
     evidence:
-      - "assurance/evidence/EVIDENCE.md EV-HEADERS-2026-07-18 (served-response capture)"
+      - "assurance/evidence/EVIDENCE.md EV-HEADERS-001 (served-response capture)"
       - "customHttp.yml:5 (frame-ancestors)"
       - "build/generate.mjs:271-302 (embed.html kiosk view intended for framing inside play.wa / Mossverse)"
     defeaters:
