@@ -1,6 +1,6 @@
 # Threat model — links.moss.land
 
-> **Status:** Draft, produced during Agentic Assurance Profile adoption; pending human review (PROFILE.md §4.3).
+> **Status:** Produced during Agentic Assurance Profile adoption. The invariants and residuals it maps to were reviewed and approved by the human owner on 2026-07-18 (PROFILE.md §4.3).
 >
 > **Disclosure rule:** This file is public. It states threats and impacts at a level safe for public disclosure and keeps actionable exploit detail out. Suspected exploitable findings go to GitHub Private Vulnerability Reporting (see `SECURITY.md`), never a public Issue.
 

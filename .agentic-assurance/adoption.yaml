@@ -1,8 +1,8 @@
 # OpenDevs Agentic Assurance Profile — adoption declaration for links.moss.land.
 # See AGENTIC_ASSURANCE.md (repo root) and the pinned profile at the commit below.
-# DRAFT: the profile selection and human_owner below are proposals pending human
-# review (PROFILE.md section 4.3 / docs/REVIEW-GUIDE.md). Nothing here is accepted
-# until the repository owner reviews it.
+# The profile selection and human_owner below were confirmed by the repository owner
+# on 2026-07-18; see the human_review block at the end of this file for the full
+# record of that PROFILE.md section 4.3 review and what remains outstanding.
 upstream:
   repository: MosslandOpenDevs/agentic-assurance-profile
   # v0.1.0-rc.1 is the latest published tag; its VERSION file reads v0.1.0-rc.1,
@@ -61,14 +61,19 @@ issue_integration:
   public_security_issues_allowed: false
   closing_requires_artifact_update: true
 
-# PARTIAL review record. The PROFILE.md section 4.3 intent review is NOT complete;
-# this records the decisions the owner has made so far. Do not read this block as
-# an adoption sign-off.
+# The PROFILE.md section 4.3 intent review is COMPLETE as of 2026-07-18: purpose and
+# non-goals, the critical claims and invariants, the behaviour classification, and the
+# residual register were all reviewed and decided by the human owner. Every invariant's
+# intent.authority points at this record.
+#
+# This is a review record, not a conformance certificate. One trust-critical obligation
+# (PROFILE.md 6.3, private vulnerability reporting) depends on a repository setting the
+# owner must enable; see `outstanding` below.
 human_review:
   date: 2026-07-18
   reviewer: MosslandOpenDevs maintainers (Mossland)
   record: https://github.com/MosslandOpenDevs/links/pull/6
-  status: partial
+  status: complete
   decided:
     - human_owner is the maintainers body rather than a named individual
     - "profile set: added data-curation, with its two 6.4 gaps recorded openly"
@@ -91,7 +96,18 @@ human_review:
       third parties / not a live uptime monitor). The uptime-monitor entry rests on
       owner confirmation rather than a machine-checkable control, since it is inferred
       from an absence; it is also the basis on which RES-STATUS-DRIFT-001 was accepted.
+    - >-
+      behaviour classification in assurance/SYSTEM.md section 9 approved in full. Five
+      rows rest on machine-checkable evidence, one on generator code logic, and three on
+      prose; the prose-grounded rows stay tracked by RES-PROVENANCE-001 for later
+      re-grounding even though they are approved.
   outstanding:
-    - sign-off on the behaviour classification in assurance/SYSTEM.md section 9 (the amplify.yml row is confirmed; the other nine are under owner review)
+    # Not review items — repository settings the agent cannot change.
+    - >-
+      enable GitHub Private Vulnerability Reporting for MosslandOpenDevs/links. SECURITY.md
+      and the issue-template contact link already route to it, and PROFILE.md 6.3 requires
+      private vulnerability reporting for a public trust-critical adopter, so this is a
+      conformance prerequisite rather than a preference.
+    - create the issue labels the adopter forms reference — assurance/gap, assurance/evidence, assurance/residual, needs-human-approval — since GitHub silently drops labels that do not exist
     - approval of the critical invariants (INV-PHISH-001, INV-REG-001) as human-approved intent — intent.authority is still null on every invariant
     - "repository settings the agent cannot change: enable GitHub Private Vulnerability Reporting, create the assurance/* and needs-human-approval issue labels"

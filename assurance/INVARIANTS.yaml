@@ -1,8 +1,9 @@
 version: 1
 # Invariant register for links.moss.land (Mossland Verified Links).
-# Draft — INTENDED classifications and critical invariants are pending the human
-# intent review (PROFILE.md section 4.3). Status reflects current evidence, not
-# accepted intent. Critical invariants are not "VERIFIED" just because code exists.
+# The INTENDED classifications and the critical invariants were reviewed and approved
+# by the human owner on 2026-07-18 (PROFILE.md section 4.3); intent.authority records
+# that decision on each entry. `status` still reflects evidence strength, not approval:
+# a critical invariant is not "VERIFIED" merely because code exists or an owner said so.
 invariants:
   - id: INV-PHISH-001
     title: Every listed non-third-party entry is a Mossland-controlled presence
@@ -16,7 +17,7 @@ invariants:
     severity: critical
     intent:
       classification: INTENDED
-      authority: null  # pending human intent review (PROFILE.md 4.3)
+      authority: "Owner intent review 2026-07-18 (MosslandOpenDevs maintainers); record: .agentic-assurance/adoption.yaml human_review + PR #6"
     scope: The rendered directory (index.html, embed.html) generated from ecosystem-registry.json.
     assumptions:
       - Each service's owner/tier fields in ecosystem-registry.json are set correctly by human curation.
@@ -52,7 +53,7 @@ invariants:
     severity: critical
     intent:
       classification: INTENDED
-      authority: null
+      authority: "Owner intent review 2026-07-18 (MosslandOpenDevs maintainers); record: .agentic-assurance/adoption.yaml human_review + PR #6"
     scope: All generated artifacts produced by build/generate.mjs.
     assumptions:
       - The committed generated files were produced by running build/generate.mjs against the committed registry.
@@ -84,7 +85,7 @@ invariants:
     severity: high
     intent:
       classification: INTENDED
-      authority: null
+      authority: "Owner intent review 2026-07-18 (MosslandOpenDevs maintainers); record: .agentic-assurance/adoption.yaml human_review + PR #6"
     scope: ecosystem-registry.json passportEligible / stampType / stampClass fields.
     assumptions:
       - Consumers (Passport, City, WA) trust passportEligible as the gate for issuing a stamp.
@@ -117,7 +118,7 @@ invariants:
     severity: high
     intent:
       classification: INTENDED
-      authority: null
+      authority: "Owner intent review 2026-07-18 (MosslandOpenDevs maintainers); record: .agentic-assurance/adoption.yaml human_review + PR #6"
     scope: HTML body interpolation in build/generate.mjs (card, domLine, section headers).
     assumptions:
       - ecosystem-registry.json is trusted, Mossland-curated input, not attacker-controlled.
@@ -151,7 +152,7 @@ invariants:
     severity: high
     intent:
       classification: INTENDED
-      authority: null
+      authority: "Owner intent review 2026-07-18 (MosslandOpenDevs maintainers); record: .agentic-assurance/adoption.yaml human_review + PR #6"
     scope: HTTP response headers served by AWS Amplify per customHttp.yml.
     assumptions:
       - The site is a static deployment with no backend, cookies, or authenticated endpoints.
@@ -182,7 +183,7 @@ invariants:
     severity: medium
     intent:
       classification: INTENDED
-      authority: null
+      authority: "Owner intent review 2026-07-18 (MosslandOpenDevs maintainers); record: .agentic-assurance/adoption.yaml human_review + PR #6"
     scope: CSP frame-ancestors directive on all responses.
     assumptions:
       - AWS Amplify applies customHttp.yml as written.
@@ -213,7 +214,7 @@ invariants:
     severity: medium
     intent:
       classification: INTENDED
-      authority: null
+      authority: "Owner intent review 2026-07-18 (MosslandOpenDevs maintainers); record: .agentic-assurance/adoption.yaml human_review + PR #6"
     scope: The markets section of the rendered page and the llms.txt / JSON output.
     assumptions:
       - Market entries keep owner "third-party" / tier "third_party" and section "markets".

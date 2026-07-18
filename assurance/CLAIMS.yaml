@@ -1,8 +1,9 @@
 version: 1
 # Public claim register for links.moss.land.
-# Draft — public claim wording and limitations are pending the human intent review
-# (PROFILE.md sections 3 and 4.3). Proof tiers are set so claim wording does not
-# exceed the strength of the available evidence (PROFILE.md section 8).
+# Public claim wording and limitations were reviewed and approved by the human owner
+# on 2026-07-18 (PROFILE.md sections 3 and 4.3); the CLAIM-PHISH-001 wording was
+# revised in that review. Proof tiers are set so claim wording does not exceed the
+# strength of the available evidence (PROFILE.md section 8).
 claims:
   - id: CLAIM-PHISH-001
     text: >-

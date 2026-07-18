@@ -1,6 +1,6 @@
 # As-built system description — links.moss.land
 
-> **Status:** Draft reconstruction produced during Agentic Assurance Profile adoption. The purpose, non-goals, and behavior classifications below are pending the human intent review (PROFILE.md §4.3 / `docs/REVIEW-GUIDE.md` of the pinned upstream profile). Nothing here is accepted intent until the owner reviews it.
+> **Status:** As-built reconstruction produced during Agentic Assurance Profile adoption. The purpose, non-goals (§2) and behavior classifications (§9) were **reviewed and approved by the human owner on 2026-07-18** (PROFILE.md §4.3). They are now approved intent: an agent must not redefine them without a new owner decision, and each invariant's `intent.authority` points at this review.
 >
 > **Evidence rule:** Non-`UNKNOWN` conclusions cite concrete evidence (file:line, header, command output). An AI narrative is not evidence by itself.
 
@@ -89,6 +89,8 @@ Material public claims are registered with stable IDs in `assurance/CLAIMS.yaml`
 - **Remaining gap:** there is still no unit-test suite, and no *continuous* deployed-header assertion — the headers were confirmed by a one-time live capture and that residual was accepted (`RES-HEADERS-001`, ACCEPTED 2026-07-18) rather than remediated, because a live-site check in CI would make the build network-dependent.
 
 ## 9. Behavior classification
+
+**All rows below were reviewed and approved by the human owner on 2026-07-18.** Five rest on machine-checkable evidence (schema constraint, served headers, command output, code behaviour), one on generator code logic, and three on prose — the prose-grounded ones remain tracked by `RES-PROVENANCE-001` for later re-grounding, approval notwithstanding.
 
 | Behavior | Classification | Evidence | Conclusion |
 |---|---|---|---|

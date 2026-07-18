@@ -4,7 +4,7 @@
 >
 > **Purpose:** Connect this repository (`links.moss.land`) to the shared OpenDevs assurance profile without duplicating the upstream standard locally.
 >
-> **Status:** Draft adoption pending the human intent review (§6.3, §12). Nothing here is accepted until the repository owner reviews it.
+> **Status:** The PROFILE.md §4.3 intent review is **complete as of 2026-07-18** — purpose and non-goals, critical claims and invariants, the behaviour classification, and the residual register were all reviewed and decided by the repository owner (recorded in `.agentic-assurance/adoption.yaml` `human_review`). One trust-critical obligation remains outstanding: GitHub Private Vulnerability Reporting must be enabled on the repository. See §12.
 
 ---
 
@@ -92,7 +92,7 @@ Do not copy the complete upstream profile into this repository; local duplicatio
 
 ## 5. Profile selection
 
-Adopted (provisional, pending the §4.3 intent review): `core`, `service`, `trust-critical`, `data-curation`.
+Adopted, confirmed by the owner on 2026-07-18: `core`, `service`, `trust-critical`, `data-curation`.
 
 - `core` — the repository is substantially AI-agent-built.
 - `service` — a deployed website plus a public read-only registry endpoint (AWS Amplify).
@@ -144,4 +144,15 @@ The normative "OpenDevs Agentic Assurance" reading-order section is reproduced a
 
 ## 12. Adoption completion
 
-This adoption is **not** complete merely because these documents exist. Per the pinned profile it is complete only when the upstream pin resolves, human-approved purpose and non-goals are recorded, critical claims and invariants have enforcement/evidence references or an explicit `UNKNOWN`, the residual register is active and owned, and the assurance artifacts are referenced in normal change review. Completion language is reserved for the human owner's acceptance. Conformance means the system's promises, controls, evidence, and remaining doubt are inspectable — not that the system is bug-free or universally secure.
+This adoption is **not** complete merely because these documents exist. Status against the pinned profile's completion criteria:
+
+| Criterion | State |
+|---|---|
+| Upstream pin resolves to a real version and commit | ✅ `v0.1.0-rc.1` @ `8377ecd`, checked in CI |
+| Human-approved purpose and non-goals recorded | ✅ owner review 2026-07-18 (`assurance/SYSTEM.md` §2) |
+| Critical claims and invariants stated, with enforcement/evidence or explicit `UNKNOWN` | ✅ 7 invariants, 5 claims; `intent.authority` set on each |
+| Residual register active and owned | ✅ 8 residuals — 2 RESOLVED, 4 ACCEPTED with rationale, 2 OPEN |
+| Material-change workflow references the assurance artifacts | ✅ `.github/PULL_REQUEST_TEMPLATE.md` |
+| Private vulnerability reporting (required for a public `trust-critical` adopter, PROFILE.md §6.3) | ⏳ **outstanding** — `SECURITY.md` and the issue-template contact link route to it, but the repository setting must be enabled |
+
+Conformance means the system's promises, controls, evidence, and remaining doubt are inspectable — **not** that the system is bug-free or universally secure. Two residuals remain deliberately open (`RES-CURATION-002`, `RES-PROVENANCE-001`).
