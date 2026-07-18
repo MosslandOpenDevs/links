@@ -4,7 +4,7 @@
   "title": "Mossland Ecosystem Registry",
   "description": "Machine-readable registry of verified Mossland domains, ecosystem apps, labs, channels, and third-party market references. Source of truth for links.moss.land and for Passport ecosystem-stamp domain verification.",
   "type": "object",
-  "required": ["version", "owner", "services"],
+  "required": ["version", "owner", "services", "rubricVersion", "rubric"],
   "additionalProperties": true,
   "properties": {
     "$schema": { "type": "string" },
@@ -15,6 +15,81 @@
     "description": { "type": "string" },
     "tiers": { "type": "object", "additionalProperties": { "type": "string" } },
     "statuses": { "type": "object", "additionalProperties": { "type": "string" } },
+    "rubricVersion": {
+      "type": "string",
+      "description": "Semantic version of the editorial rubric declared in `rubric`. Distinct from `version`, which versions this document's contents: an entry can stay byte-identical while the rubric that classified it changes meaning. Bump per the rules in assurance/RUBRIC.md. Consumers that act on stampClass — notably Passport, which weights ecosystem stamps — should treat a change here as a signal to re-check their assumptions.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "rubric": {
+      "type": "object",
+      "description": "The editorial rubric of record: how a service's fields map to the trust chip shown on the page, and what each Passport stampClass signifies. build/generate.mjs derives both the chip and the on-page legend from this object, so the rendered page cannot drift from the declared rubric.",
+      "required": ["chips", "stampClasses"],
+      "additionalProperties": true,
+      "properties": {
+        "note": { "type": "string" },
+        "stampWeighting": {
+          "type": "string",
+          "description": "Where numeric stamp weighting is decided. This registry declares what a stampClass signifies, not a weight."
+        },
+        "chips": {
+          "type": "object",
+          "required": ["precedence", "legendOrder", "definitions"],
+          "additionalProperties": false,
+          "properties": {
+            "precedence": {
+              "type": "array",
+              "description": "Ordered chip-derivation rules; first match wins. The final entry must be the catch-all rule with `when` set to \"default\".",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["chip", "when"],
+                "additionalProperties": false,
+                "properties": {
+                  "chip": { "type": "string" },
+                  "when": {
+                    "description": "Either the string \"default\" (catch-all) or a condition object: {artifact:true}, {chipOverride:true}, {tier}, {owner}, {status}, or {anyOf:[...]}.",
+                    "oneOf": [{ "const": "default" }, { "type": "object" }]
+                  }
+                }
+              }
+            },
+            "legendOrder": {
+              "type": "array",
+              "description": "Display order of the on-page legend. Every name must have a definition.",
+              "items": { "type": "string" }
+            },
+            "definitions": {
+              "type": "object",
+              "description": "Per-chip presentation class, accessible label, and bilingual meaning.",
+              "additionalProperties": {
+                "type": "object",
+                "required": ["class", "aria", "ko", "en"],
+                "additionalProperties": false,
+                "properties": {
+                  "class": { "type": "string" },
+                  "aria": { "type": "string" },
+                  "ko": { "type": "string" },
+                  "en": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "stampClasses": {
+          "type": "object",
+          "description": "What each stampClass signifies. Must cover every stampClass value used by a service.",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["meaning"],
+            "additionalProperties": true,
+            "properties": {
+              "meaning": { "type": "string" },
+              "ko": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
     "services": {
       "type": "array",
       "items": { "$ref": "#/$defs/service" }

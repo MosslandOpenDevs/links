@@ -73,3 +73,35 @@ Evidence for the `trust-critical` obligation that a public adopter has private v
   - All six labels referenced by the adopter issue forms exist: `bug`, `enhancement`, `assurance/gap`, `assurance/evidence`, `assurance/residual`, `needs-human-approval`. GitHub silently drops references to labels that do not exist, so their presence is what keeps a residual-review issue carrying its `needs-human-approval` flag.
 - **Supports:** the PROFILE.md §6.3 private-reporting obligation; the disclosure routing asserted in `SECURITY.md` and `AGENTIC_ASSURANCE.md` §9.
 - **Note:** this records that the channel exists and is reachable, not that any report has been handled through it.
+
+---
+
+## EV-RUBRIC-001 — moving the rubric into data changed no rendered output
+
+The rubric refactor (`RES-CURATION-002`) rewired `build/generate.mjs` to derive the chip assignment and the on-page legend from `ecosystem-registry.json` `rubric` instead of from hard-coded logic and hard-coded legend rows. A refactor of the thing that decides every trust chip on an anti-phishing page needs to be demonstrably behaviour-preserving, not assumed to be.
+
+- **Bound to:** the rubric-versioning change (registry `rubricVersion` 1.0.0).
+- **Captured:** 2026-07-18.
+- **Method:** snapshot the four generated files before the refactor, apply the refactor, regenerate, compare byte-for-byte.
+  ```sh
+  # before
+  cp index.html embed.html llms.txt sitemap.xml <snapshot>/
+  # after the refactor
+  node build/generate.mjs
+  for f in index.html embed.html llms.txt sitemap.xml; do cmp -s "$f" "<snapshot>/$f"; done
+  ```
+- **Observed:** all four files byte-identical (`cmp` silent for each); `git diff` reported no change to any generated file. Pre-refactor SHA-256 of `index.html` was `cb171d324066c19fd17460ff798dea8a71856afa4ef729aba6107aa3acba1aec`, unchanged after.
+- **Result:** every one of the 28 rendered services received the same chip, with the same CSS class and the same `aria-label`, and the legend rendered identically — so the declared rubric reproduces the previous implementation exactly. This is why `RUBRIC.md` records `1.0.0` as a faithful reconstruction rather than a semantic change.
+- **Supports:** `RES-CURATION-002` resolution; `INV-PHISH-001` (chip derivation unchanged); `INV-REG-001`.
+
+### Negative tests of the rubric consistency checks
+
+Captured 2026-07-18 against `.github/scripts/validate-registry.py`. Each mutation was applied to a copy, checked, and reverted:
+
+| Mutation | Result |
+|---|---|
+| Delete a `stampClass` that a service uses (`governance`) | `ERROR: $.services[id='agora']: stampClass 'governance' is not declared in rubric.stampClasses` — exit 1 |
+| Remove the catch-all `default` precedence rule | `ERROR: ... the last rule must be the catch-all` + orphan-definition error — exit 1 |
+| Drop a chip from `legendOrder` | `ERROR: ... '베타' is defined but is missing from legendOrder, so it would render on the page without an explanation` — exit 1 |
+
+The unmodified registry exits 0. These confirm the checks fail on real drift rather than merely existing.

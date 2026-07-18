@@ -26,6 +26,40 @@
     "offline": "오프라인",
     "deprecated": "지원 종료"
   },
+  "rubricVersion": "1.0.0",
+  "rubric": {
+    "note": "The editorial rubric of record: how a service's fields map to the trust chip shown on the page, and what each Passport stampClass signifies. Versioned separately from `version` (which versions this document's contents) so that a change in classification *meaning* is visible to consumers even when no entry changed. build/generate.mjs derives both the chip and the on-page legend from this object, so the rendered page cannot drift from the declared rubric. See assurance/RUBRIC.md for the changelog and the version-bump rules.",
+    "chips": {
+      "precedence": [
+        { "chip": "자료", "when": { "artifact": true } },
+        { "chip": "실험", "when": { "anyOf": [{ "chipOverride": true }, { "tier": "labs" }] } },
+        { "chip": "제3자", "when": { "anyOf": [{ "owner": "third-party" }, { "tier": "third_party" }] } },
+        { "chip": "쇼케이스", "when": { "tier": "showcase" } },
+        { "chip": "인텔리전스", "when": { "tier": "intelligence" } },
+        { "chip": "베타", "when": { "anyOf": [{ "tier": "official_beta" }, { "status": "beta" }] } },
+        { "chip": "공식", "when": "default" }
+      ],
+      "legendOrder": ["공식", "베타", "인텔리전스", "쇼케이스", "실험", "제3자", "자료"],
+      "definitions": {
+        "공식": { "class": "chip", "aria": "공식 · 검증된 Mossland 링크", "ko": "Mossland 공식·검증 도메인과 채널", "en": "Verified Mossland domains and channels" },
+        "베타": { "class": "chip beta", "aria": "베타 · 운영 중인 공식 베타", "ko": "운영 중인 공식 베타", "en": "Official service in open beta" },
+        "인텔리전스": { "class": "chip intel", "aria": "인텔리전스 · 검증된 Mossland AI 분석·데이터", "ko": "Mossland AI 분석·데이터 서비스", "en": "Mossland AI intelligence & data" },
+        "쇼케이스": { "class": "chip show", "aria": "쇼케이스 · 검증된 Mossland 체험형 데모", "ko": "체험형 데모·월드 쇼케이스", "en": "Experiential demo & world showcase" },
+        "실험": { "class": "chip lab", "aria": "실험 · 아직 완성된 공식 제품 아님", "ko": "아직 완성된 공식 제품 아님", "en": "Experimental, not a finished official product" },
+        "제3자": { "class": "chip third", "aria": "제3자 · Mossland 미검증", "ko": "Mossland 미검증 외부 링크", "en": "Third-party, not verified by Mossland" },
+        "자료": { "class": "chip muted", "aria": "자료 · 개발자 데이터 파일", "ko": "개발자·데이터 파일", "en": "Developer & data files" }
+      }
+    },
+    "stampClasses": {
+      "core": { "meaning": "identity / holder", "ko": "신원·홀더" },
+      "governance": { "meaning": "binding decision acts", "ko": "구속력 있는 의사결정 행위" },
+      "participation": { "meaning": "recurring community activity", "ko": "반복적 커뮤니티 활동" },
+      "connect": { "meaning": "lightweight verified-domain visit", "ko": "검증된 도메인 방문(경량)" },
+      "lab": { "meaning": "experimental observer", "ko": "실험 관찰자" },
+      "showcase": { "meaning": "experience visit", "ko": "체험 방문" }
+    },
+    "stampWeighting": "Not defined here. This registry declares what each stampClass signifies, not a numeric weight; the weighting policy belongs to Passport. rubricVersion is the signal that tells a consumer these meanings changed."
+  },
   "services": [
     {
       "id": "moss",

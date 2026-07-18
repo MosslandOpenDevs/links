@@ -89,6 +89,7 @@ claims:
     evidence:
       - "ecosystem-registry.json (all 11 passportEligible entries — disclosure, passport, agora, wa, signalmap, city, npc, recipe, algora, bridge, monitor — have owner 'mossland')"
       - ".github/scripts/validate-registry.py rejects any passportEligible entry whose owner is not 'mossland'; run on every push and pull request since 2026-07-18 and confirmed by a negative test."
+      - "ecosystem-registry.json `rubric.stampClasses` declares what each stampClass signifies, versioned by `rubricVersion` (assurance/RUBRIC.md), so a consumer can tell when the meaning behind an unchanged entry has moved. CI rejects a service using an undeclared stampClass."
     limitations:
       - "The consistency of this claim is now enforced in CI, but the claim still rests on curation for its truth: the check verifies the value of the `owner` field, not that the domain or account is genuinely Mossland's (DEF-PHISH-001). That is why the tier remains OPERATOR_ATTESTED rather than INDEPENDENTLY_VERIFIABLE."
       - "The constraint lives in the CI validator, not in the published schema, so a third party validating against ecosystem-registry.schema.json alone does not get it. Binding passportEligible:true to owner 'mossland' in the schema itself would close that gap."
