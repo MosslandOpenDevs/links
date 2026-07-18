@@ -1,0 +1,257 @@
+version: 1
+# Residual register for links.moss.land — known limitations and remaining doubt
+# (PROFILE.md sections 2 and 12).
+#
+# Residual review completed 2026-07-18 by the human owner (MosslandOpenDevs
+# maintainers). Dispositions: 2 RESOLVED by remediation, 4 ACCEPTED with recorded
+# rationale, 1 left OPEN for remediation. An agent prepared this review but did
+# not accept anything on the owner's behalf (PROFILE.md section 15).
+residuals:
+  - id: RES-VERIFY-001
+    summary: >-
+      Domain authenticity and service statuses are established by periodic manual
+      verification, not continuous monitoring. Between verifications the directory can
+      be stale — a domain's control or a service's status could change without the
+      page reflecting it.
+    private_detail_location: null
+    affected_claims:
+      - CLAIM-PHISH-001
+    affected_invariants:
+      - INV-PHISH-001
+    impact: medium
+    uncertainty: medium
+    mitigation:
+      - "The footer shows the last-verified date ('최종 확인', build/generate.mjs:180,260)."
+      - Registry edits go through pull-request review grounded in the live site (README.md 'Always ground descriptions in the live site').
+    status: ACCEPTED
+    acceptance_rationale: >-
+      Inherent to the design and accepted as proportionate. A static registry cannot
+      cryptographically prove domain ownership; eliminating this residual would require
+      continuous monitoring infrastructure disproportionate to the project. The public
+      claim (CLAIM-PHISH-001) is already scoped to OPERATOR_ATTESTED and states the
+      periodic-verification limitation, so the claim does not exceed its evidence.
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: MosslandOpenDevs maintainers (Mossland)
+    accepted_at: 2026-07-18
+    review_after: 2026-10-18
+
+  - id: RES-CI-VALIDATION-001
+    summary: >-
+      No continuous validation ran on change. Neither JSON Schema validation of
+      ecosystem-registry.json against its schema, nor a check that the committed
+      generated files match a fresh `node build/generate.mjs` run, was wired into CI.
+      Registry, projection, and Passport-eligibility invariants therefore relied on
+      author discipline.
+    private_detail_location: null
+    affected_claims:
+      - CLAIM-REG-001
+      - CLAIM-PASSPORT-001
+      - CLAIM-PASSPORT-002
+    affected_invariants:
+      - INV-REG-001
+      - INV-PASSPORT-001
+    impact: medium
+    uncertainty: low
+    mitigation:
+      - The generator is pure and idempotent, so a local regenerate-and-diff catches projection drift.
+      - Pull-request review.
+    status: RESOLVED
+    resolution_note: >-
+      Remediated 2026-07-18 by .github/workflows/registry.yml, which runs on every push
+      and pull request: (a) .github/scripts/validate-registry.py validates the registry
+      against ecosystem-registry.schema.json (draft 2020-12), which is what enforces
+      INV-PASSPORT-001, and additionally asserts that every passportEligible entry has
+      owner 'mossland' (CLAIM-PASSPORT-002) and that service ids are unique; (b) a
+      regenerate-and-diff step fails the build if the committed pages are not
+      byte-identical to a fresh generator run (INV-REG-001). Verified by a negative
+      test before merge: marking a third_party entry passportEligible produced two
+      errors and exit 1; the unmodified registry exits 0.
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: null
+    accepted_at: null
+    review_after: 2026-10-18
+
+  - id: RES-HEADERS-001
+    summary: >-
+      The deployed security headers were confirmed by a manual capture
+      (2026-07-18, EV-HEADERS-001) but are not verified by an automated,
+      continuous check; their ongoing presence depends on AWS Amplify honouring
+      customHttp.yml, and a later platform/config change could drop them undetected.
+    private_detail_location: null
+    affected_claims: []
+    affected_invariants:
+      - INV-CORS-001
+      - INV-FRAME-001
+    impact: low
+    uncertainty: low
+    mitigation:
+      - Headers are declared centrally in customHttp.yml and reviewed on change.
+      - "Confirmed live (assurance/evidence/EVIDENCE.md EV-HEADERS-001)."
+    status: ACCEPTED
+    acceptance_rationale: >-
+      Accepted as low impact. The headers are declared in a single reviewed file and
+      were confirmed to match the served responses exactly. A continuous check would
+      have to call the live site from CI, making the build network-dependent and prone
+      to false failures; a scheduled post-deploy assertion is the better shape and is
+      recorded as a future improvement rather than a blocker.
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: MosslandOpenDevs maintainers (Mossland)
+    accepted_at: 2026-07-18
+    review_after: 2026-10-18
+
+  - id: RES-RENDER-JSONLD-001
+    summary: >-
+      The JSON-LD structured-data blocks were not escaped against early termination of
+      the script element. The risk was bounded by trusted curated input and CSP
+      script-src 'self', but the defence-in-depth escape was not applied.
+    private_detail_location: null
+    affected_claims: []
+    affected_invariants:
+      - INV-RENDER-001
+    impact: low
+    uncertainty: low
+    mitigation:
+      - "CSP script-src 'self' blocks injected inline/external scripts (customHttp.yml:5)."
+      - Registry input is trusted, Mossland-curated data.
+    status: RESOLVED
+    resolution_note: >-
+      Remediated 2026-07-18 in build/generate.mjs jsonLd(): the serialized JSON-LD now
+      escapes "<" as its < escape sequence, so no registry value can terminate the
+      script element early. JSON.parse restores "<", so consumers see identical data.
+      Verified: all three ld+json blocks in the regenerated index.html parse correctly.
+      The change produced no diff in the generated output, because no current registry
+      value contains "<" — the fix is preventive and there was no live exposure.
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: null
+    accepted_at: null
+    review_after: 2026-10-18
+
+  - id: RES-STATUS-DRIFT-001
+    summary: >-
+      The registry records point-in-time operational facts for ecosystem services
+      (for example alpha 'paused', ao 'degraded', media empty/'실험' as of 2026-07-06).
+      These states drift, so the status and notes fields can lag the live services.
+    private_detail_location: null
+    affected_claims: []
+    affected_invariants:
+      - INV-MARKET-001
+    impact: low
+    uncertainty: medium
+    mitigation:
+      - Statuses are re-verified against the live services when the registry is updated.
+      - "The ecosystem section carries a note that '실험' services are not finished official products (build/generate.mjs:23)."
+    status: ACCEPTED
+    acceptance_rationale: >-
+      Accepted as an inherent property of a manually curated directory and as low
+      impact: a stale operational status does not weaken the anti-phishing guarantee,
+      which is about which domains are genuinely Mossland's, not about uptime. The page
+      is explicit that it is not a live uptime monitor (assurance/SYSTEM.md section 2).
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: MosslandOpenDevs maintainers (Mossland)
+    accepted_at: 2026-07-18
+    review_after: 2026-10-18
+
+  # --- data-curation profile (PROFILE.md 6.4) gaps, recorded on adoption 2026-07-18 ---
+
+  - id: RES-CURATION-001
+    summary: >-
+      The registry does not separate externally observed facts from Mossland's own
+      editorial judgement. A service object mixes observed facts (domain, url, ticker)
+      with Mossland classifications (tier, chip, status, label/labelKo,
+      passportEligible, stampType, stampClass) in one flat structure, with no field or
+      convention marking which is which. A cross-origin consumer cannot tell an
+      observed fact from a curatorial opinion. Provenance for the observed side is also
+      thin: sourceOfTruth is set on only a few entries and lastDataAt is null on every
+      entry.
+    private_detail_location: null
+    affected_claims:
+      - CLAIM-REG-001
+    affected_invariants: []
+    impact: medium
+    uncertainty: low
+    mitigation:
+      - "The distinction is documented narratively in assurance/SYSTEM.md section 3.1 (fact vs judgement field table) as an interim measure."
+      - README.md documents what each tier and chip means, so the judgements are at least explained.
+      - "Staged remediation: mark judgement fields explicitly in ecosystem-registry.schema.json (or group them under a nested object), and populate lastDataAt / sourceOfTruth for entries whose data is observed."
+    status: ACCEPTED
+    acceptance_rationale: >-
+      Accepted for now with the narrative separation in SYSTEM.md section 3.1 as the
+      interim mitigation. Closing it properly means restructuring a public schema that
+      other Mossland properties already consume, so it warrants its own scoped change
+      with consumer impact analysis rather than being bundled into the adoption. Impact
+      is bounded: no consumer currently depends on distinguishing fact from judgement,
+      and the registry's judgements are documented in README.
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: MosslandOpenDevs maintainers (Mossland)
+    accepted_at: 2026-07-18
+    review_after: 2026-10-18
+
+  - id: RES-CURATION-002
+    summary: >-
+      There is no versioned history of the classification and scoring rubric. The
+      tier-to-chip derivation and the stampClass significance weighting are the
+      registry's editorial rubric, but they live only in current code
+      (build/generate.mjs chipFor) and prose (README chips table). The registry's
+      version field versions the document, not the rubric, so an entry carries no
+      record of which rubric version classified it. If the rubric changes, the meaning
+      of an unchanged entry changes silently — and stampClass is consumed by Passport
+      to weight ecosystem stamps, so a silent rubric change propagates into stamp
+      weighting.
+    private_detail_location: null
+    affected_claims:
+      - CLAIM-PASSPORT-002
+    affected_invariants:
+      - INV-PHISH-001
+    impact: medium
+    uncertainty: medium
+    mitigation:
+      - "The rubric is at least documented and data-driven (chip derivation keys off owner/tier/chip, never a service id) — see README.md chips table and build/generate.mjs:45-53."
+      - "Staged remediation: introduce an explicit rubric version in the registry (and record it per entry or per document), with a changelog for tier/chip/stampClass semantics."
+    status: OPEN
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: null
+    accepted_at: null
+    review_after: 2026-10-18
+    # Deliberately NOT accepted in the 2026-07-18 review: this is the one residual
+    # whose consequence leaves this repository. stampClass feeds Passport's stamp
+    # weighting, so a silent rubric change alters another system's behaviour. The
+    # owner chose remediation (introduce a versioned rubric) over acceptance.
+
+  # --- Recorded 2026-07-18, after the residual review, when grounding the
+  # --- amplify.yml classification exposed a systemic evidence-provenance problem.
+
+  - id: RES-PROVENANCE-001
+    summary: >-
+      Much of this repository's explanatory prose — code comments, README
+      descriptions, registry `note` fields — was written in AI-co-authored commits.
+      PROFILE.md section 7 excludes AI-generated explanation as evidence by itself,
+      so any intent classification grounded in that prose is weaker than it looks:
+      one agent asserts a rationale, a later agent cites the assertion as proof of
+      human intent. Found while grounding the amplify.yml `|| true` classification,
+      whose only evidence was a comment introduced in an AI-co-authored commit
+      (d688deb); that one was re-grounded on explicit owner confirmation, but the
+      same pattern applies wherever prose is the sole evidence — for example the
+      README chips table cited by INV-PHISH-001.
+    private_detail_location: null
+    affected_claims: []
+    affected_invariants:
+      - INV-PHISH-001
+    impact: medium
+    uncertainty: medium
+    mitigation:
+      - "Classifications grounded in machine-checkable artifacts — schema constraints, served response headers, command output, code behaviour — are unaffected; these carry most of assurance/SYSTEM.md section 9."
+      - "Where prose was the only ground, the classification was re-grounded on explicit owner confirmation and the substitution recorded (see the amplify.yml footnote in assurance/SYSTEM.md section 9)."
+      - "Staged remediation: audit the remaining prose-grounded rows in section 9 and either re-ground them on a machine-checkable artifact or obtain owner confirmation per row."
+    status: OPEN
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: null
+    accepted_at: null
+    review_after: 2026-10-18

@@ -1,0 +1,8 @@
+# This whole ISSUE_TEMPLATE directory replaces any organization default template
+# set, including this config.yml. Keep it complete so blank issues stay disabled
+# and the security contact link is not lost (docs/ADOPTION.md §3.5 of the profile).
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/MosslandOpenDevs/links/security/advisories/new
+    about: Do not open a public issue for suspected vulnerabilities. See SECURITY.md.

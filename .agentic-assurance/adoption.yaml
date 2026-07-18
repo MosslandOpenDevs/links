@@ -1,0 +1,114 @@
+# OpenDevs Agentic Assurance Profile — adoption declaration for links.moss.land.
+# See AGENTIC_ASSURANCE.md (repo root) and the pinned profile at the commit below.
+# The profile selection and human_owner below were confirmed by the repository owner
+# on 2026-07-18; see the human_review block at the end of this file for the full
+# record of that PROFILE.md section 4.3 review and what remains outstanding.
+upstream:
+  repository: MosslandOpenDevs/agentic-assurance-profile
+  # v0.1.0-rc.1 is the latest published tag; its VERSION file reads v0.1.0-rc.1,
+  # which the adopter validator requires to match this pin exactly. (HEAD of the
+  # profile's default branch reads v0.1.0-dev, which is forbidden in an adopter pin.)
+  version: v0.1.0-rc.1
+  commit: 8377ecd0223d7c66234af5bc9ce102646881482d
+
+project:
+  name: Mossland Verified Links
+  repository: MosslandOpenDevs/links
+  # Governing body for this repository, confirmed by the owner (2026-07-18):
+  # the MosslandOpenDevs maintainers as a body, not a single named individual.
+  # The contents of ecosystem-registry.json (the authenticity source of truth)
+  # are ultimately governed by Mossland DAO via Agora (agora.moss.land);
+  # see assurance/SYSTEM.md section 5.
+  human_owner: MosslandOpenDevs maintainers (Mossland)
+
+profiles:
+  - core            # substantially AI-agent-built repository
+  - service         # deployed website + public read-only registry (AWS Amplify)
+  - trust-critical  # anti-phishing / domain-authenticity is the page's core purpose
+  - data-curation   # the registry is curated, classified, scored data: tier/chip/status
+                    # judgments, and the stampClass significance weighting consumed by
+                    # Passport. Added by owner decision 2026-07-18.
+                    # Provisional upstream profile — its obligations may change in a minor
+                    # release and the validator emits a non-blocking warning on selection.
+                    # Known PROFILE.md 6.4 gaps are recorded as RES-CURATION-001
+                    # (external fact vs editorial judgment not separated) and
+                    # RES-CURATION-002 (no versioned classification/scoring rubric).
+
+specification_workflow:
+  system: existing
+  # GitHub pull requests. The change workflow is documented in README.md
+  # ("Source of truth" and "Adding or changing a service").
+  root: README.md
+
+paths:
+  system: assurance/SYSTEM.md
+  invariants: assurance/INVARIANTS.yaml
+  claims: assurance/CLAIMS.yaml
+  defeaters: assurance/DEFEATERS.yaml
+  residuals: assurance/RESIDUALS.yaml
+  threat_model: assurance/THREAT_MODEL.md
+  evidence: assurance/evidence
+
+security:
+  policy: SECURITY.md
+  public_assurance_root: assurance
+  # Non-actionable label only. Suspected vulnerabilities go to GitHub Private
+  # Vulnerability Reporting / a draft Security Advisory, never a public Issue.
+  restricted_record: external_private_system
+
+issue_integration:
+  stable_id_required: true
+  public_security_issues_allowed: false
+  closing_requires_artifact_update: true
+
+# The PROFILE.md section 4.3 intent review is COMPLETE as of 2026-07-18: purpose and
+# non-goals, the critical claims and invariants, the behaviour classification, and the
+# residual register were all reviewed and decided by the human owner. Every invariant's
+# intent.authority points at this record.
+#
+# This is a review record, not a conformance certificate. One trust-critical obligation
+# (PROFILE.md 6.3, private vulnerability reporting) depends on a repository setting the
+# owner must enable; see `outstanding` below.
+human_review:
+  date: 2026-07-18
+  reviewer: MosslandOpenDevs maintainers (Mossland)
+  record: https://github.com/MosslandOpenDevs/links/pull/6
+  status: complete
+  decided:
+    - human_owner is the maintainers body rather than a named individual
+    - "profile set: added data-curation, with its two 6.4 gaps recorded openly"
+    - "public claim wording refined so it no longer over-states control of off-domain platforms"
+    - "residual review of all 7 entries: 2 RESOLVED by remediation, 4 ACCEPTED with rationale, 1 (RES-CURATION-002) deliberately left OPEN"
+    - >-
+      amplify.yml `|| true` (ship committed files even if the generator fails) confirmed
+      as INTENDED resilience. This replaces the earlier grounding: the draft had cited the
+      amplify.yml code comment, but that comment entered in an AI-co-authored commit
+      (d688deb), and PROFILE.md 7 excludes AI-generated explanation as evidence by itself.
+      The accepted side effect is that a generator failure on Amplify is silent in the
+      deploy log; committed output is known-good because CI verifies it at merge time.
+    - >-
+      non-goal "not a general CMS" (generated files are never hand-edited) confirmed as
+      deliberate. It is the structural precondition for INV-REG-001 and the anti-phishing
+      claim, and is machine-enforced by the registry.yml projection gate.
+    - >-
+      all four non-goals in assurance/SYSTEM.md section 2 confirmed as deliberate
+      (not a general CMS / not a price feed / not a Passport-eligibility grantor for
+      third parties / not a live uptime monitor). The uptime-monitor entry rests on
+      owner confirmation rather than a machine-checkable control, since it is inferred
+      from an absence; it is also the basis on which RES-STATUS-DRIFT-001 was accepted.
+    - >-
+      behaviour classification in assurance/SYSTEM.md section 9 approved in full. Five
+      rows rest on machine-checkable evidence, one on generator code logic, and three on
+      prose; the prose-grounded rows stay tracked by RES-PROVENANCE-001 for later
+      re-grounding even though they are approved.
+    - >-
+      repository settings completed 2026-07-18 and verified by API, not by assertion:
+      GitHub Private Vulnerability Reporting is enabled (satisfying the PROFILE.md 6.3
+      private-reporting obligation for a public trust-critical adopter), and all six
+      labels referenced by the adopter issue forms exist. Recorded as
+      assurance/evidence/EVIDENCE.md EV-INTAKE-001.
+  outstanding: []
+  # Nothing outstanding from the section 4.3 review. Two residuals remain deliberately
+  # OPEN by decision, not by omission: RES-CURATION-002 (versioned rubric) and
+  # RES-PROVENANCE-001 (prose-grounded evidence). Neither is critical-impact, so neither
+  # blocks the conformance criteria in PROFILE.md 17 — but both stay open and owned.

@@ -1,0 +1,237 @@
+version: 1
+# Invariant register for links.moss.land (Mossland Verified Links).
+# The INTENDED classifications and the critical invariants were reviewed and approved
+# by the human owner on 2026-07-18 (PROFILE.md section 4.3); intent.authority records
+# that decision on each entry. `status` still reflects evidence strength, not approval:
+# a critical invariant is not "VERIFIED" merely because code exists or an owner said so.
+invariants:
+  - id: INV-PHISH-001
+    title: Every listed non-third-party entry is a Mossland-controlled presence
+    statement: >-
+      A link rendered on the page without the 제3자 (third-party) chip is a
+      Mossland-controlled presence (owner "mossland") — either a verified Mossland
+      domain (a *.moss.land site) or an official Mossland-controlled channel/account
+      on a third-party platform (Medium, X, GitHub). Only entries with owner
+      "third-party" or tier "third_party" are non-Mossland, and those always render
+      the 제3자 chip.
+    severity: critical
+    intent:
+      classification: INTENDED
+      authority: "Owner intent review 2026-07-18 (MosslandOpenDevs maintainers); record: .agentic-assurance/adoption.yaml human_review + PR #6"
+    scope: The rendered directory (index.html, embed.html) generated from ecosystem-registry.json.
+    assumptions:
+      - Each service's owner/tier fields in ecosystem-registry.json are set correctly by human curation.
+      - The registry commit history is trustworthy (no unreviewed edit introduced a false entry).
+    limitations:
+      - There is no cryptographic or automated proof that a listed entry is Mossland-controlled; correctness rests on human curation (see DEF-PHISH-001, RES-VERIFY-001).
+      - "Mossland-controlled for off-domain channels (Medium, X, GitHub) means an official account Mossland operates on a third-party platform, not infrastructure Mossland runs. The on-page copy was refined on 2026-07-18 (build/generate.mjs:191-194) to state that distinction explicitly, so the public wording now matches this invariant rather than over-stating it."
+    enforcement:
+      - "build/generate.mjs chipFor() lines 45-53: the 제3자 chip is emitted iff owner === 'third-party' || tier === 'third_party'; every other entry (including owner 'mossland' channel/developer entries) renders as a verified Mossland chip."
+      - "ecosystem-registry.json owner field: all non-market entries declare owner 'mossland'."
+    verification:
+      - Manual curation review on each registry pull request (README.md 'Adding or changing a service').
+      - "Live-domain verification recorded via the footer '최종 확인' date (build/generate.mjs line 180, 260); last verified 2026-07-06 (ecosystem-registry.json generatedAt)."
+    evidence:
+      - "build/generate.mjs:45-53 (chip derivation; owner 'mossland' channel/developer entries fall through to the verified-Mossland chip)"
+      - "README.md chips table (the 공식 chip means 'Verified Mossland domain or official channel')"
+      - "build/generate.mjs:191-194 (VERIFY copy: 'every link here is either an official Mossland domain or an official account Mossland operates')"
+    defeaters:
+      - DEF-PHISH-001
+    residuals:
+      - RES-VERIFY-001
+      - RES-CURATION-002
+    status: INFERRED
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+
+  - id: INV-REG-001
+    title: The rendered pages are a pure projection of the registry
+    statement: >-
+      index.html, embed.html, llms.txt, and sitemap.xml contain no link that is not
+      present in ecosystem-registry.json; the registry is the single source of truth
+      and the generated files are a deterministic projection of it.
+    severity: critical
+    intent:
+      classification: INTENDED
+      authority: "Owner intent review 2026-07-18 (MosslandOpenDevs maintainers); record: .agentic-assurance/adoption.yaml human_review + PR #6"
+    scope: All generated artifacts produced by build/generate.mjs.
+    assumptions:
+      - The committed generated files were produced by running build/generate.mjs against the committed registry.
+    limitations:
+      - "Enforced at merge time, not deploy time: Amplify still ships committed files even if its own generator invocation fails (amplify.yml:9 `|| true`). Drift is introduced by commits, which CI now blocks (DEF-REG-001, RESOLVED 2026-07-18)."
+    enforcement:
+      - "build/generate.mjs renders exclusively from reg.services (lines 10, 76-97, 121-134, 181-184); README.md states the outputs must not be hand-edited."
+      - ".github/workflows/registry.yml: a regenerate-and-diff step fails the build unless index.html, embed.html, llms.txt and sitemap.xml are byte-identical to a fresh generator run. Runs on every push and pull request."
+    verification:
+      - "Idempotent regeneration bound to a revision: `node build/generate.mjs` then `git diff --quiet` exits 0 (committed output byte-identical to the generator's output). Re-run on every change to the registry or generator; captures are listed in assurance/evidence/EVIDENCE.md EV-PROJECTION-001."
+    evidence:
+      - "assurance/evidence/EVIDENCE.md EV-PROJECTION-001 (regenerate-and-diff; latest capture clean at 7dbfc80, 2026-07-18)"
+      - "build/generate.mjs:76-97 (renderSections reads reg.services)"
+      - "README.md:23-32 ('generated from the registry ... Do not edit them by hand')"
+    defeaters:
+      - DEF-REG-001
+    residuals:
+      - RES-CI-VALIDATION-001
+    status: VERIFIED
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+
+  - id: INV-PASSPORT-001
+    title: Third-party and off-domain channel entries are never Passport-eligible
+    statement: >-
+      No service with tier "third_party" or tier "channel" has passportEligible true;
+      third-party market links and off-domain channels can never back a Passport
+      ecosystem stamp.
+    severity: high
+    intent:
+      classification: INTENDED
+      authority: "Owner intent review 2026-07-18 (MosslandOpenDevs maintainers); record: .agentic-assurance/adoption.yaml human_review + PR #6"
+    scope: ecosystem-registry.json passportEligible / stampType / stampClass fields.
+    assumptions:
+      - Consumers (Passport, City, WA) trust passportEligible as the gate for issuing a stamp.
+    limitations:
+      - "The schema itself encodes only this negative direction (third_party/channel ⇒ not eligible); it still does not bind passportEligible:true to owner 'mossland'. Since 2026-07-18 that positive direction is asserted by the CI validator rather than the schema, so a consumer validating against the published schema alone does not get it. See CLAIM-PASSPORT-002."
+    enforcement:
+      - "ecosystem-registry.schema.json allOf lines 102-111: if tier is third_party then passportEligible const false; if tier is channel then passportEligible const false."
+      - ".github/scripts/validate-registry.py, run by .github/workflows/registry.yml on every push and pull request: validates the registry against the schema and additionally rejects any passportEligible entry whose owner is not 'mossland'."
+      - "Registry data: every third_party (markets) and channel (Medium, X) entry has passportEligible false."
+    verification:
+      - "JSON Schema (draft 2020-12) validation of ecosystem-registry.json against ecosystem-registry.schema.json — reproducible by any consumer, and enforced in CI since 2026-07-18."
+      - "Negative test (2026-07-18): marking a third_party entry passportEligible made the validator emit two errors and exit 1; the unmodified registry exits 0 with 29 services and 11 Passport-eligible entries."
+    evidence:
+      - "ecosystem-registry.schema.json:102-111 (allOf if/then constraints for third_party and channel)"
+      - "ecosystem-registry.json (all owner 'third-party' and channel entries: passportEligible false)"
+    defeaters:
+      - DEF-PASSPORT-001
+    residuals:
+      - RES-CI-VALIDATION-001
+    status: VERIFIED
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+
+  - id: INV-RENDER-001
+    title: Registry values are HTML-escaped into the generated markup
+    statement: >-
+      Registry-derived strings rendered through card(), domLine(), and the section
+      markup are HTML-escaped, so registry content cannot inject markup or script into
+      the page body.
+    severity: high
+    intent:
+      classification: INTENDED
+      authority: "Owner intent review 2026-07-18 (MosslandOpenDevs maintainers); record: .agentic-assurance/adoption.yaml human_review + PR #6"
+    scope: HTML body interpolation in build/generate.mjs (card, domLine, section headers).
+    assumptions:
+      - ecosystem-registry.json is trusted, Mossland-curated input, not attacker-controlled.
+    limitations:
+      - "One registry-derived value is rendered without esc(): the generatedAt-derived last-verified date, interpolated into the footer (build/generate.mjs:260) and sitemap.xml (:340-341). Risk is nil because generatedAt is schema-constrained to format date-time (ecosystem-registry.schema.json:12) and is trusted input."
+      - "The JSON-LD blocks were previously not escaped against script-element termination; remediated 2026-07-18 (DEF-RENDER-001 / RES-RENDER-JSONLD-001 both RESOLVED)."
+    enforcement:
+      - "build/generate.mjs esc() lines 12-13, applied to every card()/domLine()/section-title interpolation (card() 62-73, domLine() 55-60, section titles 85-94)."
+      - "build/generate.mjs jsonLd(): the serialized JSON-LD escapes \"<\", so no registry value can terminate the script element early (JSON.parse restores it)."
+      - "customHttp.yml Content-Security-Policy line 5: script-src 'self' (no unsafe-inline for scripts) blocks injected inline/external script as defense in depth."
+    verification:
+      - Code inspection of build/generate.mjs interpolation sites (card/domLine/section headers all pass through esc()).
+      - "All three ld+json blocks in the regenerated index.html parse as valid JSON (checked 2026-07-18 after the escaping change)."
+    evidence:
+      - "build/generate.mjs:12-13 (esc definition), :62-73 (card uses esc on name/role/domain/url)"
+      - "customHttp.yml:5 (script-src 'self')"
+    defeaters:
+      - DEF-RENDER-001
+    residuals:
+      - RES-RENDER-JSONLD-001
+    status: VERIFIED
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+
+  - id: INV-CORS-001
+    title: Only the public read-only registry is exposed cross-origin
+    statement: >-
+      The only responses served with Access-Control-Allow-Origin "*" are the public,
+      read-only ecosystem-registry.json and ecosystem-registry.schema.json; the site
+      exposes no credentialed, mutating, or private cross-origin surface.
+    severity: high
+    intent:
+      classification: INTENDED
+      authority: "Owner intent review 2026-07-18 (MosslandOpenDevs maintainers); record: .agentic-assurance/adoption.yaml human_review + PR #6"
+    scope: HTTP response headers served by AWS Amplify per customHttp.yml.
+    assumptions:
+      - The site is a static deployment with no backend, cookies, or authenticated endpoints.
+    limitations:
+      - Verified by a one-time manual capture of the live responses (2026-07-18), not by an automated/continuous check; a later platform or config change could drop the scoping (see DEF-HTTP-001, RES-HEADERS-001).
+    enforcement:
+      - "customHttp.yml lines 35-50: ACAO '*' and Cross-Origin-Resource-Policy 'cross-origin' are scoped to /ecosystem-registry.json and /ecosystem-registry.schema.json only; the global default-src 'self' / connect-src 'self' CSP (line 5) governs everything else."
+    verification:
+      - "Live response headers captured 2026-07-18 (assurance/evidence/EVIDENCE.md EV-HEADERS-001): /ecosystem-registry.json returns ACAO '*'; a normal page carries connect-src 'self' and form-action 'none'."
+    evidence:
+      - "assurance/evidence/EVIDENCE.md EV-HEADERS-001 (served-response capture)"
+      - "customHttp.yml:31-50 (registry CORS block, scoped by path pattern)"
+      - "customHttp.yml:5 (connect-src 'self', form-action 'none')"
+    defeaters:
+      - DEF-HTTP-001
+    residuals:
+      - RES-HEADERS-001
+    status: VERIFIED
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+
+  - id: INV-FRAME-001
+    title: The page may be framed only by Mossland origins
+    statement: >-
+      The page may be embedded only by links.moss.land itself and Mossland's
+      Mossverse origins (wa.moss.land and its subdomains), preventing clickjacking or
+      framing by an impersonator while still allowing the intended embed.html kiosk.
+    severity: medium
+    intent:
+      classification: INTENDED
+      authority: "Owner intent review 2026-07-18 (MosslandOpenDevs maintainers); record: .agentic-assurance/adoption.yaml human_review + PR #6"
+    scope: CSP frame-ancestors directive on all responses.
+    assumptions:
+      - AWS Amplify applies customHttp.yml as written.
+    limitations:
+      - Verified by a one-time manual capture (2026-07-18), not by an automated/continuous check (see RES-HEADERS-001).
+    enforcement:
+      - "customHttp.yml:5 CSP frame-ancestors 'self' https://wa.moss.land https://*.wa.moss.land."
+    verification:
+      - "Live response header captured 2026-07-18 (assurance/evidence/EVIDENCE.md EV-HEADERS-001): GET / returns the frame-ancestors allow-list exactly as declared."
+    evidence:
+      - "assurance/evidence/EVIDENCE.md EV-HEADERS-001 (served-response capture)"
+      - "customHttp.yml:5 (frame-ancestors)"
+      - "build/generate.mjs:271-302 (embed.html kiosk view intended for framing inside play.wa / Mossverse)"
+    defeaters:
+      - DEF-HTTP-001
+    residuals:
+      - RES-HEADERS-001
+    status: VERIFIED
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+
+  - id: INV-MARKET-001
+    title: Third-party market links are marked and disclaimed
+    statement: >-
+      Every third-party market or exchange link renders the 제3자 chip, sits in the
+      시세·거래소 (Markets) section, and is accompanied by a notice stating the links
+      are reference only and not a trading recommendation.
+    severity: medium
+    intent:
+      classification: INTENDED
+      authority: "Owner intent review 2026-07-18 (MosslandOpenDevs maintainers); record: .agentic-assurance/adoption.yaml human_review + PR #6"
+    scope: The markets section of the rendered page and the llms.txt / JSON output.
+    assumptions:
+      - Market entries keep owner "third-party" / tier "third_party" and section "markets".
+    limitations:
+      - The disclaimer is presentational; it does not prevent a user from acting on a price link.
+    enforcement:
+      - "build/generate.mjs:31 markets section note ('Third-party market links are provided for reference only and are not trading recommendations')."
+      - "build/generate.mjs:191-194 VERIFY copy scopes the Mossland-operated guarantee to exclude third-party market links."
+      - "build/generate.mjs:48 chipFor(): owner 'third-party' / tier 'third_party' renders the 제3자 chip."
+    verification:
+      - Rendered-output inspection of the markets section and legend.
+    evidence:
+      - "build/generate.mjs:26-32 (markets note), :330-331 (llms.txt notes)"
+      - "ecosystem-registry.json (coinmarketcap, coingecko, upbit, bithumb, coinone, gopax: tier third_party, section markets, passportEligible false)"
+    defeaters: []
+    residuals:
+      - RES-STATUS-DRIFT-001
+    status: VERIFIED
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)

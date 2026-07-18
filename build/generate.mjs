@@ -132,8 +132,12 @@ function jsonLd() {
       description: s.label || s.labelKo,
     })),
   };
+  // Escape "<" as < so no registry value can terminate the script element early.
+  // JSON.parse turns < straight back into "<", so consumers see identical data.
+  // Defence in depth alongside CSP script-src 'self' — INV-RENDER-001 / RES-RENDER-JSONLD-001.
+  const jsonForScript = (o) => JSON.stringify(o, null, 2).replace(/</g, "\\u003c");
   return [org, website, itemList]
-    .map((o) => `    <script type="application/ld+json">\n${JSON.stringify(o, null, 2)}\n    </script>`)
+    .map((o) => `    <script type="application/ld+json">\n${jsonForScript(o)}\n    </script>`)
     .join("\n");
 }
 
@@ -158,7 +162,7 @@ const HEAD_META = `    <meta charset="UTF-8" />
     <meta property="og:title" content="Mossland 공식 링크 · Verified Links" />
     <meta
       property="og:description"
-      content="진짜 Mossland 도메인만 모은 공식 링크 모음 — Passport, 공시, 생태계 앱, 거래소. The verified directory of real Mossland links."
+      content="검증된 Mossland 공식 도메인·채널과 제3자 시세·거래소를 한곳에 — Passport, 공시, 생태계 앱. The verified directory of real Mossland links."
     />
     <meta property="og:url" content="https://links.moss.land/" />
     <meta property="og:image" content="https://links.moss.land/og.png" />
@@ -171,7 +175,7 @@ const HEAD_META = `    <meta charset="UTF-8" />
     <meta name="twitter:title" content="Mossland 공식 링크 · Verified Links" />
     <meta
       name="twitter:description"
-      content="진짜 Mossland 도메인만 모은 공식 링크 모음. The verified directory of real Mossland links."
+      content="검증된 Mossland 공식 도메인·채널 모음. The verified directory of real Mossland links."
     />
     <meta name="twitter:image" content="https://links.moss.land/og.png" />
     <meta name="twitter:image:alt" content="Mossland 공식 링크 안내 카드 — 검증된 도메인·채널 모음 / Mossland Verified Links social card" />
@@ -189,8 +193,8 @@ const NAV = NAV_IDS.map((id) => {
 }).join("\n");
 
 const VERIFY = `          <div class="verify">
-            <strong lang="ko">시세·거래소(제3자)를 뺀 이 페이지의 모든 링크는 Mossland가 직접 운영합니다. 여기에 없는 주소는 공식이 아니니, 의심되면 공식 X(@TheMossland)로 확인하세요.</strong>
-            <span lang="en">Apart from third-party market links, every link here is operated by Mossland. If an address isn't listed, treat it as unofficial — verify via official X (@TheMossland).</span>
+            <strong lang="ko">시세·거래소(제3자)를 뺀 이 페이지의 모든 링크는 Mossland 공식 도메인이거나, Mossland가 운영하는 공식 채널·계정입니다. 여기에 없는 주소는 공식이 아니니, 의심되면 공식 X(@TheMossland)로 확인하세요.</strong>
+            <span lang="en">Apart from third-party market links, every link here is either an official Mossland domain or an official account Mossland operates. If an address isn't listed, treat it as unofficial — verify via official X (@TheMossland).</span>
           </div>`;
 
 const LEGEND = `        <details class="legend" open>
@@ -308,7 +312,7 @@ function renderLlms() {
   lines.push(`> ${reg.description}`);
   lines.push("");
   lines.push(
-    "Mossland is infrastructure for the AI civilization. This file lists the verified official domains so search engines and AI agents can resolve real Mossland services and avoid impersonators. The machine-readable source of truth is the JSON registry below."
+    "Mossland is infrastructure for the AI civilization. This file lists the verified official Mossland domains, plus the official channels and accounts Mossland operates on third-party platforms, so search engines and AI agents can resolve real Mossland services and avoid impersonators. The machine-readable source of truth is the JSON registry below."
   );
   lines.push("");
   for (const meta of SECTIONS) {

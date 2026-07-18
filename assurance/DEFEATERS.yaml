@@ -1,0 +1,114 @@
+version: 1
+# Defeater register for links.moss.land — concrete reasons a claim or invariant may
+# be false, incomplete, stale, or inapplicable (PROFILE.md sections 2 and 12).
+defeaters:
+  - id: DEF-PHISH-001
+    statement: >-
+      Domain authenticity is asserted by a hand-set owner/tier field, not proven.
+      A curation mistake, a compromised or unreviewed commit, or a typo in a domain
+      could list a non-Mossland address as verified, or omit a genuine Mossland
+      domain — defeating the anti-phishing guarantee for that entry.
+    affected_claims:
+      - CLAIM-PHISH-001
+    affected_invariants:
+      - INV-PHISH-001
+    evidence:
+      - "ecosystem-registry.json owner field is a free string set by hand; no automated authenticity check exists."
+      - "No CI workflow validates domain ownership or registry completeness (amplify.yml runs only build/generate.mjs)."
+    status: OPEN
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    review_after: 2026-10-18
+
+  - id: DEF-REG-001
+    statement: >-
+      index.html, embed.html, llms.txt and sitemap.xml are committed build outputs.
+      Nothing verifies that the committed files match `node build/generate.mjs` run
+      against the committed registry, so a hand edit or a stale/partial commit could
+      make the page diverge from the source of truth without detection.
+    affected_claims:
+      - CLAIM-REG-001
+    affected_invariants:
+      - INV-REG-001
+    evidence:
+      - "amplify.yml:9 runs `node build/generate.mjs || true` and ships committed files even if the generator fails."
+      - "Before 2026-07-18, no CI diff/check asserted that committed output equals a fresh generator run."
+    status: RESOLVED
+    resolution: >-
+      Resolved 2026-07-18 by the projection-diff step in .github/workflows/registry.yml,
+      which regenerates and fails the build unless index.html, embed.html, llms.txt and
+      sitemap.xml are byte-identical to a fresh generator run. Residual nuance: Amplify
+      still deploys committed files even if its own generator invocation fails
+      (amplify.yml:9 `|| true`), so this control blocks drift at merge time, not at
+      deploy time — which is the point at which drift is actually introduced.
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    review_after: 2026-10-18
+
+  - id: DEF-PASSPORT-001
+    statement: >-
+      The registry JSON Schema encodes the passportEligible constraint for
+      third_party/channel tiers, but no CI or pre-commit step validates
+      ecosystem-registry.json against ecosystem-registry.schema.json, so a violating
+      edit (e.g. a third-party entry marked passportEligible true) would not be
+      automatically caught before deploy.
+    affected_claims:
+      - CLAIM-PASSPORT-001
+      - CLAIM-PASSPORT-002
+    affected_invariants:
+      - INV-PASSPORT-001
+    evidence:
+      - "amplify.yml build phase has no schema-validation step."
+      - "Before 2026-07-18, no repository workflow ran a JSON Schema validator over the registry."
+    status: RESOLVED
+    resolution: >-
+      Resolved 2026-07-18 by .github/scripts/validate-registry.py, run on every push and
+      pull request via .github/workflows/registry.yml. It validates the registry against
+      ecosystem-registry.schema.json (draft 2020-12) — which is what enforces the
+      third_party/channel passportEligible constraint — and additionally asserts that
+      every passportEligible entry has owner 'mossland'. Confirmed by a negative test:
+      marking a third_party entry passportEligible produced two errors and exit 1.
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    review_after: 2026-10-18
+
+  - id: DEF-HTTP-001
+    statement: >-
+      The security headers (CSP, HSTS, CORS scoping, frame-ancestors) are declared in
+      customHttp.yml and depend on AWS Amplify applying them at the edge. No automated
+      test asserts the live responses actually carry the declared headers, so a
+      platform or configuration change could silently drop or weaken them.
+    affected_invariants:
+      - INV-CORS-001
+      - INV-FRAME-001
+    evidence:
+      - "customHttp.yml declares the headers; there is no deployed-response header check in the repository."
+    status: OPEN
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    review_after: 2026-10-18
+
+  - id: DEF-RENDER-001
+    statement: >-
+      JSON-LD structured-data blocks are serialized with JSON.stringify and are not
+      escaped for the sequence that closes a script element, so a registry value
+      containing that sequence could terminate the ld+json block early. The risk is
+      bounded because the registry is trusted, Mossland-curated input and the
+      Content-Security-Policy script-src 'self' blocks any injected inline or external
+      script.
+    affected_invariants:
+      - INV-RENDER-001
+    evidence:
+      - "build/generate.mjs:99-137 (jsonLd builds objects and emits JSON.stringify output inside <script type=\"application/ld+json\"> without esc())."
+      - "customHttp.yml:5 (script-src 'self' — no 'unsafe-inline' for scripts)."
+    status: RESOLVED
+    resolution: >-
+      Resolved 2026-07-18: build/generate.mjs jsonLd() now escapes "<" in the serialized
+      JSON-LD, so no registry value can terminate the script element early. JSON.parse
+      restores "<", and all three ld+json blocks in the regenerated index.html were
+      confirmed to parse. The change produced no diff in generated output because no
+      current registry value contains "<", so the fix is preventive and there was no
+      live exposure. CSP script-src 'self' remains as defence in depth.
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    review_after: 2026-10-18

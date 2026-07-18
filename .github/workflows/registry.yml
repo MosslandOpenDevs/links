@@ -1,0 +1,48 @@
+# Registry contract checks for links.moss.land.
+#
+# Closes RES-CI-VALIDATION-001: before this workflow existed, neither the
+# registry's JSON Schema contract nor the "generated files are a pure
+# projection of the registry" property was checked on change — both relied on
+# author discipline.
+#
+# Enforces INV-PASSPORT-001 (schema) and INV-REG-001 (projection).
+name: registry
+
+on: [push, pull_request]
+
+jobs:
+  registry:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install schema validator
+        run: pip install "jsonschema[format-nongpl]"
+
+      # INV-PASSPORT-001: the schema's allOf forbids passportEligible on
+      # third_party and channel tiers. Plus an explicit check that every
+      # eligible entry is owner 'mossland' (CLAIM-PASSPORT-002).
+      - name: Registry validates against its JSON Schema
+        run: python .github/scripts/validate-registry.py
+
+      # INV-REG-001: the committed pages must be byte-identical to a fresh
+      # generator run, so the page can never show a link the registry does not
+      # contain. Evidence record: assurance/evidence/EVIDENCE.md EV-PROJECTION-001.
+      - name: Generated output is a pure projection of the registry
+        run: |
+          node build/generate.mjs
+          if ! git diff --exit-code -- index.html embed.html llms.txt sitemap.xml; then
+            echo "::error::Generated files do not match the registry. Run 'node build/generate.mjs' and commit the result."
+            exit 1
+          fi

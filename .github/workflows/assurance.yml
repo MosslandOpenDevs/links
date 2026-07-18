@@ -1,0 +1,11 @@
+# Agentic Assurance Profile validation for adopting repositories.
+# The @-ref below is pinned to the SAME full 40-character commit SHA as
+# upstream.commit in .agentic-assurance/adoption.yaml, and is updated together
+# with that pin (docs/ADOPTION.md §3.4 of the pinned profile).
+name: assurance
+
+on: [push, pull_request]
+
+jobs:
+  assurance:
+    uses: MosslandOpenDevs/agentic-assurance-profile/.github/workflows/adopter-validate.yml@8377ecd0223d7c66234af5bc9ce102646881482d
