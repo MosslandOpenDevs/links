@@ -38,6 +38,7 @@ invariants:
       - DEF-PHISH-001
     residuals:
       - RES-VERIFY-001
+      - RES-CURATION-002
     status: INFERRED
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)

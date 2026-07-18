@@ -30,6 +30,21 @@ Reconstructed from the code and copy; **pending human confirmation**:
 - **Schema contract** — `ecosystem-registry.schema.json` (JSON Schema draft 2020-12), authoritative at `https://links.moss.land/ecosystem-registry.schema.json`.
 - **Passport stamp identity** — `stampType` (namespaced id, e.g. `identity_holder`) and `stampClass` (significance tier: core/governance/participation/connect/lab/showcase), consumed by Passport.
 
+### 3.1 External fact vs editorial judgement (`data-curation`)
+
+The `data-curation` profile requires separating externally sourced facts from local editorial judgement (PROFILE.md §6.4). The registry does **not** yet encode that split structurally; this narrative list is the interim separation, and closing it properly is tracked as `RES-CURATION-001`.
+
+| Kind | Fields |
+|---|---|
+| **Externally observed fact** | `domain`, `url`, `ticker`, `runtime.domain`/`runtime.url` |
+| **Mossland editorial judgement** | `tier`, `chip`, `status`, `label`/`labelKo`, `section`, `featured`, `note`, `passportEligible`, `stampType`, `stampClass` |
+| **Provenance / bookkeeping** | `id`, `owner`, `hidden`, `artifact`, `sourceOfTruth`, `lastDataAt`, document-level `version` / `generatedAt` |
+
+Two properties of this table matter for consumers:
+
+- **`stampClass` is a scoring rubric, not a fact.** It weights Passport stamps ("so stamps can be weighted rather than treated as a flat attendance log", `ecosystem-registry.schema.json:78-79`), and Passport consumes it. The rubric itself is unversioned — `RES-CURATION-002`.
+- **Provenance is thin on the fact side.** `sourceOfTruth` is set on only a few entries and `lastDataAt` is `null` on every entry, so an observed fact carries no capture time. Also `RES-CURATION-001`.
+
 ## 4. State transitions
 
 - **Registry → generated artifacts.** `node build/generate.mjs` reads the registry and writes `index.html`, `embed.html`, `llms.txt`, `sitemap.xml` (`build/generate.mjs:347-350`). Idempotent; committed output equals a fresh run (`amplify.yml:7-8`). Trigger: a human editing the registry and running the generator, then committing both (`README.md:103-108`).
@@ -92,5 +107,6 @@ Current production behavior is evidence of current behavior, not automatic proof
 
 - Whether "unlisted ⇒ unofficial" is intended as a strong guarantee or a best-effort heuristic — resolved by the §4.3 intent review. Tracked as a limitation on `CLAIM-PHISH-001`.
 - Whether the omission of registry-schema CI validation is deliberate scope or simply unbuilt — currently classified ACCIDENTAL; `RES-CI-VALIDATION-001`.
-- Whether `data-curation` should be added to the adopted profile set (the registry is curated, classified data) — an owner decision (see handoff).
-- Whether a specific named person (rather than the maintainer body) should be the recorded `human_owner`.
+- What the intended semantics of the tier/chip/`stampClass` rubric are over time — there is no rubric version history, so past classifications cannot be interpreted against the rubric that produced them (`RES-CURATION-002`).
+- ~~Whether `data-curation` should be added~~ — decided 2026-07-18: added, with its PROFILE.md §6.4 gaps recorded as `RES-CURATION-001` and `RES-CURATION-002`.
+- ~~Whether a specific named person should be the recorded `human_owner`~~ — decided 2026-07-18: authority rests with the MosslandOpenDevs maintainers as a body.

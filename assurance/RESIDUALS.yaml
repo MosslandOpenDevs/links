@@ -123,3 +123,60 @@ residuals:
     accepted_by: null
     accepted_at: null
     review_after: 2026-10-18
+
+  # --- data-curation profile (PROFILE.md 6.4) gaps, recorded on adoption 2026-07-18 ---
+
+  - id: RES-CURATION-001
+    summary: >-
+      The registry does not separate externally observed facts from Mossland's own
+      editorial judgement. A service object mixes observed facts (domain, url, ticker)
+      with Mossland classifications (tier, chip, status, label/labelKo,
+      passportEligible, stampType, stampClass) in one flat structure, with no field or
+      convention marking which is which. A cross-origin consumer cannot tell an
+      observed fact from a curatorial opinion. Provenance for the observed side is also
+      thin: sourceOfTruth is set on only a few entries and lastDataAt is null on every
+      entry.
+    private_detail_location: null
+    affected_claims:
+      - CLAIM-REG-001
+    affected_invariants: []
+    impact: medium
+    uncertainty: low
+    mitigation:
+      - "The distinction is documented narratively in assurance/SYSTEM.md section 3 (fact vs judgement field lists) as an interim measure."
+      - README.md documents what each tier and chip means, so the judgements are at least explained.
+      - "Staged remediation: mark judgement fields explicitly in ecosystem-registry.schema.json (or group them under a nested object), and populate lastDataAt / sourceOfTruth for entries whose data is observed."
+    status: OPEN
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: null
+    accepted_at: null
+    review_after: 2026-10-18
+
+  - id: RES-CURATION-002
+    summary: >-
+      There is no versioned history of the classification and scoring rubric. The
+      tier-to-chip derivation and the stampClass significance weighting are the
+      registry's editorial rubric, but they live only in current code
+      (build/generate.mjs chipFor) and prose (README chips table). The registry's
+      version field versions the document, not the rubric, so an entry carries no
+      record of which rubric version classified it. If the rubric changes, the meaning
+      of an unchanged entry changes silently — and stampClass is consumed by Passport
+      to weight ecosystem stamps, so a silent rubric change propagates into stamp
+      weighting.
+    private_detail_location: null
+    affected_claims:
+      - CLAIM-PASSPORT-002
+    affected_invariants:
+      - INV-PHISH-001
+    impact: medium
+    uncertainty: medium
+    mitigation:
+      - "The rubric is at least documented and data-driven (chip derivation keys off owner/tier/chip, never a service id) — see README.md chips table and build/generate.mjs:45-53."
+      - "Staged remediation: introduce an explicit rubric version in the registry (and record it per entry or per document), with a changelog for tier/chip/stampClass semantics."
+    status: OPEN
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: null
+    accepted_at: null
+    review_after: 2026-10-18

@@ -25,8 +25,14 @@ profiles:
   - core            # substantially AI-agent-built repository
   - service         # deployed website + public read-only registry (AWS Amplify)
   - trust-critical  # anti-phishing / domain-authenticity is the page's core purpose
-  # - data-curation # candidate: the registry is curated, classified data. Provisional
-  #                 # profile (validator warns); left for the owner to decide (see handoff).
+  - data-curation   # the registry is curated, classified, scored data: tier/chip/status
+                    # judgments, and the stampClass significance weighting consumed by
+                    # Passport. Added by owner decision 2026-07-18.
+                    # Provisional upstream profile — its obligations may change in a minor
+                    # release and the validator emits a non-blocking warning on selection.
+                    # Known PROFILE.md 6.4 gaps are recorded as RES-CURATION-001
+                    # (external fact vs editorial judgment not separated) and
+                    # RES-CURATION-002 (no versioned classification/scoring rubric).
 
 specification_workflow:
   system: existing

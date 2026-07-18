@@ -92,13 +92,12 @@ Do not copy the complete upstream profile into this repository; local duplicatio
 
 ## 5. Profile selection
 
-Adopted (provisional, pending review): `core`, `service`, `trust-critical`.
+Adopted (provisional, pending the §4.3 intent review): `core`, `service`, `trust-critical`, `data-curation`.
 
 - `core` — the repository is substantially AI-agent-built.
 - `service` — a deployed website plus a public read-only registry endpoint (AWS Amplify).
 - `trust-critical` — domain authenticity / anti-phishing is the page's core purpose.
-
-Candidate under review: `data-curation` (the registry is curated, classified data). It is a provisional upstream profile; left for the owner to decide.
+- `data-curation` — the registry is curated, classified, scored data (tier/chip/status judgements, and the `stampClass` significance weighting consumed by Passport). Added by owner decision 2026-07-18. This is a **provisional** upstream profile: its obligations may change in a minor release, and the validator emits a non-blocking warning on selection. Its known PROFILE.md §6.4 gaps are recorded openly as `RES-CURATION-001` (external fact vs editorial judgement not structurally separated) and `RES-CURATION-002` (no versioned classification/scoring rubric); see `assurance/SYSTEM.md` §3.1.
 
 ---
 

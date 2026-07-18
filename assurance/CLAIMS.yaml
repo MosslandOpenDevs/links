@@ -51,6 +51,7 @@ claims:
       - DEF-REG-001
     residuals:
       - RES-CI-VALIDATION-001
+      - RES-CURATION-001
     status: VERIFIED
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)
@@ -91,6 +92,7 @@ claims:
       - DEF-PASSPORT-001
     residuals:
       - RES-CI-VALIDATION-001
+      - RES-CURATION-002
     status: INFERRED
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)
