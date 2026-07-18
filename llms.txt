@@ -2,7 +2,7 @@
 
 > Mossland Verified Links — the official directory of verified Mossland domains, ecosystem apps, labs, official channels, and third-party market references. Anything not listed here should be treated as unofficial.
 
-Mossland is infrastructure for the AI civilization. This file lists the verified official domains so search engines and AI agents can resolve real Mossland services and avoid impersonators. The machine-readable source of truth is the JSON registry below.
+Mossland is infrastructure for the AI civilization. This file lists the verified official Mossland domains, plus the official channels and accounts Mossland operates on third-party platforms, so search engines and AI agents can resolve real Mossland services and avoid impersonators. The machine-readable source of truth is the JSON registry below.
 
 ## Official
 - [Mossland](https://www.moss.land/): Official

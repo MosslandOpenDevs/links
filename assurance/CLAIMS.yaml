@@ -6,8 +6,9 @@ version: 1
 claims:
   - id: CLAIM-PHISH-001
     text: >-
-      Apart from third-party market links, every link on links.moss.land is operated
-      by Mossland; an address that is not listed here should be treated as unofficial.
+      Apart from third-party market links, every link on links.moss.land is either an
+      official Mossland domain or an official account Mossland operates; an address
+      that is not listed here should be treated as unofficial.
     scope: The links.moss.land directory as generated from ecosystem-registry.json v1.0.0.
     proof_tier: OPERATOR_ATTESTED
     invariants:
@@ -20,7 +21,7 @@ claims:
       - Completeness and correctness of the list depend on human curation; there is no automated authenticity proof.
       - "'Not listed' means 'not verified here', not proof that an address is malicious."
       - The registry is verified periodically, not continuously; between verifications it can be stale.
-      - "The on-page phrase 'operated by Mossland' also covers official off-domain channels/accounts (Medium, X, GitHub) that are Mossland-controlled presences rather than Mossland-run infrastructure. Whether to refine this wording is an open owner decision."
+      - "Official off-domain entries (Medium, X, GitHub) are accounts Mossland operates on third-party platforms, not domains Mossland runs. The public wording was refined by owner decision on 2026-07-18 to state that distinction explicitly instead of the previous blanket 'operated by Mossland'."
     defeaters:
       - DEF-PHISH-001
     residuals:

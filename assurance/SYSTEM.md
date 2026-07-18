@@ -65,7 +65,7 @@ Two properties of this table matter for consumers:
 
 Material public claims are registered with stable IDs in `assurance/CLAIMS.yaml`:
 
-- `CLAIM-PHISH-001` — "apart from third-party market links, every link here is operated by Mossland; unlisted ⇒ treat as unofficial" (`build/generate.mjs:191-194`).
+- `CLAIM-PHISH-001` — "apart from third-party market links, every link here is either an official Mossland domain or an official account Mossland operates; unlisted ⇒ treat as unofficial" (`build/generate.mjs:191-194`; wording refined 2026-07-18 so the public claim no longer over-states control of off-domain platforms).
 - `CLAIM-REG-001` — the JSON registry is the single, cross-origin-fetchable source of truth; the page is a deterministic projection.
 - `CLAIM-PASSPORT-001` — third-party and off-domain channel entries are never Passport-eligible (schema-verifiable); `CLAIM-PASSPORT-002` — only Mossland-controlled domains/accounts back a stamp (curation-attested).
 - `CLAIM-MARKET-001` — third-party market links are reference only, not recommendations.
