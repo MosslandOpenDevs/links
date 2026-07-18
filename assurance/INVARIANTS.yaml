@@ -57,9 +57,10 @@ invariants:
     assumptions:
       - The committed generated files were produced by running build/generate.mjs against the committed registry.
     limitations:
-      - Projection purity is verified at the current revision only; nothing in CI enforces it on every future commit, so a later hand edit or stale commit could diverge (see DEF-REG-001, RES-CI-VALIDATION-001).
+      - "Enforced at merge time, not deploy time: Amplify still ships committed files even if its own generator invocation fails (amplify.yml:9 `|| true`). Drift is introduced by commits, which CI now blocks (DEF-REG-001, RESOLVED 2026-07-18)."
     enforcement:
       - "build/generate.mjs renders exclusively from reg.services (lines 10, 76-97, 121-134, 181-184); README.md states the outputs must not be hand-edited."
+      - ".github/workflows/registry.yml: a regenerate-and-diff step fails the build unless index.html, embed.html, llms.txt and sitemap.xml are byte-identical to a fresh generator run. Runs on every push and pull request."
     verification:
       - "Idempotent regeneration bound to a revision: `node build/generate.mjs` then `git diff --quiet` exits 0 (committed output byte-identical to the generator's output). Re-run on every change to the registry or generator; captures are listed in assurance/evidence/EVIDENCE.md EV-PROJECTION-001."
     evidence:
@@ -88,13 +89,14 @@ invariants:
     assumptions:
       - Consumers (Passport, City, WA) trust passportEligible as the gate for issuing a stamp.
     limitations:
-      - "The schema encodes only this negative direction (third_party/channel ⇒ not eligible). The broader property that every Passport-eligible entry is Mossland-controlled holds in the current registry by curation (all 11 eligible entries have owner 'mossland'), not by schema: an entry of another tier on a non-Mossland domain marked passportEligible true would still validate. Binding passportEligible:true to owner 'mossland' in the schema would close this. See CLAIM-PASSPORT-002, DEF-PASSPORT-001, RES-CI-VALIDATION-001."
-      - The schema constraint is not run in CI, so a violating edit would not be automatically rejected (see DEF-PASSPORT-001).
+      - "The schema itself encodes only this negative direction (third_party/channel ⇒ not eligible); it still does not bind passportEligible:true to owner 'mossland'. Since 2026-07-18 that positive direction is asserted by the CI validator rather than the schema, so a consumer validating against the published schema alone does not get it. See CLAIM-PASSPORT-002."
     enforcement:
       - "ecosystem-registry.schema.json allOf lines 102-111: if tier is third_party then passportEligible const false; if tier is channel then passportEligible const false."
+      - ".github/scripts/validate-registry.py, run by .github/workflows/registry.yml on every push and pull request: validates the registry against the schema and additionally rejects any passportEligible entry whose owner is not 'mossland'."
       - "Registry data: every third_party (markets) and channel (Medium, X) entry has passportEligible false."
     verification:
-      - "JSON Schema (draft 2020-12) validation of ecosystem-registry.json against ecosystem-registry.schema.json — reproducible by any consumer; not yet wired into CI."
+      - "JSON Schema (draft 2020-12) validation of ecosystem-registry.json against ecosystem-registry.schema.json — reproducible by any consumer, and enforced in CI since 2026-07-18."
+      - "Negative test (2026-07-18): marking a third_party entry passportEligible made the validator emit two errors and exit 1; the unmodified registry exits 0 with 29 services and 11 Passport-eligible entries."
     evidence:
       - "ecosystem-registry.schema.json:102-111 (allOf if/then constraints for third_party and channel)"
       - "ecosystem-registry.json (all owner 'third-party' and channel entries: passportEligible false)"
@@ -121,12 +123,14 @@ invariants:
       - ecosystem-registry.json is trusted, Mossland-curated input, not attacker-controlled.
     limitations:
       - "One registry-derived value is rendered without esc(): the generatedAt-derived last-verified date, interpolated into the footer (build/generate.mjs:260) and sitemap.xml (:340-341). Risk is nil because generatedAt is schema-constrained to format date-time (ecosystem-registry.schema.json:12) and is trusted input."
-      - "The JSON-LD blocks are serialized with JSON.stringify and are not </script>-escaped (see DEF-RENDER-001, RES-RENDER-JSONLD-001); mitigated by trusted input and CSP script-src 'self'."
+      - "The JSON-LD blocks were previously not escaped against script-element termination; remediated 2026-07-18 (DEF-RENDER-001 / RES-RENDER-JSONLD-001 both RESOLVED)."
     enforcement:
       - "build/generate.mjs esc() lines 12-13, applied to every card()/domLine()/section-title interpolation (card() 62-73, domLine() 55-60, section titles 85-94)."
+      - "build/generate.mjs jsonLd(): the serialized JSON-LD escapes \"<\", so no registry value can terminate the script element early (JSON.parse restores it)."
       - "customHttp.yml Content-Security-Policy line 5: script-src 'self' (no unsafe-inline for scripts) blocks injected inline/external script as defense in depth."
     verification:
       - Code inspection of build/generate.mjs interpolation sites (card/domLine/section headers all pass through esc()).
+      - "All three ld+json blocks in the regenerated index.html parse as valid JSON (checked 2026-07-18 after the escaping change)."
     evidence:
       - "build/generate.mjs:12-13 (esc definition), :62-73 (card uses esc on name/role/domain/url)"
       - "customHttp.yml:5 (script-src 'self')"

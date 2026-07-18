@@ -73,7 +73,8 @@ Material public claims are registered with stable IDs in `assurance/CLAIMS.yaml`
 ## 7. Enforcement inventory
 
 - **Chip derivation** — `build/generate.mjs chipFor()` (`:45-53`) drives the 제3자 vs verified-Mossland trust signal from `owner`/`tier`. Backs `INV-PHISH-001`, `INV-MARKET-001`.
-- **Registry schema `allOf`** — forces `passportEligible: false` for `third_party` and `channel` tiers (`ecosystem-registry.schema.json:102-111`). Backs `INV-PASSPORT-001` (latent: not run in CI — `DEF-PASSPORT-001`).
+- **Registry schema `allOf`** — forces `passportEligible: false` for `third_party` and `channel` tiers (`ecosystem-registry.schema.json:102-111`). Backs `INV-PASSPORT-001`.
+- **CI registry gate** — `.github/workflows/registry.yml` runs `.github/scripts/validate-registry.py` (schema validation + "every Passport-eligible entry is owner `mossland`" + unique ids) and a regenerate-and-diff step, on every push and pull request. Backs `INV-PASSPORT-001` and `INV-REG-001`; added 2026-07-18, closing `RES-CI-VALIDATION-001`.
 - **HTML escaping** — `esc()` on every `card`/`domLine`/section-title interpolation (`build/generate.mjs:12-13`); the schema-constrained `generatedAt` date in the footer/sitemap is rendered directly (bounded exception). Backs `INV-RENDER-001`.
 - **CSP / HSTS / CORS scoping / frame-ancestors** — `customHttp.yml:1-50`; the overall HTTP-header posture. Backs `INV-CORS-001`, `INV-FRAME-001`.
 - **Generator as single writer** — pages rendered only from `reg.services`; README forbids hand edits. Backs `INV-REG-001`.
@@ -84,7 +85,8 @@ Material public claims are registered with stable IDs in `assurance/CLAIMS.yaml`
 - **JSON Schema validation** — `ecosystem-registry.json` can be validated against `ecosystem-registry.schema.json` by any consumer; **not yet wired into CI** (`RES-CI-VALIDATION-001`).
 - **Manual live-site verification** — descriptions/statuses grounded in the live services, recorded via the footer "최종 확인" date (`build/generate.mjs:180`).
 - **Bound evidence records** — `assurance/evidence/EVIDENCE.md`: `EV-PROJECTION-001` (regenerate-and-diff proves the committed pages are a pure projection; re-captured on each generator/registry change, latest `7dbfc80`) and `EV-HEADERS-001` (live capture proves the deployed CSP/HSTS/CORS/frame-ancestors match `customHttp.yml`).
-- **Gap:** no automated tests, no schema-validation CI, no *continuous* deployed-header assertion. This adoption adds `.github/workflows/assurance.yml` (profile-artifact validation); registry-schema, projection-diff, and continuous header checks are staged remediation (`RES-CI-VALIDATION-001`, `RES-HEADERS-001`).
+- **Continuous validation** — two workflows run on every push and pull request: `.github/workflows/assurance.yml` (the pinned upstream profile validator) and `.github/workflows/registry.yml` (registry schema contract + projection diff). The registry gate was verified by a negative test before merge: marking a `third_party` entry `passportEligible` failed the build with two errors.
+- **Remaining gap:** there is still no unit-test suite, and no *continuous* deployed-header assertion — the headers were confirmed by a one-time live capture and that residual was accepted (`RES-HEADERS-001`, ACCEPTED 2026-07-18) rather than remediated, because a live-site check in CI would make the build network-dependent.
 
 ## 9. Behavior classification
 
@@ -98,8 +100,8 @@ Material public claims are registered with stable IDs in `assurance/CLAIMS.yaml`
 | `media` shows explicit 실험 chip while empty | INTENDED | `ecosystem-registry.json` media `chip:"실험"`; `README.md:95-97` | VERIFIED |
 | `alpha` paused / `ao` degraded recorded as of 2026-07-06 | INTENDED (point-in-time data) | `ecosystem-registry.json` notes | VERIFIED (as of that date) |
 | Amplify runs generator with `|| true`, shipping committed files even on generator failure | INTENDED (resilience) | `amplify.yml:7-9` | VERIFIED |
-| JSON-LD blocks not escaped against script-element termination | ACCIDENTAL | `build/generate.mjs:99-137` | VERIFIED |
-| No CI validation of registry against its schema | ACCIDENTAL (gap, not desired) | `amplify.yml` has no validation step | VERIFIED |
+| JSON-LD blocks not escaped against script-element termination | ACCIDENTAL — **remediated 2026-07-18** | `build/generate.mjs` jsonLd() now escapes `<`; `RES-RENDER-JSONLD-001` RESOLVED | VERIFIED |
+| No CI validation of registry against its schema | ACCIDENTAL — **remediated 2026-07-18** | `.github/workflows/registry.yml`; `RES-CI-VALIDATION-001` RESOLVED | VERIFIED |
 
 Current production behavior is evidence of current behavior, not automatic proof of intended behavior.
 

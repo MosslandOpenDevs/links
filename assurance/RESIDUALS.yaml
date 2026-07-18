@@ -1,9 +1,11 @@
 version: 1
 # Residual register for links.moss.land — known limitations and remaining doubt
-# (PROFILE.md sections 2 and 12). All entries are OPEN: none has been accepted by
-# the human owner yet. An agent must not accept a critical residual on the owner's
-# behalf. Critical/high residuals require an explicit named acceptance authority and
-# date before status may become ACCEPTED (residuals.schema.json allOf).
+# (PROFILE.md sections 2 and 12).
+#
+# Residual review completed 2026-07-18 by the human owner (MosslandOpenDevs
+# maintainers). Dispositions: 2 RESOLVED by remediation, 4 ACCEPTED with recorded
+# rationale, 1 left OPEN for remediation. An agent prepared this review but did
+# not accept anything on the owner's behalf (PROFILE.md section 15).
 residuals:
   - id: RES-VERIFY-001
     summary: >-
@@ -21,19 +23,25 @@ residuals:
     mitigation:
       - "The footer shows the last-verified date ('최종 확인', build/generate.mjs:180,260)."
       - Registry edits go through pull-request review grounded in the live site (README.md 'Always ground descriptions in the live site').
-    status: OPEN
+    status: ACCEPTED
+    acceptance_rationale: >-
+      Inherent to the design and accepted as proportionate. A static registry cannot
+      cryptographically prove domain ownership; eliminating this residual would require
+      continuous monitoring infrastructure disproportionate to the project. The public
+      claim (CLAIM-PHISH-001) is already scoped to OPERATOR_ATTESTED and states the
+      periodic-verification limitation, so the claim does not exceed its evidence.
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)
-    accepted_by: null
-    accepted_at: null
+    accepted_by: MosslandOpenDevs maintainers (Mossland)
+    accepted_at: 2026-07-18
     review_after: 2026-10-18
 
   - id: RES-CI-VALIDATION-001
     summary: >-
-      No continuous validation runs on change. Neither JSON Schema validation of
+      No continuous validation ran on change. Neither JSON Schema validation of
       ecosystem-registry.json against its schema, nor a check that the committed
-      generated files match a fresh `node build/generate.mjs` run, is wired into CI.
-      Registry, projection, and Passport-eligibility invariants therefore rely on
+      generated files match a fresh `node build/generate.mjs` run, was wired into CI.
+      Registry, projection, and Passport-eligibility invariants therefore relied on
       author discipline.
     private_detail_location: null
     affected_claims:
@@ -46,11 +54,19 @@ residuals:
     impact: medium
     uncertainty: low
     mitigation:
-      - The generator is pure and idempotent, so a local regenerate-and-diff catches projection drift; captures are recorded in assurance/evidence/EVIDENCE.md EV-PROJECTION-001, but only for revisions where someone ran it by hand.
+      - The generator is pure and idempotent, so a local regenerate-and-diff catches projection drift.
       - Pull-request review.
-      - "Staged remediation: add registry schema validation and a generated-output diff to the new .github/workflows/assurance.yml (or a sibling workflow). See the handoff plan."
-      - "Consider a schema constraint binding passportEligible:true to owner 'mossland', which would make CLAIM-PASSPORT-002 independently verifiable rather than curation-attested."
-    status: OPEN
+    status: RESOLVED
+    resolution_note: >-
+      Remediated 2026-07-18 by .github/workflows/registry.yml, which runs on every push
+      and pull request: (a) .github/scripts/validate-registry.py validates the registry
+      against ecosystem-registry.schema.json (draft 2020-12), which is what enforces
+      INV-PASSPORT-001, and additionally asserts that every passportEligible entry has
+      owner 'mossland' (CLAIM-PASSPORT-002) and that service ids are unique; (b) a
+      regenerate-and-diff step fails the build if the committed pages are not
+      byte-identical to a fresh generator run (INV-REG-001). Verified by a negative
+      test before merge: marking a third_party entry passportEligible produced two
+      errors and exit 1; the unmodified registry exits 0.
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)
     accepted_by: null
@@ -59,7 +75,7 @@ residuals:
 
   - id: RES-HEADERS-001
     summary: >-
-      The deployed security headers were confirmed once by a manual capture
+      The deployed security headers were confirmed by a manual capture
       (2026-07-18, EV-HEADERS-001) but are not verified by an automated,
       continuous check; their ongoing presence depends on AWS Amplify honouring
       customHttp.yml, and a later platform/config change could drop them undetected.
@@ -72,20 +88,25 @@ residuals:
     uncertainty: low
     mitigation:
       - Headers are declared centrally in customHttp.yml and reviewed on change.
-      - "Confirmed live once (assurance/evidence/EVIDENCE.md EV-HEADERS-001)."
-      - "Staged remediation: add a post-deploy header assertion (CSP/HSTS/CORS/frame-ancestors) for links.moss.land so the check is continuous, not one-time."
-    status: OPEN
+      - "Confirmed live (assurance/evidence/EVIDENCE.md EV-HEADERS-001)."
+    status: ACCEPTED
+    acceptance_rationale: >-
+      Accepted as low impact. The headers are declared in a single reviewed file and
+      were confirmed to match the served responses exactly. A continuous check would
+      have to call the live site from CI, making the build network-dependent and prone
+      to false failures; a scheduled post-deploy assertion is the better shape and is
+      recorded as a future improvement rather than a blocker.
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)
-    accepted_by: null
-    accepted_at: null
+    accepted_by: MosslandOpenDevs maintainers (Mossland)
+    accepted_at: 2026-07-18
     review_after: 2026-10-18
 
   - id: RES-RENDER-JSONLD-001
     summary: >-
-      The JSON-LD structured-data blocks are not escaped against early termination of
-      the script element. The risk is bounded by trusted curated input and CSP
-      script-src 'self', but a defence-in-depth escape is not yet applied.
+      The JSON-LD structured-data blocks were not escaped against early termination of
+      the script element. The risk was bounded by trusted curated input and CSP
+      script-src 'self', but the defence-in-depth escape was not applied.
     private_detail_location: null
     affected_claims: []
     affected_invariants:
@@ -95,8 +116,14 @@ residuals:
     mitigation:
       - "CSP script-src 'self' blocks injected inline/external scripts (customHttp.yml:5)."
       - Registry input is trusted, Mossland-curated data.
-      - "Staged remediation: escape the script-closing sequence when serializing JSON-LD in build/generate.mjs (jsonLd)."
-    status: OPEN
+    status: RESOLVED
+    resolution_note: >-
+      Remediated 2026-07-18 in build/generate.mjs jsonLd(): the serialized JSON-LD now
+      escapes "<" as its < escape sequence, so no registry value can terminate the
+      script element early. JSON.parse restores "<", so consumers see identical data.
+      Verified: all three ld+json blocks in the regenerated index.html parse correctly.
+      The change produced no diff in the generated output, because no current registry
+      value contains "<" — the fix is preventive and there was no live exposure.
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)
     accepted_by: null
@@ -117,11 +144,16 @@ residuals:
     mitigation:
       - Statuses are re-verified against the live services when the registry is updated.
       - "The ecosystem section carries a note that '실험' services are not finished official products (build/generate.mjs:23)."
-    status: OPEN
+    status: ACCEPTED
+    acceptance_rationale: >-
+      Accepted as an inherent property of a manually curated directory and as low
+      impact: a stale operational status does not weaken the anti-phishing guarantee,
+      which is about which domains are genuinely Mossland's, not about uptime. The page
+      is explicit that it is not a live uptime monitor (assurance/SYSTEM.md section 2).
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)
-    accepted_by: null
-    accepted_at: null
+    accepted_by: MosslandOpenDevs maintainers (Mossland)
+    accepted_at: 2026-07-18
     review_after: 2026-10-18
 
   # --- data-curation profile (PROFILE.md 6.4) gaps, recorded on adoption 2026-07-18 ---
@@ -146,11 +178,18 @@ residuals:
       - "The distinction is documented narratively in assurance/SYSTEM.md section 3.1 (fact vs judgement field table) as an interim measure."
       - README.md documents what each tier and chip means, so the judgements are at least explained.
       - "Staged remediation: mark judgement fields explicitly in ecosystem-registry.schema.json (or group them under a nested object), and populate lastDataAt / sourceOfTruth for entries whose data is observed."
-    status: OPEN
+    status: ACCEPTED
+    acceptance_rationale: >-
+      Accepted for now with the narrative separation in SYSTEM.md section 3.1 as the
+      interim mitigation. Closing it properly means restructuring a public schema that
+      other Mossland properties already consume, so it warrants its own scoped change
+      with consumer impact analysis rather than being bundled into the adoption. Impact
+      is bounded: no consumer currently depends on distinguishing fact from judgement,
+      and the registry's judgements are documented in README.
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)
-    accepted_by: null
-    accepted_at: null
+    accepted_by: MosslandOpenDevs maintainers (Mossland)
+    accepted_at: 2026-07-18
     review_after: 2026-10-18
 
   - id: RES-CURATION-002
@@ -180,3 +219,7 @@ residuals:
     accepted_by: null
     accepted_at: null
     review_after: 2026-10-18
+    # Deliberately NOT accepted in the 2026-07-18 review: this is the one residual
+    # whose consequence leaves this repository. stampClass feeds Passport's stamp
+    # weighting, so a silent rubric change alters another system's behaviour. The
+    # owner chose remediation (introduce a versioned rubric) over acceptance.

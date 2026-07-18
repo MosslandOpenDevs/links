@@ -32,8 +32,15 @@ defeaters:
       - INV-REG-001
     evidence:
       - "amplify.yml:9 runs `node build/generate.mjs || true` and ships committed files even if the generator fails."
-      - "No CI diff/check asserts committed output equals a fresh generator run."
-    status: OPEN
+      - "Before 2026-07-18, no CI diff/check asserted that committed output equals a fresh generator run."
+    status: RESOLVED
+    resolution: >-
+      Resolved 2026-07-18 by the projection-diff step in .github/workflows/registry.yml,
+      which regenerates and fails the build unless index.html, embed.html, llms.txt and
+      sitemap.xml are byte-identical to a fresh generator run. Residual nuance: Amplify
+      still deploys committed files even if its own generator invocation fails
+      (amplify.yml:9 `|| true`), so this control blocks drift at merge time, not at
+      deploy time — which is the point at which drift is actually introduced.
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)
     review_after: 2026-10-18
@@ -52,8 +59,15 @@ defeaters:
       - INV-PASSPORT-001
     evidence:
       - "amplify.yml build phase has no schema-validation step."
-      - "No repository workflow runs a JSON Schema validator over the registry."
-    status: OPEN
+      - "Before 2026-07-18, no repository workflow ran a JSON Schema validator over the registry."
+    status: RESOLVED
+    resolution: >-
+      Resolved 2026-07-18 by .github/scripts/validate-registry.py, run on every push and
+      pull request via .github/workflows/registry.yml. It validates the registry against
+      ecosystem-registry.schema.json (draft 2020-12) — which is what enforces the
+      third_party/channel passportEligible constraint — and additionally asserts that
+      every passportEligible entry has owner 'mossland'. Confirmed by a negative test:
+      marking a third_party entry passportEligible produced two errors and exit 1.
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)
     review_after: 2026-10-18
@@ -87,11 +101,14 @@ defeaters:
     evidence:
       - "build/generate.mjs:99-137 (jsonLd builds objects and emits JSON.stringify output inside <script type=\"application/ld+json\"> without esc())."
       - "customHttp.yml:5 (script-src 'self' — no 'unsafe-inline' for scripts)."
-    status: MITIGATED
+    status: RESOLVED
     resolution: >-
-      Defense in depth (trusted curated input + CSP script-src 'self') bounds the
-      impact. A durable fix is tracked in RES-RENDER-JSONLD-001 (escape the closing
-      sequence in the JSON-LD serialization).
+      Resolved 2026-07-18: build/generate.mjs jsonLd() now escapes "<" in the serialized
+      JSON-LD, so no registry value can terminate the script element early. JSON.parse
+      restores "<", and all three ld+json blocks in the regenerated index.html were
+      confirmed to parse. The change produced no diff in generated output because no
+      current registry value contains "<", so the fix is preventive and there was no
+      live exposure. CSP script-src 'self' remains as defence in depth.
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)
     review_after: 2026-10-18

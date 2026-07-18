@@ -132,8 +132,12 @@ function jsonLd() {
       description: s.label || s.labelKo,
     })),
   };
+  // Escape "<" as < so no registry value can terminate the script element early.
+  // JSON.parse turns < straight back into "<", so consumers see identical data.
+  // Defence in depth alongside CSP script-src 'self' — INV-RENDER-001 / RES-RENDER-JSONLD-001.
+  const jsonForScript = (o) => JSON.stringify(o, null, 2).replace(/</g, "\\u003c");
   return [org, website, itemList]
-    .map((o) => `    <script type="application/ld+json">\n${JSON.stringify(o, null, 2)}\n    </script>`)
+    .map((o) => `    <script type="application/ld+json">\n${jsonForScript(o)}\n    </script>`)
     .join("\n");
 }
 

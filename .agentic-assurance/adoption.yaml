@@ -61,10 +61,20 @@ issue_integration:
   public_security_issues_allowed: false
   closing_requires_artifact_update: true
 
-# No human review has occurred yet. When the owner completes the section 4.3
-# review, record it here, for example:
-# human_review:
-#   date: 2026-07-18
-#   reviewer: <named owner or body>
-#   record: <path to the durable review record, e.g. the merged PR>
-#   notes: <review outcome summary>
+# PARTIAL review record. The PROFILE.md section 4.3 intent review is NOT complete;
+# this records the decisions the owner has made so far. Do not read this block as
+# an adoption sign-off.
+human_review:
+  date: 2026-07-18
+  reviewer: MosslandOpenDevs maintainers (Mossland)
+  record: https://github.com/MosslandOpenDevs/links/pull/6
+  status: partial
+  decided:
+    - human_owner is the maintainers body rather than a named individual
+    - "profile set: added data-curation, with its two 6.4 gaps recorded openly"
+    - "public claim wording refined so it no longer over-states control of off-domain platforms"
+    - "residual review of all 7 entries: 2 RESOLVED by remediation, 4 ACCEPTED with rationale, 1 (RES-CURATION-002) deliberately left OPEN"
+  outstanding:
+    - sign-off on purpose and non-goals, and on the behaviour classification in assurance/SYSTEM.md section 9
+    - approval of the critical invariants (INV-PHISH-001, INV-REG-001) as human-approved intent — intent.authority is still null on every invariant
+    - "repository settings the agent cannot change: enable GitHub Private Vulnerability Reporting, create the assurance/* and needs-human-approval issue labels"

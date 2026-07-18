@@ -55,7 +55,7 @@ Stated as abuse + impact, without a working recipe:
 - **False verification.** An adversary gets a non-Mossland domain listed without the 제3자 chip (via a curation error or an unreviewed edit), lending a phishing domain the site's authority. Impact: high. → `INV-PHISH-001`, `DEF-PHISH-001`.
 - **Projection drift.** Committed HTML is edited by hand or shipped stale so the page diverges from the registry, showing links the source of truth does not. Impact: medium–high. → `INV-REG-001`, `DEF-REG-001`.
 - **Passport-eligibility abuse.** A third-party/channel entry is marked `passportEligible: true`, letting a non-Mossland domain back an ecosystem stamp. Impact: medium. → `INV-PASSPORT-001`, `DEF-PASSPORT-001`.
-- **Markup/JSON-LD injection** via registry content. Bounded by `esc()` on the body and CSP `script-src 'self'`; JSON-LD is a residual sink. Impact: low. → `INV-RENDER-001`, `DEF-RENDER-001`.
+- **Markup/JSON-LD injection** via registry content. Bounded by `esc()` on the body and CSP `script-src 'self'`; the JSON-LD sink was closed on 2026-07-18 by escaping `<`. Impact: low. → `INV-RENDER-001`, `DEF-RENDER-001` (RESOLVED).
 - **Clickjacking / framing** by an impersonator to overlay the trusted page. Impact: low–medium. → `INV-FRAME-001`.
 - **Header regression.** A platform/config change silently drops CSP/HSTS/CORS scoping. Impact: medium. → `DEF-HTTP-001`, `RES-HEADERS-001`.
 
@@ -64,22 +64,24 @@ Stated as abuse + impact, without a working recipe:
 | Threat | Control | Invariant ID | Verification |
 |---|---|---|---|
 | False verification of a domain | `owner`/`tier` → chip derivation; curation review | INV-PHISH-001 | Manual review; last-verified date (gap: no automated authenticity check) |
-| Page diverges from source of truth | Generator is sole writer; no hand edits | INV-REG-001 | `node build/generate.mjs` + `git diff` (gap: not in CI) |
-| Non-Mossland domain backs a stamp | Schema `allOf` forces `passportEligible:false` | INV-PASSPORT-001 | JSON Schema validation (gap: not in CI) |
-| Injection via registry content | `esc()` on body + CSP `script-src 'self'` | INV-RENDER-001 | Code inspection; CSP present |
+| Page diverges from source of truth | Generator is sole writer; CI regenerate-and-diff blocks drift at merge | INV-REG-001 | `.github/workflows/registry.yml` on every push/PR |
+| Non-Mossland domain backs a stamp | Schema `allOf` forces `passportEligible:false`; CI also rejects any eligible entry not owned by Mossland | INV-PASSPORT-001 | `.github/scripts/validate-registry.py`; negative-tested 2026-07-18 |
+| Injection via registry content | `esc()` on body, `<` escaped in JSON-LD, CSP `script-src 'self'` | INV-RENDER-001 | Code inspection; ld+json blocks confirmed to parse; CSP present |
 | Cross-origin misuse | `ACAO:*` scoped to read-only registry only | INV-CORS-001 | Header inspection |
 | Clickjacking / framing | CSP `frame-ancestors 'self' + wa.moss.land` | INV-FRAME-001 | Header inspection |
 | Trading-recommendation confusion | 제3자 chip + "reference only" notice | INV-MARKET-001 | Rendered-output inspection |
 
 ## 7. Residual links
 
-Threats not fully controlled are residuals, not omissions:
+Threats not fully controlled are residuals, not omissions. All were reviewed by the human owner on 2026-07-18:
 
-- RES-VERIFY-001 — manual, periodic authenticity verification.
-- RES-CI-VALIDATION-001 — no schema/projection validation in CI.
-- RES-HEADERS-001 — deployed headers not asserted automatically.
-- RES-RENDER-JSONLD-001 — JSON-LD not escaped against script-element termination.
-- RES-STATUS-DRIFT-001 — service statuses lag the live services.
+- RES-VERIFY-001 — manual, periodic authenticity verification. **ACCEPTED** (inherent to a static registry; no cryptographic proof of domain ownership is possible here).
+- RES-HEADERS-001 — deployed headers not asserted continuously. **ACCEPTED** (low impact; confirmed once by live capture, EV-HEADERS-001).
+- RES-STATUS-DRIFT-001 — service statuses lag the live services. **ACCEPTED** (does not weaken the anti-phishing guarantee, which is about domain authenticity, not uptime).
+- RES-CURATION-001 — external fact vs editorial judgement not structurally separated. **ACCEPTED** (interim narrative split in `assurance/SYSTEM.md` §3.1; a proper fix restructures a schema other properties consume).
+- RES-CURATION-002 — no versioned classification/scoring rubric. **OPEN — deliberately not accepted**, because `stampClass` feeds Passport's stamp weighting, so a silent rubric change alters another system's behaviour.
+- RES-CI-VALIDATION-001 — no schema/projection validation in CI. **RESOLVED** by `.github/workflows/registry.yml`.
+- RES-RENDER-JSONLD-001 — JSON-LD not escaped. **RESOLVED** in `build/generate.mjs` jsonLd().
 
 ## 8. Review triggers
 
