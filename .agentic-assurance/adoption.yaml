@@ -81,7 +81,12 @@ human_review:
       (d688deb), and PROFILE.md 7 excludes AI-generated explanation as evidence by itself.
       The accepted side effect is that a generator failure on Amplify is silent in the
       deploy log; committed output is known-good because CI verifies it at merge time.
+    - >-
+      non-goal "not a general CMS" (generated files are never hand-edited) confirmed as
+      deliberate. It is the structural precondition for INV-REG-001 and the anti-phishing
+      claim, and is machine-enforced by the registry.yml projection gate.
   outstanding:
-    - sign-off on purpose and non-goals, and on the behaviour classification in assurance/SYSTEM.md section 9
+    - sign-off on the three remaining non-goals in assurance/SYSTEM.md section 2 (not a price feed / not a Passport-eligibility grantor for third parties / not a live uptime monitor)
+    - sign-off on the behaviour classification in assurance/SYSTEM.md section 9 (the amplify.yml row is confirmed; the other nine are not)
     - approval of the critical invariants (INV-PHISH-001, INV-REG-001) as human-approved intent — intent.authority is still null on every invariant
     - "repository settings the agent cannot change: enable GitHub Private Vulnerability Reporting, create the assurance/* and needs-human-approval issue labels"

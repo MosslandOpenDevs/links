@@ -16,12 +16,12 @@ It is a static site deployed on AWS Amplify (`amplify.yml`, `README.md:8`).
 
 ## 2. Non-goals
 
-Reconstructed from the code and copy; **pending human confirmation**:
+Reconstructed from the code and copy. **Confirmation status is per item** — an unconfirmed entry is the drafting agent's reading, not approved intent, and must not be relied on as a constraint.
 
-- Not a price feed, trading venue, or investment advice — third-party market links are "reference only and are not trading recommendations" (`build/generate.mjs:31`).
-- Not a Passport-eligibility grantor for third parties — market and off-domain channel links are `passportEligible: false` by contract (`ecosystem-registry.schema.json:102-111`).
-- Not a live uptime monitor — service `status` reflects point-in-time manual verification, not continuous monitoring (see §9, `RES-STATUS-DRIFT-001`).
-- Not a general CMS — the rendered files are generated, never hand-edited (`README.md:23-32`).
+- ✅ **Not a general CMS** — the rendered files are generated, never hand-edited (`README.md:23-32`). **Owner-confirmed 2026-07-18.** Machine-enforced, not just documented: the generator renders solely from `reg.services`, and `.github/workflows/registry.yml` fails the build when committed output diverges from a fresh run. This is the structural precondition for `INV-REG-001`, and therefore for the anti-phishing claim `CLAIM-PHISH-001` — if the page could be hand-edited it could show links the registry does not contain, and the registry would stop being the source of truth that Passport and other properties verify against.
+- ⏳ Not a price feed, trading venue, or investment advice — third-party market links are "reference only and are not trading recommendations" (`build/generate.mjs:31`, visible in the rendered output). *Pending owner confirmation.*
+- ⏳ Not a Passport-eligibility grantor for third parties — market and off-domain channel links are `passportEligible: false` by contract (`ecosystem-registry.schema.json:102-111`, enforced in CI since 2026-07-18). *Pending owner confirmation.*
+- ⏳ Not a live uptime monitor — service `status` reflects point-in-time manual verification, not continuous monitoring (see §9, `RES-STATUS-DRIFT-001`). *Pending owner confirmation; this one is inferred from an absence (no monitoring exists), which is weaker evidence than the others.*
 
 ## 3. Domain entities and identifiers
 
