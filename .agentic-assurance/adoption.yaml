@@ -112,5 +112,3 @@ human_review:
   # OPEN by decision, not by omission: RES-CURATION-002 (versioned rubric) and
   # RES-PROVENANCE-001 (prose-grounded evidence). Neither is critical-impact, so neither
   # blocks the conformance criteria in PROFILE.md 17 — but both stay open and owned.
-    - approval of the critical invariants (INV-PHISH-001, INV-REG-001) as human-approved intent — intent.authority is still null on every invariant
-    - "repository settings the agent cannot change: enable GitHub Private Vulnerability Reporting, create the assurance/* and needs-human-approval issue labels"
