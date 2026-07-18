@@ -35,21 +35,39 @@ const SECTIONS = [
 // Nav: lean anchor set, one per visible section.
 const NAV_IDS = ["official", "participation", "ecosystem", "developers", "markets"];
 
-// Chip = trust + category signal. Filled green ("공식") = official Mossland pillar;
-// outlined chips = verified Mossland but not an official product: "베타" (open beta),
-// "인텔리전스" (AI analysis/data), "쇼케이스" (experiential demo/world), "실험" (labs,
-// not-yet-finished); grey "제3자" = third-party. Precedence is order-sensitive: the
-// "실험" override (chip:"실험" or labs tier) wins over the tier chips, so an empty
-// intelligence service (e.g. media) shows 실험 until it has real data.
-const AMBER_ARIA = "실험 · 아직 완성된 공식 제품 아님";
+// Chip = trust + category signal. The rubric is NOT written out here: it is declared
+// as data in ecosystem-registry.json `rubric` and versioned by `rubricVersion`, and
+// both the chip and the on-page legend are derived from it, so the rendered page
+// cannot drift from the declared rubric. See assurance/RUBRIC.md for the changelog
+// and the version-bump rules.
+//
+// Precedence stays order-sensitive: the "실험" override (chip:"실험" or labs tier) wins
+// over the tier chips, so an empty intelligence service (e.g. media) shows 실험 until
+// it has real data. That order now lives in rubric.chips.precedence.
+const RUBRIC = reg.rubric;
+if (!RUBRIC?.chips?.precedence?.length || !RUBRIC?.chips?.definitions) {
+  throw new Error("ecosystem-registry.json: rubric.chips.precedence/definitions missing — the rubric is required to render chips");
+}
+
+function matchesRule(s, when) {
+  if (when === "default") return true;
+  if (Array.isArray(when.anyOf)) return when.anyOf.some((cond) => matchesRule(s, cond));
+  if (when.artifact === true) return Boolean(s.artifact);
+  if (when.chipOverride === true) return Boolean(s.chip);
+  if (when.tier !== undefined) return s.tier === when.tier;
+  if (when.owner !== undefined) return s.owner === when.owner;
+  if (when.status !== undefined) return s.status === when.status;
+  throw new Error(`rubric: unrecognised chip rule condition ${JSON.stringify(when)}`);
+}
+
 function chipFor(s) {
-  if (s.artifact) return { t: "자료", c: "chip muted", aria: "자료 · 개발자 데이터 파일" };
-  if (s.chip || s.tier === "labs") return { t: "실험", c: "chip lab", aria: AMBER_ARIA };
-  if (s.owner === "third-party" || s.tier === "third_party") return { t: "제3자", c: "chip third", aria: "제3자 · Mossland 미검증" };
-  if (s.tier === "showcase") return { t: "쇼케이스", c: "chip show", aria: "쇼케이스 · 검증된 Mossland 체험형 데모" };
-  if (s.tier === "intelligence") return { t: "인텔리전스", c: "chip intel", aria: "인텔리전스 · 검증된 Mossland AI 분석·데이터" };
-  if (s.tier === "official_beta" || s.status === "beta") return { t: "베타", c: "chip beta", aria: "베타 · 운영 중인 공식 베타" };
-  return { t: "공식", c: "chip", aria: "공식 · 검증된 Mossland 링크" };
+  for (const rule of RUBRIC.chips.precedence) {
+    if (!matchesRule(s, rule.when)) continue;
+    const def = RUBRIC.chips.definitions[rule.chip];
+    if (!def) throw new Error(`rubric: chip "${rule.chip}" is used in precedence but has no definition`);
+    return { t: rule.chip, c: def.class, aria: def.aria };
+  }
+  throw new Error(`rubric: no chip rule matched service "${s.id}" — precedence must end with a "default" rule`);
 }
 
 function domLine(s) {
@@ -197,16 +215,20 @@ const VERIFY = `          <div class="verify">
             <span lang="en">Apart from third-party market links, every link here is either an official Mossland domain or an official account Mossland operates. If an address isn't listed, treat it as unofficial — verify via official X (@TheMossland).</span>
           </div>`;
 
+// Legend rows are rendered from the same rubric definitions that drive chipFor(),
+// so a chip's on-page meaning cannot disagree with the rule that assigns it.
+const LEGEND_ITEMS = RUBRIC.chips.legendOrder
+  .map((name) => {
+    const def = RUBRIC.chips.definitions[name];
+    if (!def) throw new Error(`rubric: legendOrder names "${name}" but it has no definition`);
+    return `            <li><span class="${esc(def.class)}">${esc(name)}</span> ${esc(def.ko)} / ${esc(def.en)}</li>`;
+  })
+  .join("\n");
+
 const LEGEND = `        <details class="legend" open>
           <summary>표시 안내 / What the chips mean</summary>
           <ul>
-            <li><span class="chip">공식</span> Mossland 공식·검증 도메인과 채널 / Verified Mossland domains and channels</li>
-            <li><span class="chip beta">베타</span> 운영 중인 공식 베타 / Official service in open beta</li>
-            <li><span class="chip intel">인텔리전스</span> Mossland AI 분석·데이터 서비스 / Mossland AI intelligence &amp; data</li>
-            <li><span class="chip show">쇼케이스</span> 체험형 데모·월드 쇼케이스 / Experiential demo &amp; world showcase</li>
-            <li><span class="chip lab">실험</span> 아직 완성된 공식 제품 아님 / Experimental, not a finished official product</li>
-            <li><span class="chip third">제3자</span> Mossland 미검증 외부 링크 / Third-party, not verified by Mossland</li>
-            <li><span class="chip muted">자료</span> 개발자·데이터 파일 / Developer &amp; data files</li>
+${LEGEND_ITEMS}
           </ul>
         </details>`;
 

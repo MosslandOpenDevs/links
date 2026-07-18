@@ -37,7 +37,8 @@ every deploy.
 | --- | --- |
 | `ecosystem-registry.json` | **Source of truth** — every service and its fields |
 | `ecosystem-registry.schema.json` | JSON Schema (draft 2020-12) contract for the registry |
-| `build/generate.mjs` | Generator — renders `index.html` + `embed.html` + `llms.txt` + `sitemap.xml` from the registry |
+| `assurance/RUBRIC.md` | The classification rubric of record — chip precedence, `stampClass` meanings, changelog, and version-bump rules |
+| `build/generate.mjs` | Generator — renders `index.html` + `embed.html` + `llms.txt` + `sitemap.xml` from the registry, deriving chips and legend from the registry's `rubric` |
 | `build/style.css` | Stylesheet, inlined into the generated HTML |
 | `index.html` | Generated public page (do not edit by hand) |
 | `embed.html` | Generated chrome-less kiosk view for embedding in play.wa / Mossverse |
@@ -66,15 +67,29 @@ The page renders five sections (`section` field), in order:
 ## Chips (trust signal)
 
 Color carries the meaning; each service's specifics live in its one-line role,
-not the chip. There are five chips:
+not the chip. There are seven chips:
 
 | Chip | Color | Meaning | Driven by |
 | --- | --- | --- | --- |
-| `공식` | green | Verified Mossland domain or official channel | default |
+| `공식` | green, filled | Verified Mossland domain or official channel | default |
 | `베타` | green outline | Official service in open beta | `tier: official_beta` or `status: beta` |
-| `실험` | amber | Experimental / not-yet-finished (not an official product) | `tier: labs`, or explicit `chip: "실험"` |
-| `제3자` | grey | Third-party, not verified by Mossland | `owner: "third-party"` / `tier: third_party` |
+| `인텔리전스` | teal outline | Mossland AI intelligence & data | `tier: intelligence` |
+| `쇼케이스` | purple outline | Experiential demo & world showcase | `tier: showcase` |
+| `실험` | amber outline | Experimental / not-yet-finished (not an official product) | `tier: labs`, or explicit `chip: "실험"` |
+| `제3자` | grey outline | Third-party, not verified by Mossland | `owner: "third-party"` / `tier: third_party` |
 | `자료` | muted | Developer data file | `artifact: true` |
+
+> **This table is a convenience summary, not the source of truth.** The rubric is
+> declared as data in [`ecosystem-registry.json`](ecosystem-registry.json) under
+> `rubric`, versioned by `rubricVersion`, and `build/generate.mjs` renders both the
+> chips and the on-page legend from it. Nothing checks this table against the
+> rubric, so if they ever disagree, the registry wins — see
+> [`assurance/RUBRIC.md`](assurance/RUBRIC.md) for the rubric of record, its
+> precedence order, and the version-bump rules.
+>
+> It has drifted before: until 2026-07-18 this table claimed "five chips" and
+> omitted `인텔리전스` and `쇼케이스`, which the page had been rendering all along.
+> That drift is what motivated moving the rubric into data.
 
 Key rule: **the amber `실험` stage is decoupled from operational `status`.**
 `offline`/`paused` are uptime, not a stage — a service is `실험` because it *is*

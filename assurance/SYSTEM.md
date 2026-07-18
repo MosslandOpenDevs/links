@@ -25,7 +25,7 @@ Reconstructed from the code and copy, and **confirmed by the owner on 2026-07-18
 
 ## 3. Domain entities and identifiers
 
-- **Registry document** — `ecosystem-registry.json`, the single source of truth (`version` 1.0.0, `generatedAt` 2026-07-06). Authoritative at `https://links.moss.land/ecosystem-registry.json`.
+- **Registry document** — `ecosystem-registry.json`, the single source of truth (`version` 1.0.0, `rubricVersion` 1.0.0, `generatedAt` 2026-07-06). Authoritative at `https://links.moss.land/ecosystem-registry.json`. `version` versions the document's contents; `rubricVersion` versions the *meaning* its classifications carry, and the two move independently (see [`RUBRIC.md`](RUBRIC.md)).
 - **Service** — one entry in `services[]`. Stable identifier: `id` (pattern `^[a-z0-9-]+$`, `ecosystem-registry.schema.json:50`). Key fields: `domain`, `url`, `tier`, `status`, `section`, `owner`, `passportEligible`, `stampType`, `stampClass`, `labelKo`/`label`, `chip`, `artifact`, `hidden` (`ecosystem-registry.schema.json:45-101`).
 - **Schema contract** — `ecosystem-registry.schema.json` (JSON Schema draft 2020-12), authoritative at `https://links.moss.land/ecosystem-registry.schema.json`.
 - **Passport stamp identity** — `stampType` (namespaced id, e.g. `identity_holder`) and `stampClass` (significance tier: core/governance/participation/connect/lab/showcase), consumed by Passport.
@@ -42,7 +42,7 @@ The `data-curation` profile requires separating externally sourced facts from lo
 
 Two properties of this table matter for consumers:
 
-- **`stampClass` is a scoring rubric, not a fact.** It weights Passport stamps ("so stamps can be weighted rather than treated as a flat attendance log", `ecosystem-registry.schema.json:78-79`), and Passport consumes it. The rubric itself is unversioned — `RES-CURATION-002`.
+- **`stampClass` is a scoring rubric, not a fact.** It weights Passport stamps ("so stamps can be weighted rather than treated as a flat attendance log"), and Passport consumes it. Since 2026-07-18 the rubric is declared as data in the registry's `rubric` object and versioned by `rubricVersion`, with the changelog and bump rules in [`RUBRIC.md`](RUBRIC.md) — `RES-CURATION-002` RESOLVED. Numeric weights remain Passport's policy, deliberately undefined here.
 - **Provenance is thin on the fact side.** `sourceOfTruth` is set on only a few entries and `lastDataAt` is `null` on every entry, so an observed fact carries no capture time. Also `RES-CURATION-001`.
 
 ## 4. State transitions
@@ -72,7 +72,7 @@ Material public claims are registered with stable IDs in `assurance/CLAIMS.yaml`
 
 ## 7. Enforcement inventory
 
-- **Chip derivation** — `build/generate.mjs chipFor()` (`:45-53`) drives the 제3자 vs verified-Mossland trust signal from `owner`/`tier`. Backs `INV-PHISH-001`, `INV-MARKET-001`.
+- **Chip derivation** — `build/generate.mjs chipFor()` drives the 제3자 vs verified-Mossland trust signal from `owner`/`tier`, applying the ordered rules declared in the registry's `rubric.chips.precedence`. The on-page legend renders from the same definitions, so a chip's stated meaning cannot disagree with the rule that assigns it. Backs `INV-PHISH-001`, `INV-MARKET-001`.
 - **Registry schema `allOf`** — forces `passportEligible: false` for `third_party` and `channel` tiers (`ecosystem-registry.schema.json:102-111`). Backs `INV-PASSPORT-001`.
 - **CI registry gate** — `.github/workflows/registry.yml` runs `.github/scripts/validate-registry.py` (schema validation + "every Passport-eligible entry is owner `mossland`" + unique ids) and a regenerate-and-diff step, on every push and pull request. Backs `INV-PASSPORT-001` and `INV-REG-001`; added 2026-07-18, closing `RES-CI-VALIDATION-001`.
 - **HTML escaping** — `esc()` on every `card`/`domLine`/section-title interpolation (`build/generate.mjs:12-13`); the schema-constrained `generatedAt` date in the footer/sitemap is rendered directly (bounded exception). Backs `INV-RENDER-001`.
@@ -116,6 +116,6 @@ Current production behavior is evidence of current behavior, not automatic proof
 - Whether "unlisted ⇒ unofficial" is intended as a strong guarantee or a best-effort heuristic — resolved by the §4.3 intent review. Tracked as a limitation on `CLAIM-PHISH-001`.
 - ~~Whether the omission of registry-schema CI validation is deliberate scope or simply unbuilt~~ — settled 2026-07-18: classified ACCIDENTAL and remediated (`RES-CI-VALIDATION-001` RESOLVED).
 - How much of this repository's prose-based evidence actually reflects human intent rather than agent narrative — `RES-PROVENANCE-001`. Resolved per row by re-grounding on a machine-checkable artifact or an explicit owner confirmation.
-- What the intended semantics of the tier/chip/`stampClass` rubric are over time — there is no rubric version history, so past classifications cannot be interpreted against the rubric that produced them (`RES-CURATION-002`).
+- ~~What the intended semantics of the tier/chip/`stampClass` rubric are over time~~ — addressed 2026-07-18: the rubric is declared, versioned (`rubricVersion`) and changelogged in [`RUBRIC.md`](RUBRIC.md) (`RES-CURATION-002` RESOLVED). Still open underneath it: individual entries carry no record of *which* rubric version classified them, since versioning is document-level (`RES-CURATION-001`).
 - ~~Whether `data-curation` should be added~~ — decided 2026-07-18: added, with its PROFILE.md §6.4 gaps recorded as `RES-CURATION-001` and `RES-CURATION-002`.
 - ~~Whether a specific named person should be the recorded `human_owner`~~ — decided 2026-07-18: authority rests with the MosslandOpenDevs maintainers as a body.

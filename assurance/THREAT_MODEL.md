@@ -79,7 +79,7 @@ Threats not fully controlled are residuals, not omissions. All were reviewed by 
 - RES-HEADERS-001 — deployed headers not asserted continuously. **ACCEPTED** (low impact; confirmed once by live capture, EV-HEADERS-001).
 - RES-STATUS-DRIFT-001 — service statuses lag the live services. **ACCEPTED** (does not weaken the anti-phishing guarantee, which is about domain authenticity, not uptime).
 - RES-CURATION-001 — external fact vs editorial judgement not structurally separated. **ACCEPTED** (interim narrative split in `assurance/SYSTEM.md` §3.1; a proper fix restructures a schema other properties consume).
-- RES-CURATION-002 — no versioned classification/scoring rubric. **OPEN — deliberately not accepted**, because `stampClass` feeds Passport's stamp weighting, so a silent rubric change alters another system's behaviour.
+- RES-CURATION-002 — no versioned classification/scoring rubric. **RESOLVED** 2026-07-18: the rubric is declared as data and versioned (`rubricVersion`), the generator renders from it, CI checks its consistency, and `assurance/RUBRIC.md` carries the changelog and bump rules. It was deliberately not accepted in the review precisely because its consequence left this repository.
 - RES-CI-VALIDATION-001 — no schema/projection validation in CI. **RESOLVED** by `.github/workflows/registry.yml`.
 - RES-RENDER-JSONLD-001 — JSON-LD not escaped. **RESOLVED** in `build/generate.mjs` jsonLd().
 

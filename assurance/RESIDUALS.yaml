@@ -194,14 +194,14 @@ residuals:
 
   - id: RES-CURATION-002
     summary: >-
-      There is no versioned history of the classification and scoring rubric. The
-      tier-to-chip derivation and the stampClass significance weighting are the
-      registry's editorial rubric, but they live only in current code
+      There was no versioned history of the classification and scoring rubric. The
+      tier-to-chip derivation and the stampClass significance meanings were the
+      registry's editorial rubric, but they lived only in current code
       (build/generate.mjs chipFor) and prose (README chips table). The registry's
-      version field versions the document, not the rubric, so an entry carries no
-      record of which rubric version classified it. If the rubric changes, the meaning
-      of an unchanged entry changes silently — and stampClass is consumed by Passport
-      to weight ecosystem stamps, so a silent rubric change propagates into stamp
+      version field versions the document, not the rubric, so an entry carried no
+      record of which rubric version classified it. If the rubric changed, the meaning
+      of an unchanged entry changed silently — and stampClass is consumed by Passport
+      to weight ecosystem stamps, so a silent rubric change propagated into stamp
       weighting.
     private_detail_location: null
     affected_claims:
@@ -211,18 +211,37 @@ residuals:
     impact: medium
     uncertainty: medium
     mitigation:
-      - "The rubric is at least documented and data-driven (chip derivation keys off owner/tier/chip, never a service id) — see README.md chips table and build/generate.mjs:45-53."
-      - "Staged remediation: introduce an explicit rubric version in the registry (and record it per entry or per document), with a changelog for tier/chip/stampClass semantics."
-    status: OPEN
+      - "The rubric was at least documented and data-driven (chip derivation keys off owner/tier/chip, never a service id)."
+    status: RESOLVED
+    resolution_note: >-
+      Remediated 2026-07-18. The rubric is now declared as data in
+      ecosystem-registry.json `rubric` and versioned by `rubricVersion` (1.0.0),
+      separately from `version` so a change in classification meaning is visible even
+      when no entry changed. Rather than adding a third place for the rubric to live,
+      build/generate.mjs was rewired to derive BOTH the chip assignment and the on-page
+      legend from that object, so code cannot drift from the declared rubric; the
+      refactor was verified behaviour-preserving by producing byte-identical output
+      (assurance/evidence/EVIDENCE.md EV-RUBRIC-001). ecosystem-registry.schema.json
+      now requires rubricVersion and rubric, and .github/scripts/validate-registry.py
+      enforces rubric consistency in CI — negative-tested on three failure modes.
+      assurance/RUBRIC.md carries the changelog and the version-bump rules, whose
+      governing test is "would an unchanged entry now render or mean differently?".
+      Numeric stamp weights are deliberately still not defined here: that is Passport's
+      policy, and asserting it would claim authority over another system.
+      Residual limitation: per-entry rubric provenance (which rubric version classified
+      a given entry) is still not recorded — document-level versioning was judged
+      proportionate for a registry that is re-verified wholesale. That thinness is
+      covered by RES-CURATION-001, and the README summary table remains an unchecked
+      prose copy (RES-PROVENANCE-001).
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)
     accepted_by: null
     accepted_at: null
     review_after: 2026-10-18
-    # Deliberately NOT accepted in the 2026-07-18 review: this is the one residual
-    # whose consequence leaves this repository. stampClass feeds Passport's stamp
-    # weighting, so a silent rubric change alters another system's behaviour. The
-    # owner chose remediation (introduce a versioned rubric) over acceptance.
+    # Was deliberately NOT accepted in the 2026-07-18 residual review: this was the one
+    # residual whose consequence left this repository — stampClass feeds Passport's stamp
+    # weighting, so a silent rubric change alters another system's behaviour. The owner
+    # chose remediation over acceptance, and this entry records that remediation landing.
 
   # --- Recorded 2026-07-18, after the residual review, when grounding the
   # --- amplify.yml classification exposed a systemic evidence-provenance problem.

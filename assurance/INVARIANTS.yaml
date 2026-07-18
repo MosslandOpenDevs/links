@@ -26,7 +26,7 @@ invariants:
       - There is no cryptographic or automated proof that a listed entry is Mossland-controlled; correctness rests on human curation (see DEF-PHISH-001, RES-VERIFY-001).
       - "Mossland-controlled for off-domain channels (Medium, X, GitHub) means an official account Mossland operates on a third-party platform, not infrastructure Mossland runs. The on-page copy was refined on 2026-07-18 (build/generate.mjs:191-194) to state that distinction explicitly, so the public wording now matches this invariant rather than over-stating it."
     enforcement:
-      - "build/generate.mjs chipFor() lines 45-53: the 제3자 chip is emitted iff owner === 'third-party' || tier === 'third_party'; every other entry (including owner 'mossland' channel/developer entries) renders as a verified Mossland chip."
+      - "build/generate.mjs chipFor(): the 제3자 chip is emitted iff owner === 'third-party' || tier === 'third_party'; every other entry (including owner 'mossland' channel/developer entries) renders as a verified Mossland chip. Since 2026-07-18 that rule is not hard-coded but read from ecosystem-registry.json rubric.chips.precedence, versioned by rubricVersion (assurance/RUBRIC.md), and CI rejects an inconsistent rubric."
       - "ecosystem-registry.json owner field: all non-market entries declare owner 'mossland'."
     verification:
       - Manual curation review on each registry pull request (README.md 'Adding or changing a service').
