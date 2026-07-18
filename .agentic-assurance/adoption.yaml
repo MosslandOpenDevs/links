@@ -14,10 +14,11 @@ upstream:
 project:
   name: Mossland Verified Links
   repository: MosslandOpenDevs/links
-  # Governing body for this repository. Replace with a specific named person or
-  # body if the owner prefers. The contents of ecosystem-registry.json (the
-  # authenticity source of truth) are ultimately governed by Mossland DAO via
-  # Agora (agora.moss.land); see assurance/SYSTEM.md section 5.
+  # Governing body for this repository, confirmed by the owner (2026-07-18):
+  # the MosslandOpenDevs maintainers as a body, not a single named individual.
+  # The contents of ecosystem-registry.json (the authenticity source of truth)
+  # are ultimately governed by Mossland DAO via Agora (agora.moss.land);
+  # see assurance/SYSTEM.md section 5.
   human_owner: MosslandOpenDevs maintainers (Mossland)
 
 profiles:
