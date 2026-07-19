@@ -5,13 +5,12 @@
 # record of that PROFILE.md section 4.3 review and what remains outstanding.
 upstream:
   repository: MosslandOpenDevs/agentic-assurance-profile
-  # Pinned to the v0.2.0 release (the commit tag v0.2.0 points to; its
-  # VERSION file reads v0.2.0). Upgraded from v0.1.0 per ADOPTION.md §2.1
-  # together with the CI caller workflow reference. Note: from v0.2.0 the
-  # reusable workflow's checks are named 'structure' and 'conformance'
-  # (formerly 'validate').
-  version: v0.3.1
-  commit: 48c5b53214c3710f0f22492302044a7ece96fcdc
+  # Pinned to a specific profile release: `version` is the release tag and
+  # `commit` is the 40-char SHA that tag points to (that commit's VERSION file
+  # reads `version`). The caller workflow (.github/workflows/assurance.yml) pins
+  # the SAME SHA; bump all three together per ADOPTION.md §2.1 when upgrading.
+  version: v0.3.2
+  commit: aac49ef7f0d8a8e8762113df8b7bf1784eaa2e54
 
 project:
   name: Mossland Verified Links
