@@ -10,8 +10,8 @@ upstream:
   # together with the CI caller workflow reference. Note: from v0.2.0 the
   # reusable workflow's checks are named 'structure' and 'conformance'
   # (formerly 'validate').
-  version: v0.3.0
-  commit: 13f4f2d57d780a35cf0b890cdc5da190eae4c325
+  version: v0.3.1
+  commit: 48c5b53214c3710f0f22492302044a7ece96fcdc
 
 project:
   name: Mossland Verified Links
