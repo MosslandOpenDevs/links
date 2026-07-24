@@ -9,8 +9,8 @@ upstream:
   # `commit` is the 40-char SHA that tag points to (that commit's VERSION file
   # reads `version`). The caller workflow (.github/workflows/assurance.yml) pins
   # the SAME SHA; bump all three together per ADOPTION.md §2.1 when upgrading.
-  version: v0.3.2
-  commit: aac49ef7f0d8a8e8762113df8b7bf1784eaa2e54
+  version: v0.4.0
+  commit: 00e2fe46d4eb01a4147f149851a48a3017cbb796
 
 project:
   name: Mossland Verified Links

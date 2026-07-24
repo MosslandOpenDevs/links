@@ -6,6 +6,14 @@
 >
 > **Status:** The PROFILE.md §4.3 intent review is **complete as of 2026-07-18** — purpose and non-goals, critical claims and invariants, the behaviour classification, and the residual register were all reviewed and decided by the repository owner (recorded in `.agentic-assurance/adoption.yaml` `human_review`). Private vulnerability reporting is enabled and verified (`EV-INTAKE-001`). See §12 for the completion-criteria table.
 
+Before any material change, read:
+
+1. `AGENTIC_ASSURANCE.md`;
+2. `.agentic-assurance/adoption.yaml`;
+3. the project system specification and non-goals (`assurance/SYSTEM.md`);
+4. affected claims, invariants, defeaters, and residuals (`assurance/*.yaml`);
+5. the active change specification (the pull request / issue).
+
 ---
 
 ## 1. Adoption declaration
