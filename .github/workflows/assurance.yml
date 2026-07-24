@@ -13,4 +13,4 @@ on:
 
 jobs:
   assurance:
-    uses: MosslandOpenDevs/agentic-assurance-profile/.github/workflows/adopter-validate.yml@00e2fe46d4eb01a4147f149851a48a3017cbb796
+    uses: MosslandOpenDevs/agentic-assurance-profile/.github/workflows/adopter-validate.yml@759e4a9c06cdba876d5099e5760251d42a74a88c
