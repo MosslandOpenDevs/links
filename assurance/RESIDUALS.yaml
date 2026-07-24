@@ -3,9 +3,11 @@ version: 1
 # (PROFILE.md sections 2 and 12).
 #
 # Residual review completed 2026-07-18 by the human owner (MosslandOpenDevs
-# maintainers). Dispositions: 2 RESOLVED by remediation, 4 ACCEPTED with recorded
-# rationale, 1 left OPEN for remediation. An agent prepared this review but did
-# not accept anything on the owner's behalf (PROFILE.md section 15).
+# maintainers). Dispositions at that review (7 entries then registered): 2 RESOLVED
+# by remediation, 4 ACCEPTED with recorded rationale, 1 (RES-CURATION-002) left OPEN
+# for remediation. This header is a point-in-time record of that review; the current
+# per-residual status is the `status:` field on each entry below. An agent prepared
+# this review but did not accept anything on the owner's behalf (PROFILE.md section 15).
 residuals:
   - id: RES-VERIFY-001
     summary: >-

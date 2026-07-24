@@ -55,6 +55,7 @@ profiles:
   - core
   - service
   - trust-critical
+  - data-curation
 ```
 
 The full commit SHA is the normative pin. A branch such as `main` MUST NOT be the sole reference. Agents MUST NOT update the pin silently; an upstream upgrade requires a dedicated change with impact analysis and a matching update to the `@`-ref in `.github/workflows/assurance.yml`.
@@ -104,7 +105,7 @@ Adopted, confirmed by the owner on 2026-07-18: `core`, `service`, `trust-critica
 - `core` — the repository is substantially AI-agent-built.
 - `service` — a deployed website plus a public read-only registry endpoint (AWS Amplify).
 - `trust-critical` — domain authenticity / anti-phishing is the page's core purpose.
-- `data-curation` — the registry is curated, classified, scored data (tier/chip/status judgements, and the `stampClass` significance weighting consumed by Passport). Added by owner decision 2026-07-18. This is a **provisional** upstream profile: its obligations may change in a minor release, and the validator emits a non-blocking warning on selection. Its known PROFILE.md §6.4 gaps are recorded openly as `RES-CURATION-001` (external fact vs editorial judgement not structurally separated) and `RES-CURATION-002` (no versioned classification/scoring rubric); see `assurance/SYSTEM.md` §3.1.
+- `data-curation` — the registry is curated, classified, scored data (tier/chip/status judgements, and the `stampClass` significance weighting consumed by Passport). Added by owner decision 2026-07-18. This is an established upstream profile, promoted from provisional in v0.2.0 (see PROFILE.md §5) after a public adopter exercised every §6.4 obligation; under v0.4.0 only `agent-runtime` remains provisional, so the validator emits no provisional warning on its selection. Its PROFILE.md §6.4 considerations are recorded openly: `RES-CURATION-001` (external fact vs editorial judgement not structurally separated) remains ACCEPTED, and `RES-CURATION-002` (versioned classification/scoring rubric) is RESOLVED; see `assurance/SYSTEM.md` §3.1.
 
 ---
 
@@ -158,12 +159,12 @@ This adoption is **not** complete merely because these documents exist. Status a
 | Upstream pin resolves to a real version and commit | ✅ pinned in `.agentic-assurance/adoption.yaml`; tag-commit agreement and caller @-ref agreement checked in CI |
 | Human-approved purpose and non-goals recorded | ✅ owner review 2026-07-18 (`assurance/SYSTEM.md` §2) |
 | Critical claims and invariants stated, with enforcement/evidence or explicit `UNKNOWN` | ✅ 7 invariants, 5 claims; `intent.authority` set on each |
-| Residual register active and owned | ✅ 8 residuals — 2 RESOLVED, 4 ACCEPTED with rationale, 2 OPEN |
+| Residual register active and owned | ✅ 8 residuals — 3 RESOLVED, 4 ACCEPTED with rationale, 1 OPEN |
 | Material-change workflow references the assurance artifacts | ✅ `.github/PULL_REQUEST_TEMPLATE.md` |
 | Private vulnerability reporting (required for a public `trust-critical` adopter, PROFILE.md §6.3) | ✅ enabled 2026-07-18, verified by API (`EV-INTAKE-001`) |
 
 All six criteria are met, so the owner **may** describe this bounded revision as conforming to the pinned profile (PROFILE.md §17). That remains the owner's statement to make, not the drafting agent's.
 
-Two residuals stay deliberately open — `RES-CURATION-002` (no versioned classification rubric) and `RES-PROVENANCE-001` (prose-grounded evidence). Neither is critical-impact, so neither blocks §17, but both remain open and owned rather than being closed for tidiness.
+One residual stays deliberately open — `RES-PROVENANCE-001` (prose-grounded evidence). It is not critical-impact, so it does not block §17, but it remains open and owned rather than being closed for tidiness. (`RES-CURATION-002`, the versioned-rubric gap, was deliberately not accepted in the review and instead remediated the same day — RESOLVED.)
 
 Conformance means the project's promises, controls, evidence, counterarguments, and remaining uncertainty are represented according to the pinned profile. It does **not** mean this system is secure or bug-free.
