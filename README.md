@@ -1,6 +1,9 @@
-# links
+# Mossland Verified Links
 
-Mossland **Verified Links** — the official link registry for `https://links.moss.land`.
+[![registry CI](https://github.com/MosslandOpenDevs/links/actions/workflows/registry.yml/badge.svg)](https://github.com/MosslandOpenDevs/links/actions/workflows/registry.yml)
+[![assurance](https://github.com/MosslandOpenDevs/links/actions/workflows/assurance.yml/badge.svg)](https://github.com/MosslandOpenDevs/links/actions/workflows/assurance.yml)
+
+The official **Verified Links** registry for `https://links.moss.land`.
 
 This repository is the verified-links registry for the Mossland ecosystem: the
 canonical list of official Mossland domains, ecosystem apps, developer resources,
@@ -9,6 +12,19 @@ unofficial. It is deployed with AWS Amplify and served at `https://links.moss.la
 
 The page is **KR-primary, bilingual** (Korean lead, English support) and its core
 job is anti-phishing: telling a visitor which domains are genuinely Mossland's.
+
+**Contributing?** Read [`AGENTS.md`](AGENTS.md) first, then [Adding or changing a service](#adding-or-changing-a-service).
+
+## Contents
+
+- [Source of truth](#source-of-truth)
+- [Files](#files)
+- [Sections](#sections)
+- [Chips (trust signal)](#chips-trust-signal)
+- [Conventions](#conventions)
+- [Adding or changing a service](#adding-or-changing-a-service)
+- [Security](#security)
+- [License](#license)
 
 ## Source of truth
 
@@ -30,7 +46,13 @@ template/CSS in `build/`) and rebuild:
 node build/generate.mjs
 ```
 
-**CI enforces this, it is not just convention.**
+**Preview it locally** — the generated `index.html` is fully self-contained (CSS inlined, no runtime fetches), so open it directly:
+
+```sh
+open index.html            # macOS; or serve it, e.g. python3 -m http.server 8000
+```
+
+**CI enforces this — it is not just convention.**
 [`.github/workflows/registry.yml`](.github/workflows/registry.yml) runs on every
 push and pull request: it validates the registry against the schema and fails
 the build if the committed pages are not byte-identical to a fresh generator
@@ -41,7 +63,7 @@ node build/generate.mjs && git diff --exit-code   # projection is clean
 python .github/scripts/validate-registry.py       # registry contract + rubric
 ```
 
-The validator needs `pip install "jsonschema[format-nongpl]"`.
+**Prerequisites:** Node for the generator (CI uses Node 22; there is no `package.json`) and Python 3 for the validator (CI uses 3.12) with `pip install "jsonschema[format-nongpl]"`.
 
 The generator is pure Node (no dependencies) and idempotent. Amplify re-runs it
 on deploy, but with `|| true` — so what actually ships is the committed output,
@@ -67,7 +89,7 @@ and the CI check at merge time is what guarantees it matches the registry.
 | `.github/` | CI and templates — `workflows/registry.yml` (schema + projection checks), `workflows/assurance.yml` (assurance validator), `scripts/validate-registry.py`, issue forms and the PR template |
 | `AGENTS.md` | **Read first.** Agent/contributor instructions, build commands, and conventions |
 | `AGENTIC_ASSURANCE.md` | How this repo adopts the OpenDevs Agentic Assurance Profile; §7 defines the material-change workflow |
-| `.agentic-assurance/adoption.yaml` | The pinned upstream profile, adopted profile set, and named human owner |
+| `.agentic-assurance/adoption.yaml` | The pinned upstream profile, adopted profile set, and the human owner (a named maintainers body) |
 | `assurance/` | As-built system spec, invariants, claims, defeaters, residuals, threat model, and bound evidence |
 | `SECURITY.md` | Vulnerability reporting — **never** a public Issue |
 | `LICENSE` | MIT |
@@ -162,7 +184,7 @@ non-labs service (e.g. `media`, which is live but still data-seeding).
 1. Edit `ecosystem-registry.json` (add/modify a service object). Base the
    `labelKo`/`label` on what the live site actually says it is. Bump `version`
    for any change to the service set, and refresh `generatedAt` when you have
-   re-verified the links — it renders as the page's 최종 확인 date and the
+   re-verified the links — it renders as the page's 최종 확인 (last-verified) date and the
    sitemap's `lastmod`.
 2. If the entry needs a `stampClass` or chip the registry's `rubric` does not
    already declare, add it there too and bump `rubricVersion` per
@@ -170,7 +192,8 @@ non-labs service (e.g. `media`, which is live but still data-seeding).
    `stampClass` or an orphan chip.
 3. Run `node build/generate.mjs`.
 4. Validate locally: `git diff --exit-code` (after regenerating) and
-   `python .github/scripts/validate-registry.py`.
+   `python .github/scripts/validate-registry.py` (needs the validator
+   prerequisites above).
 5. Commit the registry change **and** the regenerated `index.html`,
    `embed.html`, `llms.txt`, and `sitemap.xml`. CI re-runs the generator and
    fails the build if they differ.
