@@ -49,8 +49,24 @@ HANDLE = "MosslandOpenDevs"
 TEAM = "MosslandOpenDevs/registry-maintainers"
 
 
+LIFECYCLE_FIELDS = ("lifecycle", "maintainer", "secondMaintainer", "lifecycleReason")
+
+
 def entry(registry: dict, service_id: str) -> dict:
     return next(s for s in registry["services"] if s.get("id") == service_id)
+
+
+def reset(registry: dict, service_id: str) -> dict:
+    """Strip a service's lifecycle fields before a mutation.
+
+    The registry now ships real MIP-1 values, so a mutation like "beta with no
+    reason" must first remove the reason the entry legitimately carries —
+    otherwise the violation under test never exists and the case silently stops
+    testing anything."""
+    svc = entry(registry, service_id)
+    for field in LIFECYCLE_FIELDS:
+        svc.pop(field, None)
+    return svc
 
 
 def run_validator(registry: dict) -> tuple[int, str]:
@@ -73,22 +89,23 @@ def run_validator(registry: dict) -> tuple[int, str]:
 
 CASES = [
     ("core with only one maintainer", "REJECT", "MIP-1 Art. 2",
-     lambda r: entry(r, "agora").update(lifecycle="core", maintainer=HANDLE)),
+     lambda r: reset(r, "agora").update(lifecycle="core", maintainer=HANDLE)),
     ("core with both maintainers", "ACCEPT", "MIP-1 Art. 2 satisfied",
-     lambda r: entry(r, "agora").update(lifecycle="core", maintainer=HANDLE, secondMaintainer=TEAM)),
+     lambda r: reset(r, "agora").update(lifecycle="core", maintainer=HANDLE, secondMaintainer=TEAM)),
     ("beta above the cap, unstaffed, no reason", "REJECT", "MIP-1 Art. 3",
-     lambda r: entry(r, "wa").update(lifecycle="beta", maintainer=HANDLE)),
+     lambda r: reset(r, "wa").update(lifecycle="beta", maintainer=HANDLE)),
     ("beta above the cap, unstaffed, reason recorded", "ACCEPT", "MIP-1 Art. 3 exception",
-     lambda r: entry(r, "wa").update(lifecycle="beta", maintainer=HANDLE,
+     lambda r: reset(r, "wa").update(lifecycle="beta", maintainer=HANDLE,
                                      lifecycleReason="Second maintainer search open; published as Beta per Annex A.")),
     ("archive without grounds", "REJECT", "MIP-1 Art. 4",
-     lambda r: entry(r, "media").update(lifecycle="archive")),
+     lambda r: reset(r, "media").update(lifecycle="archive")),
     ("lab needs no maintainer", "ACCEPT", "MIP-1 state table",
-     lambda r: entry(r, "bridge").update(lifecycle="lab")),
+     lambda r: reset(r, "bridge").update(lifecycle="lab")),
     ("maintainer recorded as an email address", "REJECT", "AGENTIC_ASSURANCE.md 9 — public repo",
-     lambda r: entry(r, "agora").update(lifecycle="core", maintainer="someone@example.com",
+     lambda r: reset(r, "agora").update(lifecycle="core", maintainer="someone@example.com",
                                         secondMaintainer=HANDLE)),
-    ("unmodified registry", "ACCEPT", "MIP-1 Art. 1 scope — out-of-scope entries untouched",
+    ("unmodified registry (with the applied MIP-1 values)", "ACCEPT",
+     "the shipped classification satisfies every rule; out-of-scope entries untouched",
      lambda r: None),
 ]
 

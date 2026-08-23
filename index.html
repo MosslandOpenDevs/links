@@ -519,6 +519,27 @@
         border: 1px solid rgba(109, 74, 134, 0.5);
       }
 
+      .link-copy .lc,
+      .legend .lc {
+        display: inline-block;
+        padding: 0 5px;
+        border: 1px solid rgba(29, 36, 27, 0.22);
+        border-radius: 4px;
+        color: var(--muted);
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        line-height: 1.5;
+        vertical-align: 1px;
+      }
+
+      .legend .legend-lc {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px dashed rgba(29, 36, 27, 0.15);
+      }
+
       .link.featured {
         border-color: rgba(31, 59, 43, 0.28);
         background: linear-gradient(180deg, rgba(228, 240, 231, 0.92), var(--panel-strong));
@@ -999,7 +1020,7 @@
                 <span class="link-copy">
                   <strong>Mossland<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">공식 홈페이지</span>
-                  <span class="dom">www.moss.land</span>
+                  <span class="dom">www.moss.land <span class="lc" aria-label="Beta · 운영 중, 변동 가능">Beta</span></span>
                 </span>
                 <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
               </a>
@@ -1007,7 +1028,7 @@
                 <span class="link-copy">
                   <strong>Disclosure<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">공식 공시</span>
-                  <span class="dom">disclosure.moss.land</span>
+                  <span class="dom">disclosure.moss.land <span class="lc" aria-label="Beta · 운영 중, 변동 가능">Beta</span></span>
                 </span>
                 <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
               </a>
@@ -1041,7 +1062,7 @@
                 <span class="link-copy">
                   <strong>Passport<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">지갑 인증·참여 증명</span>
-                  <span class="dom">passport.moss.land</span>
+                  <span class="dom">passport.moss.land <span class="lc" aria-label="Beta · 운영 중, 변동 가능">Beta</span></span>
                 </span>
                 <span class="chip beta" aria-label="베타 · 운영 중인 공식 베타">베타</span>
               </a>
@@ -1049,7 +1070,7 @@
                 <span class="link-copy">
                   <strong>Agora<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">공개 의사결정</span>
-                  <span class="dom">agora.moss.land</span>
+                  <span class="dom">agora.moss.land <span class="lc" aria-label="Beta · 운영 중, 변동 가능">Beta</span></span>
                 </span>
                 <span class="chip" aria-label="공식 · 검증된 Mossland 링크">공식</span>
               </a>
@@ -1057,7 +1078,7 @@
                 <span class="link-copy">
                   <strong>Mossverse<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">지갑이 신원인 Web3 가상세계</span>
-                  <span class="dom">wa.moss.land · play.wa.moss.land</span>
+                  <span class="dom">wa.moss.land · play.wa.moss.land <span class="lc" aria-label="Beta · 운영 중, 변동 가능">Beta</span></span>
                 </span>
                 <span class="chip beta" aria-label="베타 · 운영 중인 공식 베타">베타</span>
               </a>
@@ -1076,7 +1097,7 @@
                 <span class="link-copy">
                   <strong>Alpha<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">크립토·매크로·국제정세 큐레이션</span>
-                  <span class="dom">alpha.moss.land</span>
+                  <span class="dom">alpha.moss.land <span class="lc" aria-label="Beta · 운영 중, 변동 가능">Beta</span></span>
                 </span>
                 <span class="chip intel" aria-label="인텔리전스 · 검증된 Mossland AI 분석·데이터">인텔리전스</span>
               </a>
@@ -1084,7 +1105,7 @@
                 <span class="link-copy">
                   <strong>Signal Map<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">유튜버 여론·이슈 지도</span>
-                  <span class="dom">signalmap.moss.land</span>
+                  <span class="dom">signalmap.moss.land <span class="lc" aria-label="Beta · 운영 중, 변동 가능">Beta</span></span>
                 </span>
                 <span class="chip intel" aria-label="인텔리전스 · 검증된 Mossland AI 분석·데이터">인텔리전스</span>
               </a>
@@ -1092,7 +1113,7 @@
                 <span class="link-copy">
                   <strong>Mossland Signal<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">온체인 예측 인사이트</span>
-                  <span class="dom">signal.moss.land</span>
+                  <span class="dom">signal.moss.land <span class="lc" aria-label="Lab · 실험, best-effort">Lab</span></span>
                 </span>
                 <span class="chip lab" aria-label="실험 · 아직 완성된 공식 제품 아님">실험</span>
               </a>
@@ -1100,7 +1121,7 @@
                 <span class="link-copy">
                   <strong>City<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">스스로 움직이는 AI 도시</span>
-                  <span class="dom">city.moss.land</span>
+                  <span class="dom">city.moss.land <span class="lc" aria-label="Lab · 실험, best-effort">Lab</span></span>
                 </span>
                 <span class="chip show" aria-label="쇼케이스 · 검증된 Mossland 체험형 데모">쇼케이스</span>
               </a>
@@ -1108,7 +1129,7 @@
                 <span class="link-copy">
                   <strong>NPC<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">AI 주민과 대화</span>
-                  <span class="dom">npc.moss.land</span>
+                  <span class="dom">npc.moss.land <span class="lc" aria-label="Lab · 실험, best-effort">Lab</span></span>
                 </span>
                 <span class="chip show" aria-label="쇼케이스 · 검증된 Mossland 체험형 데모">쇼케이스</span>
               </a>
@@ -1116,7 +1137,7 @@
                 <span class="link-copy">
                   <strong>Recipe<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">유행 AI 결과물 따라 만들기</span>
-                  <span class="dom">recipe.moss.land</span>
+                  <span class="dom">recipe.moss.land <span class="lc" aria-label="Lab · 실험, best-effort">Lab</span></span>
                 </span>
                 <span class="chip show" aria-label="쇼케이스 · 검증된 Mossland 체험형 데모">쇼케이스</span>
               </a>
@@ -1124,7 +1145,7 @@
                 <span class="link-copy">
                   <strong>MOSS.AO<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">AI 에이전트 조율 엔진</span>
-                  <span class="dom">ao.moss.land</span>
+                  <span class="dom">ao.moss.land <span class="lc" aria-label="Lab · 실험, best-effort">Lab</span></span>
                 </span>
                 <span class="chip lab" aria-label="실험 · 아직 완성된 공식 제품 아님">실험</span>
               </a>
@@ -1132,7 +1153,7 @@
                 <span class="link-copy">
                   <strong>Algora<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">AI 에이전트 거버넌스 토론장</span>
-                  <span class="dom">algora.moss.land</span>
+                  <span class="dom">algora.moss.land <span class="lc" aria-label="Archive · 종료·보존">Archive</span></span>
                 </span>
                 <span class="chip lab" aria-label="실험 · 아직 완성된 공식 제품 아님">실험</span>
               </a>
@@ -1140,7 +1161,7 @@
                 <span class="link-copy">
                   <strong>BRIDGE<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">현실세계 AI 거버넌스</span>
-                  <span class="dom">bridge.moss.land</span>
+                  <span class="dom">bridge.moss.land <span class="lc" aria-label="Lab · 실험, best-effort">Lab</span></span>
                 </span>
                 <span class="chip lab" aria-label="실험 · 아직 완성된 공식 제품 아님">실험</span>
               </a>
@@ -1148,7 +1169,7 @@
                 <span class="link-copy">
                   <strong>Governance Monitor<span class="ext" aria-hidden="true">↗</span><span class="sr-only"><span lang="ko"> (새 창에서 열림)</span><span lang="en"> (opens in a new tab)</span></span></strong>
                   <span class="role">AI 거버넌스 실시간 대시보드</span>
-                  <span class="dom">monitor.moss.land</span>
+                  <span class="dom">monitor.moss.land <span class="lc" aria-label="Lab · 실험, best-effort">Lab</span></span>
                 </span>
                 <span class="chip lab" aria-label="실험 · 아직 완성된 공식 제품 아님">실험</span>
               </a>
@@ -1242,7 +1263,7 @@
         </div>
 
         <details class="legend" open>
-          <summary>표시 안내 / What the chips mean</summary>
+          <summary>표시 안내 / Chips & lifecycle</summary>
           <ul>
             <li><span class="chip">공식</span> Mossland 공식·검증 도메인과 채널 / Verified Mossland domains and channels</li>
             <li><span class="chip beta">베타</span> 운영 중인 공식 베타 / Official service in open beta</li>
@@ -1251,6 +1272,12 @@
             <li><span class="chip lab">실험</span> 아직 완성된 공식 제품 아님 / Experimental, not a finished official product</li>
             <li><span class="chip third">제3자</span> Mossland 미검증 외부 링크 / Third-party, not verified by Mossland</li>
             <li><span class="chip muted">자료</span> 개발자·데이터 파일 / Developer &amp; data files</li>
+          </ul>
+          <ul class="legend-lc">
+            <li><span class="lc">Core</span> 상시 운영 — 담당자·부담당자 지정 · 장애 대응 · 변경은 예고 후</li>
+            <li><span class="lc">Beta</span> 운영 중, 변동 가능 — 담당자 지정 · 기능·데이터가 바뀔 수 있음</li>
+            <li><span class="lc">Lab</span> 실험, best-effort — 예고 없이 변경·중단될 수 있음</li>
+            <li><span class="lc">Archive</span> 종료·보존 — 신규 개발 중단 · 기록은 읽기 전용으로 보존</li>
           </ul>
         </details>
 

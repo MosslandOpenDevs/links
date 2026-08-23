@@ -251,7 +251,7 @@ invariants:
       - "MIP-1 passes substantially as proposed. If the ratified text differs, the rule is re-derived from the ratified text, not from this entry."
       - "A recorded handle corresponds to a person who actually holds deploy and recovery rights; the registry records the assignment, not the permission grant."
     limitations:
-      - "Holds vacuously today: no entry carries a lifecycle yet, because the classification is an owner decision pending approval of the MIP-1 Annex A mapping (RES-LIFECYCLE-001). The control is nonetheless demonstrated to reject violations (EV-LIFECYCLE-001)."
+      - "No entry is lifecycle core yet: the five Annex A Core candidates are published as beta under the Art. 3 exception until named individual maintainers are designated (RES-LIFECYCLE-001 resolution note), so this invariant currently constrains an empty set while remaining demonstrated against violations (EV-LIFECYCLE-001)."
       - "The registry cannot verify that a named maintainer holds deploy or recovery rights — that lives in GitHub and AWS permissions, not here. This checks that an accountable party is named, which is the part MIP-1 makes this registry the source of truth for."
     enforcement:
       - "ecosystem-registry.schema.json $defs.service.allOf: if lifecycle is core then maintainer and secondMaintainer are required. The if is guarded by required:[lifecycle] so an entry with no lifecycle is not matched vacuously."
@@ -284,7 +284,7 @@ invariants:
     assumptions:
       - "MIP-1 passes substantially as proposed."
     limitations:
-      - "Holds vacuously today (RES-LIFECYCLE-001); the control itself is demonstrated (EV-LIFECYCLE-001)."
+      - "Exercised for real since 2026-08-23: eight beta entries carry the Art. 3 exception with recorded reasons, and both archive entries carry their grounds (RES-LIFECYCLE-001 resolution note; EV-LIFECYCLE-001)."
       - "The check requires that a reason exists, not that it is a good one. Whether a recorded exception is justified stays a review judgement."
       - "MIP-1's own text is not fully consistent here: Article 3 caps an unstaffed service at Lab or below, while Annex A publishes an unstaffed Core candidate as Beta. This invariant takes the reading that reconciles them — Annex A is exercising Article 3's exception clause, which is exactly why the reason must be recorded. The stricter reading (unstaffed ⇒ Lab, full stop) would also be satisfiable under this schema by simply not using the exception. Flagged for the owner rather than resolved by the drafting agent."
     enforcement:

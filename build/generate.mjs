@@ -70,11 +70,22 @@ function chipFor(s) {
   throw new Error(`rubric: no chip rule matched service "${s.id}" — precedence must end with a "default" rule`);
 }
 
+// MIP-1 Art. 1: services in scope display their lifecycle state on the page.
+// Like the chips, the display derives from the registry's own declaration
+// (rubric.lifecycle), so the rendered vocabulary cannot drift from the policy.
+function lifecycleTag(s) {
+  if (!s.lifecycle) return "";
+  const def = RUBRIC.lifecycle?.states?.[s.lifecycle];
+  if (!def) throw new Error(`rubric: lifecycle "${s.lifecycle}" on "${s.id}" is not declared in rubric.lifecycle.states`);
+  const label = s.lifecycle.charAt(0).toUpperCase() + s.lifecycle.slice(1);
+  return ` <span class="lc" aria-label="${esc(`${label} · ${def.ko}`)}">${esc(label)}</span>`;
+}
+
 function domLine(s) {
   let d = esc(s.domain);
   if (s.ticker) d += ` · ${esc(s.ticker)}`;
   if (s.runtime) d += ` · ${esc(s.runtime.domain)}`;
-  return d;
+  return d + lifecycleTag(s);
 }
 
 function card(s) {
@@ -225,11 +236,26 @@ const LEGEND_ITEMS = RUBRIC.chips.legendOrder
   })
   .join("\n");
 
+// MIP-1 lifecycle legend — rendered only when the registry actually classifies
+// services, and read from rubric.lifecycle so the explanation is the declaration.
+const LIFECYCLE_LEGEND = reg.services.some((s) => s.lifecycle)
+  ? "\n          <ul class=\"legend-lc\">\n" +
+    (RUBRIC.lifecycle?.order || [])
+      .map((name) => {
+        const def = RUBRIC.lifecycle.states[name];
+        if (!def) throw new Error(`rubric: lifecycle order names "${name}" but it has no state definition`);
+        const label = name.charAt(0).toUpperCase() + name.slice(1);
+        return `            <li><span class="lc">${esc(label)}</span> ${esc(def.ko)} — ${esc(def.promiseKo || def.promise)}</li>`;
+      })
+      .join("\n") +
+    "\n          </ul>"
+  : "";
+
 const LEGEND = `        <details class="legend" open>
-          <summary>표시 안내 / What the chips mean</summary>
+          <summary>표시 안내 / Chips & lifecycle</summary>
           <ul>
 ${LEGEND_ITEMS}
-          </ul>
+          </ul>${LIFECYCLE_LEGEND}
         </details>`;
 
 const indexHtml = `<!DOCTYPE html>
@@ -343,7 +369,8 @@ function renderLlms() {
     lines.push(`## ${meta.titleEn}`);
     if (meta.note) lines.push(`> ${meta.note.en}`);
     for (const s of items) {
-      lines.push(`- [${s.name}](${s.url}): ${s.label || s.labelKo}`);
+      const lc = s.lifecycle ? ` (lifecycle: ${s.lifecycle})` : "";
+      lines.push(`- [${s.name}](${s.url}): ${s.label || s.labelKo}${lc}`);
     }
     lines.push("");
   }
@@ -354,6 +381,7 @@ function renderLlms() {
   lines.push("## Notes");
   lines.push("- Agora is Mossland's public decision layer: proposals and voting use gasless EIP-712 wallet signatures (no on-chain transaction), weighted by each voter's delegated MOC voting power at a fixed snapshot block (ERC20Votes getPastVotes, with a balanceOf fallback for holders who have never delegated). Unless a proposal explicitly says otherwise, Mossland DAO treats an Agora result as its binding decision of record.");
   lines.push("- Labs (AO, Algora, BRIDGE) are experimental; not official products or governance.");
+  lines.push("- Lifecycle states (core / beta / lab / archive) follow MIP-1, Mossland DAO's public service lifecycle policy: core is always-on with two named maintainers, beta is running but subject to change, lab is best-effort and may stop without notice, archive is ended and preserved read-only. This registry is the single source of truth for these states.");
   lines.push("- Markets / third-party links are reference only and are not trading recommendations.");
   lines.push("");
   return lines.join("\n");

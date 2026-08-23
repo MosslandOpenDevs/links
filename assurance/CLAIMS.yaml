@@ -87,7 +87,7 @@ claims:
     invariants:
       - INV-PASSPORT-001
     evidence:
-      - "ecosystem-registry.json (all 11 passportEligible entries — disclosure, passport, agora, wa, signalmap, city, npc, recipe, algora, bridge, monitor — have owner 'mossland')"
+      - "ecosystem-registry.json (all 10 passportEligible entries — disclosure, passport, agora, wa, signalmap, city, npc, recipe, bridge, monitor — have owner 'mossland'; algora withdrawn on archival by owner decision 2026-08-23, MIP-1 Annex A)"
       - ".github/scripts/validate-registry.py rejects any passportEligible entry whose owner is not 'mossland'; run on every push and pull request since 2026-07-18 and confirmed by a negative test."
       - "ecosystem-registry.json `rubric.stampClasses` declares what each stampClass signifies, versioned by `rubricVersion` (assurance/RUBRIC.md), so a consumer can tell when the meaning behind an unchanged entry has moved. CI rejects a service using an undeclared stampClass."
     limitations:
