@@ -66,7 +66,7 @@ claims:
     invariants:
       - INV-PASSPORT-001
     evidence:
-      - "ecosystem-registry.schema.json:102-111 (third_party and channel forced to passportEligible false)"
+      - "ecosystem-registry.schema.json:253-260 (third_party and channel forced to passportEligible false)"
       - "ecosystem-registry.json (public data: no third_party or channel entry is passportEligible)"
     limitations:
       - The schema constraint is publicly checkable by any consumer and, since 2026-07-18, is also enforced in CI on every change (RES-CI-VALIDATION-001 RESOLVED).

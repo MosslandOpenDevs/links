@@ -105,3 +105,68 @@ Captured 2026-07-18 against `.github/scripts/validate-registry.py`. Each mutatio
 | Drop a chip from `legendOrder` | `ERROR: ... '베타' is defined but is missing from legendOrder, so it would render on the page without an explanation` — exit 1 |
 
 The unmodified registry exits 0. These confirm the checks fail on real drift rather than merely existing.
+
+---
+
+## EV-STATUS-001 — alpha and ao verified against their live health endpoints
+
+- **Command:**
+  ```sh
+  curl -s "https://alpha.moss.land/api/health?strict=1"
+  curl -s "https://ao.moss.land/api/status"
+  curl -s "https://alpha.moss.land/sitemap.xml" | head
+  ```
+- **Captured:** 2026-08-23T01:01:52Z (the `ts` / `timestamp` the services themselves returned; recorded per entry in `statusVerifiedAt`).
+- **Observed:**
+  - `alpha` → `{"status":"ok","service":"alpha","db":"ok","seo_pages":1642,"ts":"2026-08-23T01:01:52.092Z","worst_status":"ok"}`; `sitemap.xml` lists same-day entries (`lastmod` 2026-08-22/23), and `GET /` returns 200.
+  - `ao` → `{"status":"operational",...}` with `api`, `database` and `llm_router` all `healthy`, `signal_feed` healthy with 12005 records emitted; sampled data endpoints `/api/signals`, `/api/ideas`, `/api/agents` each return HTTP 200.
+- **Registry before this capture:** `alpha: "paused"`, `ao: "degraded"` — both first recorded 2026-07-06 and unchanged for 48 days, including across the 2026-08-21 registry edit (`9c7b186`).
+- **Result:** both values were wrong and are corrected to `operational`, with the observation time recorded in `statusVerifiedAt` and the `note` fields re-grounded on this capture.
+- **Supports:** the `RES-STATUS-DRIFT-001` re-review (this is the evidence that its "re-verified when the registry is updated" mitigation was not operating); the 2026-08-23 rows in `assurance/SYSTEM.md` §9.
+- **Does not close:** `RES-STATUS-DRIFT-001` — this is a point-in-time capture, and nothing continuous replaces it. Per `assurance/SYSTEM.md` §2 that is deliberate.
+
+---
+
+## EV-LIFECYCLE-001 — the MIP-1 lifecycle constraints reject what they are meant to reject
+
+Follows the precedent set for the registry gate (`assurance/SYSTEM.md` §8): a control is not evidence until it has been seen to fail on the thing it is supposed to catch.
+
+- **Command:**
+  ```sh
+  python .github/scripts/test-lifecycle-rules.py
+  ```
+- **Method:** each case mutates a copy of `ecosystem-registry.json` in a temporary tree and runs the real `.github/scripts/validate-registry.py` against it. Both directions are tested — the violation must be rejected *and* the compliant form must be accepted, so a rule that rejected everything would fail here too.
+- **Captured:** 2026-08-23, Python 3.9.6 with `jsonschema[format-nongpl]`.
+- **Continuous, not a snapshot.** Unlike the 2026-07-18 registry-gate negative test, which was performed once by hand and recorded here, this one is a committed script wired into `.github/workflows/registry.yml` and re-runs on every push and pull request. Loosening a lifecycle rule turns the build red rather than going unnoticed.
+
+| Case | MIP-1 | Expected | Result |
+|---|---|---|---|
+| `core` with `maintainer` only | Art. 2 | REJECT | REJECT — schema `'secondMaintainer' is a required property` + validator `lifecycle 'core' requires 'secondMaintainer'` |
+| `core` with both handles | Art. 2 | ACCEPT | ACCEPT |
+| `beta`, no `secondMaintainer`, no reason | Art. 3 | REJECT | REJECT — `lifecycle 'beta' is above 'lab' with no secondMaintainer, so it is an exception and requires lifecycleReason` |
+| `beta`, no `secondMaintainer`, reason recorded | Art. 3 (exception) | ACCEPT | ACCEPT |
+| `archive` with no reason | Art. 4 | REJECT | REJECT — `lifecycle 'archive' requires 'lifecycleReason'` |
+| `lab` with no maintainer | state table | ACCEPT | ACCEPT |
+| `maintainer` set to an email address | `AGENTIC_ASSURANCE.md` §9 | REJECT | REJECT — schema pattern + validator `looks like a name or an email address` |
+| Unmodified registry (out-of-scope entries present) | Art. 1 scope | ACCEPT | ACCEPT |
+
+**8/8 behaved as specified.** Every rejection was caught twice — once by the published schema, once by the validator with a message naming the article violated.
+
+### The `required: ["lifecycle"]` guard is load-bearing
+
+JSON Schema's `if` is satisfied *vacuously* when the named property is absent, so `{"properties": {"lifecycle": {"const": "core"}}}` alone matches every entry that has no lifecycle. The pre-existing `passportEligible` rules get away without a guard because `tier` is a required property; `lifecycle` is optional by design (MIP-1 Art. 1 scopes the obligation), so the guard is what keeps the policy off out-of-scope entries.
+
+Removing `required: ["lifecycle"]` from all four lifecycle rules and validating the **unchanged** registry:
+
+```text
+150 schema errors across 30 entries
+entries dragged in: agora, algora, alpha, ao, bithumb, bridge, city, coingecko,
+coinmarketcap, coinone, disclosure, github-mossland, github-opendevs, gopax, links,
+llms-txt, media, medium, monitor, moss, npc, passport, recipe, registry-json, signal,
+signalmap, sitemap, upbit, x, wa
+```
+
+Upbit, Bithumb and `sitemap.xml` would each be required to name a maintainer. With the guard in place the same registry produces **0 errors**.
+
+- **Supports:** `INV-LIFECYCLE-001`, `INV-LIFECYCLE-002`.
+- **Does not close:** `RES-LIFECYCLE-001` — this proves the control works, not that any service is classified. No entry carries a lifecycle yet.

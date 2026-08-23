@@ -25,6 +25,23 @@ Checks:
    service is declared. The rubric is the registry's editorial contract
    (RES-CURATION-002); an inconsistency means the page could show a chip whose
    meaning is undeclared, or emit a stampClass Passport cannot interpret.
+5. The MIP-1 lifecycle policy holds (INV-LIFECYCLE-001, INV-LIFECYCLE-002). The
+   rules are not hard-coded here: they are read from `rubric.lifecycle`, the same
+   arrangement the chip rules use, so the declared promise and the enforced check
+   are one declaration. Article 2 — a core service names a maintainer and a second
+   maintainer. Article 3 — without a second maintainer a service is capped at
+   `unstaffedCap`, and holding it above that cap requires a recorded reason.
+   Article 4 — an archive state requires its grounds. The schema's allOf carries
+   the same constraints for consumers validating against the published contract;
+   this restates them so a CI failure names the article it violated.
+6. Maintainer handles carry no personal data. This is a public repository
+   (AGENTIC_ASSURANCE.md section 9), so a maintainer is a GitHub handle or an
+   org/team slug, never a name or an email address.
+
+Non-fatal notes (printed, exit code unaffected): services in MIP-1 Article 1 scope
+that carry no lifecycle yet, and a lifecycle review older than the monthly cadence
+Article 4 sets. These are reported rather than enforced because a date-triggered
+hard failure would break an unrelated pull request that changed nothing.
 
 Usage: python .github/scripts/validate-registry.py
 Exit code 1 on any error. No network access.
@@ -35,6 +52,7 @@ from __future__ import annotations
 import json
 import sys
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 
 try:
@@ -46,6 +64,10 @@ except ImportError:
 ROOT = Path(__file__).resolve().parents[2]
 REGISTRY = ROOT / "ecosystem-registry.json"
 SCHEMA = ROOT / "ecosystem-registry.schema.json"
+
+# MIP-1 Art. 4 reviews the lifecycle states monthly; a few days of slack keeps the
+# note from firing on a review that landed a little late.
+REVIEW_CADENCE_DAYS = 35
 
 
 def load(path: Path) -> dict:
@@ -143,6 +165,119 @@ def main() -> int:
                     "in rubric.stampClasses, so a consumer cannot tell what it signifies"
                 )
 
+    # 5. The MIP-1 lifecycle policy, enforced from its own declaration in the rubric.
+    # rubric.lifecycle states what each lifecycle promises AND which fields that
+    # promise requires, so the policy a reader sees and the rule CI applies are the
+    # same object — the arrangement that keeps the chip rules from drifting.
+    lifecycle_rubric = (rubric or {}).get("lifecycle") if isinstance(rubric, dict) else None
+    notes: list[str] = []
+    if isinstance(lifecycle_rubric, dict):
+        states = lifecycle_rubric.get("states") if isinstance(lifecycle_rubric.get("states"), dict) else {}
+        order = lifecycle_rubric.get("order") if isinstance(lifecycle_rubric.get("order"), list) else []
+        cap = lifecycle_rubric.get("unstaffedCap")
+        # MIP-1 articles, quoted in the failure so a red build names the policy it broke.
+        article = {
+            "maintainer": "MIP-1 Art. 2 / state table (a core or beta service names a maintainer)",
+            "secondMaintainer": "MIP-1 Art. 2 (core requires a second maintainer with deploy and recovery rights)",
+            "lifecycleReason": "MIP-1 Art. 4 (a lifecycle change, Archive in particular, is recorded with its grounds)",
+        }
+
+        for name in states:
+            if name not in order:
+                errors.append(
+                    f"$.rubric.lifecycle: state {name!r} is defined but missing from `order`, "
+                    "so its position relative to unstaffedCap is undefined"
+                )
+        if cap is not None and cap not in order:
+            errors.append(f"$.rubric.lifecycle.unstaffedCap: {cap!r} is not one of the states in `order`")
+
+        for service in services:
+            if not isinstance(service, dict):
+                continue
+            sid = service.get("id")
+            lifecycle = service.get("lifecycle")
+            if lifecycle is None:
+                continue
+            if lifecycle not in states:
+                errors.append(
+                    f"$.services[id={sid!r}]: lifecycle {lifecycle!r} is not declared in "
+                    "rubric.lifecycle.states, so its promise is undefined"
+                )
+                continue
+
+            for field in states[lifecycle].get("requires") or []:
+                if not service.get(field):
+                    errors.append(
+                        f"$.services[id={sid!r}]: lifecycle {lifecycle!r} requires {field!r} — "
+                        f"{article.get(field, 'MIP-1')}"
+                    )
+
+            # Article 3: without a second maintainer the lifecycle is capped, and
+            # anything above the cap is an exception that must record why.
+            if (
+                not service.get("secondMaintainer")
+                and cap in order
+                and lifecycle in order
+                and order.index(lifecycle) < order.index(cap)
+                and not service.get("lifecycleReason")
+            ):
+                errors.append(
+                    f"$.services[id={sid!r}]: lifecycle {lifecycle!r} is above {cap!r} with no "
+                    "secondMaintainer, so it is an exception and requires `lifecycleReason` — "
+                    "MIP-1 Art. 3 (a service without a second owner is shown at Lab or below; "
+                    "an exception is recorded in the registry with its reason)"
+                )
+
+        # 6. A maintainer is a public handle, never personal data (public repository).
+        for service in services:
+            if not isinstance(service, dict):
+                continue
+            for field in ("maintainer", "secondMaintainer"):
+                value = service.get(field)
+                if isinstance(value, str) and ("@" in value or " " in value):
+                    errors.append(
+                        f"$.services[id={service.get('id')!r}]: {field} {value!r} looks like a name or an "
+                        "email address; this is a public repository, so record a GitHub handle or an "
+                        "org/team slug instead (AGENTIC_ASSURANCE.md section 9)"
+                    )
+
+        # Non-fatal: MIP-1 Art. 1 scope not yet classified.
+        in_scope = [
+            s
+            for s in services
+            if isinstance(s, dict)
+            and s.get("owner") == "mossland"
+            and s.get("tier") not in ("third_party", "channel")
+            and s.get("artifact") is not True
+            and str(s.get("domain", "")).endswith("moss.land")
+        ]
+        unclassified = [s.get("id") for s in in_scope if not s.get("lifecycle")]
+        if unclassified:
+            notes.append(
+                f"{len(unclassified)} of {len(in_scope)} services in MIP-1 Art. 1 scope carry no "
+                f"lifecycle yet ({', '.join(str(i) for i in unclassified)}). The schema and this "
+                "check are in place; the classification itself is an owner decision."
+            )
+
+        # Non-fatal: Art. 4 sets a monthly review cadence.
+        reviewed = registry.get("lifecycleReviewedAt")
+        if not reviewed:
+            notes.append(
+                "lifecycleReviewedAt is not set — MIP-1 Art. 4 reviews these states once a month "
+                "and records when that happened."
+            )
+        else:
+            try:
+                last = datetime.fromisoformat(str(reviewed).replace("Z", "+00:00"))
+                age = (datetime.now(timezone.utc) - last).days
+                if age > REVIEW_CADENCE_DAYS:
+                    notes.append(
+                        f"lifecycleReviewedAt is {age} days old, past the {REVIEW_CADENCE_DAYS}-day "
+                        "monthly cadence in MIP-1 Art. 4."
+                    )
+            except ValueError:
+                errors.append(f"$.lifecycleReviewedAt: {reviewed!r} is not a parseable date-time")
+
     if errors:
         for message in errors:
             print(f"ERROR: {message}")
@@ -150,13 +285,17 @@ def main() -> int:
         return 1
 
     eligible = sum(1 for s in services if isinstance(s, dict) and s.get("passportEligible") is True)
+    classified = sum(1 for s in services if isinstance(s, dict) and s.get("lifecycle"))
     rubric_version = registry.get("rubricVersion")
     chip_count = len(((registry.get("rubric") or {}).get("chips") or {}).get("definitions") or {})
     print(
         f"OK: {len(services)} services validate against ecosystem-registry.schema.json; "
         f"{eligible} Passport-eligible, all owned by Mossland; ids unique; "
-        f"rubric v{rubric_version} consistent ({chip_count} chips declared)."
+        f"rubric v{rubric_version} consistent ({chip_count} chips declared); "
+        f"{classified} services carry a MIP-1 lifecycle, all satisfying it."
     )
+    for note in notes:
+        print(f"NOTE: {note}")
     return 0
 
 
