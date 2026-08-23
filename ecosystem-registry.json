@@ -26,7 +26,7 @@
     "offline": "오프라인",
     "deprecated": "지원 종료"
   },
-  "rubricVersion": "1.0.0",
+  "rubricVersion": "1.1.0",
   "rubric": {
     "note": "The editorial rubric of record: how a service's fields map to the trust chip shown on the page, and what each Passport stampClass signifies. Versioned separately from `version` (which versions this document's contents) so that a change in classification *meaning* is visible to consumers even when no entry changed. build/generate.mjs derives both the chip and the on-page legend from this object, so the rendered page cannot drift from the declared rubric. See assurance/RUBRIC.md for the changelog and the version-bump rules.",
     "chips": {
@@ -48,6 +48,42 @@
         "실험": { "class": "chip lab", "aria": "실험 · 아직 완성된 공식 제품 아님", "ko": "아직 완성된 공식 제품 아님", "en": "Experimental, not a finished official product" },
         "제3자": { "class": "chip third", "aria": "제3자 · Mossland 미검증", "ko": "Mossland 미검증 외부 링크", "en": "Third-party, not verified by Mossland" },
         "자료": { "class": "chip muted", "aria": "자료 · 개발자 데이터 파일", "ko": "개발자·데이터 파일", "en": "Developer & data files" }
+      }
+    },
+    "lifecycle": {
+      "note": "MIP-1 (Mossland DAO, agora.moss.land) — 공개 서비스·저장소 생명주기 정책. The lifecycle axis records the maintenance promise a service carries; `status` separately records observed availability at a point in time. Article 1 scopes the obligation to public *.moss.land services and deployment-linked public repositories, so out-of-scope entries (third-party markets, off-domain channels, data artifacts) carry no lifecycle. Article 4 makes this registry the single source of truth for these states, reviewed monthly.",
+      "order": ["core", "beta", "lab", "archive"],
+      "unstaffedCap": "lab",
+      "unstaffedNote": "MIP-1 Article 3 — a service without a secondMaintainer is capped at `unstaffedCap`. Holding it above that cap is an exception and requires `lifecycleReason`.",
+      "states": {
+        "core": {
+          "ko": "상시 운영",
+          "en": "Always-on",
+          "promiseKo": "담당자·부담당자 지정 · 장애 대응 · 변경은 예고 후",
+          "promise": "Maintainer and second maintainer, both with deploy and recovery rights; incident response; changes pre-announced",
+          "requires": ["maintainer", "secondMaintainer"]
+        },
+        "beta": {
+          "ko": "운영 중, 변동 가능",
+          "en": "Running, subject to change",
+          "promiseKo": "담당자 지정 · 기능·데이터가 바뀔 수 있음",
+          "promise": "Maintainer assigned; features and data may change",
+          "requires": ["maintainer"]
+        },
+        "lab": {
+          "ko": "실험, best-effort",
+          "en": "Experimental, best-effort",
+          "promiseKo": "예고 없이 변경·중단될 수 있음",
+          "promise": "May change or stop without notice",
+          "requires": []
+        },
+        "archive": {
+          "ko": "종료·보존",
+          "en": "Ended, preserved",
+          "promiseKo": "신규 개발 중단 · 기록은 읽기 전용으로 보존",
+          "promise": "Development ended; the record is preserved read-only. Archive is not deletion — removing a domain, its data, or its repository requires its own proposal.",
+          "requires": ["lifecycleReason"]
+        }
       }
     },
     "stampClasses": {
@@ -187,14 +223,15 @@
       "label": "Crypto, macro & geopolitics media curation",
       "labelKo": "크립토·매크로·국제정세 큐레이션",
       "section": "ecosystem",
-      "status": "paused",
+      "status": "operational",
+      "statusVerifiedAt": "2026-08-23T01:01:52Z",
       "passportEligible": false,
       "stampType": null,
       "stampClass": null,
       "sourceOfTruth": "alpha-canonical-store",
       "lastDataAt": null,
       "owner": "mossland",
-      "note": "Data backend empty across all queries (0 entities/topics/events, verified 2026-07-06); sitemap/rss list stale URLs that now 404. Pipeline suspended — not serving live data.",
+      "note": "Serving live data: /api/health?strict=1 returns status ok, db ok, worst_status ok over 1642 indexed pages, and sitemap.xml lists same-day entries (verified 2026-08-23). Supersedes the 2026-07-06 observation of an empty data backend and 404ing sitemap URLs, which the registry carried until this correction.",
       "hidden": false
     },
     {
@@ -317,14 +354,15 @@
       "label": "AI agent orchestration engine",
       "labelKo": "AI 에이전트 조율 엔진",
       "section": "ecosystem",
-      "status": "degraded",
+      "status": "operational",
+      "statusVerifiedAt": "2026-08-23T01:01:52Z",
       "passportEligible": false,
       "stampType": null,
       "stampClass": null,
       "sourceOfTruth": null,
       "lastDataAt": null,
       "owner": "mossland",
-      "note": "Health/liveness OK but all 12 data endpoints return HTTP 500 (data layer down, verified 2026-07-06); UI shows SYSTEM ONLINE while pipeline output is unavailable.",
+      "note": "Serving live data: /api/status returns operational with api, database and llm_router healthy, and the sampled data endpoints return HTTP 200 (verified 2026-08-23). Supersedes the 2026-07-06 observation of HTTP 500 across the data endpoints, which the registry carried until this correction.",
       "hidden": false
     },
     {

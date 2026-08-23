@@ -92,14 +92,14 @@ invariants:
     limitations:
       - "The schema itself encodes only this negative direction (third_party/channel ⇒ not eligible); it still does not bind passportEligible:true to owner 'mossland'. Since 2026-07-18 that positive direction is asserted by the CI validator rather than the schema, so a consumer validating against the published schema alone does not get it. See CLAIM-PASSPORT-002."
     enforcement:
-      - "ecosystem-registry.schema.json allOf lines 102-111: if tier is third_party then passportEligible const false; if tier is channel then passportEligible const false."
+      - "ecosystem-registry.schema.json $defs.service.allOf: if tier is third_party then passportEligible const false; if tier is channel then passportEligible const false."
       - ".github/scripts/validate-registry.py, run by .github/workflows/registry.yml on every push and pull request: validates the registry against the schema and additionally rejects any passportEligible entry whose owner is not 'mossland'."
       - "Registry data: every third_party (markets) and channel (Medium, X) entry has passportEligible false."
     verification:
       - "JSON Schema (draft 2020-12) validation of ecosystem-registry.json against ecosystem-registry.schema.json — reproducible by any consumer, and enforced in CI since 2026-07-18."
       - "Negative test (2026-07-18): marking a third_party entry passportEligible made the validator emit two errors and exit 1; the unmodified registry exits 0 with 29 services and 11 Passport-eligible entries."
     evidence:
-      - "ecosystem-registry.schema.json:102-111 (allOf if/then constraints for third_party and channel)"
+      - "ecosystem-registry.schema.json $defs.service.allOf (if/then constraints for third_party and channel)"
       - "ecosystem-registry.json (all owner 'third-party' and channel entries: passportEligible false)"
     defeaters:
       - DEF-PASSPORT-001
@@ -232,6 +232,72 @@ invariants:
     defeaters: []
     residuals:
       - RES-STATUS-DRIFT-001
+    status: VERIFIED
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+
+  - id: INV-LIFECYCLE-001
+    title: A core service names two maintainers
+    statement: >-
+      No service with lifecycle "core" lacks a maintainer or a secondMaintainer.
+      MIP-1 Article 2 states no exception to this, so a Core entry that names only
+      one accountable party cannot exist in the registry.
+    severity: high
+    intent:
+      classification: INTENDED
+      authority: "Mossland DAO via Agora — MIP-1 (공개 서비스·저장소 생명주기 정책), contentHash sha256:7d3cf4a4…; voting open until 2026-09-02T02:19:25Z at the time of writing. The enforcement was built ahead of ratification so it is ready inside the 14-day implementation window MIP-1 Article 4 sets; no classification value is applied until the owner approves the Annex A mapping. Registry governance authority: assurance/SYSTEM.md §5."
+    scope: ecosystem-registry.json lifecycle / maintainer / secondMaintainer fields.
+    assumptions:
+      - "MIP-1 passes substantially as proposed. If the ratified text differs, the rule is re-derived from the ratified text, not from this entry."
+      - "A recorded handle corresponds to a person who actually holds deploy and recovery rights; the registry records the assignment, not the permission grant."
+    limitations:
+      - "Holds vacuously today: no entry carries a lifecycle yet, because the classification is an owner decision pending approval of the MIP-1 Annex A mapping (RES-LIFECYCLE-001). The control is nonetheless demonstrated to reject violations (EV-LIFECYCLE-001)."
+      - "The registry cannot verify that a named maintainer holds deploy or recovery rights — that lives in GitHub and AWS permissions, not here. This checks that an accountable party is named, which is the part MIP-1 makes this registry the source of truth for."
+    enforcement:
+      - "ecosystem-registry.schema.json $defs.service.allOf: if lifecycle is core then maintainer and secondMaintainer are required. The if is guarded by required:[lifecycle] so an entry with no lifecycle is not matched vacuously."
+      - ".github/scripts/validate-registry.py, run by .github/workflows/registry.yml on every push and pull request: reads rubric.lifecycle.states[*].requires and enforces it, so the declared promise and the applied rule are one object rather than two copies that can drift."
+    verification:
+      - ".github/scripts/test-lifecycle-rules.py, run by .github/workflows/registry.yml on every push and pull request: a core entry with only a maintainer is rejected by both the schema and the validator; the same entry with both handles is accepted. First captured 2026-08-23 (EV-LIFECYCLE-001)."
+    evidence:
+      - "assurance/evidence/EVIDENCE.md EV-LIFECYCLE-001 (negative test, 8 cases plus the guard proof)"
+      - "ecosystem-registry.json rubric.lifecycle.states.core.requires = [maintainer, secondMaintainer]"
+    defeaters: []
+    residuals:
+      - RES-LIFECYCLE-001
+    status: VERIFIED
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+
+  - id: INV-LIFECYCLE-002
+    title: An exception or an ending is recorded with its reason
+    statement: >-
+      Two cases in the registry always carry a lifecycleReason: a service held above
+      the unstaffed cap (lifecycle core or beta) without a secondMaintainer, which
+      MIP-1 Article 3 treats as an exception to be recorded; and any service with
+      lifecycle "archive", which MIP-1 Article 4 requires to be recorded with its
+      grounds. A state cannot be reached silently in either direction.
+    severity: medium
+    intent:
+      classification: INTENDED
+      authority: "Mossland DAO via Agora — MIP-1 (공개 서비스·저장소 생명주기 정책), contentHash sha256:7d3cf4a4…; voting open until 2026-09-02T02:19:25Z at the time of writing. The enforcement was built ahead of ratification so it is ready inside the 14-day implementation window MIP-1 Article 4 sets; no classification value is applied until the owner approves the Annex A mapping. Registry governance authority: assurance/SYSTEM.md §5."
+    scope: ecosystem-registry.json lifecycle / secondMaintainer / lifecycleReason fields.
+    assumptions:
+      - "MIP-1 passes substantially as proposed."
+    limitations:
+      - "Holds vacuously today (RES-LIFECYCLE-001); the control itself is demonstrated (EV-LIFECYCLE-001)."
+      - "The check requires that a reason exists, not that it is a good one. Whether a recorded exception is justified stays a review judgement."
+      - "MIP-1's own text is not fully consistent here: Article 3 caps an unstaffed service at Lab or below, while Annex A publishes an unstaffed Core candidate as Beta. This invariant takes the reading that reconciles them — Annex A is exercising Article 3's exception clause, which is exactly why the reason must be recorded. The stricter reading (unstaffed ⇒ Lab, full stop) would also be satisfiable under this schema by simply not using the exception. Flagged for the owner rather than resolved by the drafting agent."
+    enforcement:
+      - "ecosystem-registry.schema.json $defs.service.allOf: (a) lifecycle in [core, beta] with no secondMaintainer requires lifecycleReason; (b) lifecycle archive requires lifecycleReason."
+      - ".github/scripts/validate-registry.py: the same two rules, derived from rubric.lifecycle.unstaffedCap and rubric.lifecycle.states[*].requires, with a failure message naming the MIP-1 article violated."
+    verification:
+      - ".github/scripts/test-lifecycle-rules.py, run on every push and pull request: an unstaffed beta with no reason is rejected and the same entry with a reason is accepted; an archive with no reason is rejected. First captured 2026-08-23 (EV-LIFECYCLE-001)."
+    evidence:
+      - "assurance/evidence/EVIDENCE.md EV-LIFECYCLE-001"
+      - "ecosystem-registry.json rubric.lifecycle.unstaffedCap = \"lab\"; rubric.lifecycle.states.archive.requires = [lifecycleReason]"
+    defeaters: []
+    residuals:
+      - RES-LIFECYCLE-001
     status: VERIFIED
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)

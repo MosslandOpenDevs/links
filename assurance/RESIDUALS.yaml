@@ -134,28 +134,52 @@ residuals:
 
   - id: RES-STATUS-DRIFT-001
     summary: >-
-      The registry records point-in-time operational facts for ecosystem services
-      (for example alpha 'paused', ao 'degraded', media empty/'실험' as of 2026-07-06).
-      These states drift, so the status and notes fields can lag the live services.
+      The registry records point-in-time operational facts for ecosystem services in
+      `status` and `note`. These states drift, so both can lag the live services. This
+      is not hypothetical: the 2026-07-06 values for alpha ('paused') and ao ('degraded')
+      were still in the registry on 2026-08-23, 48 days later, and both were wrong by
+      then — see review_note.
     private_detail_location: null
     affected_claims: []
     affected_invariants:
       - INV-MARKET-001
     impact: low
-    uncertainty: medium
+    uncertainty: high
     mitigation:
-      - Statuses are re-verified against the live services when the registry is updated.
       - "The ecosystem section carries a note that '실험' services are not finished official products (build/generate.mjs:23)."
+      - "Since 2026-08-23, statusVerifiedAt records per entry when its status was last checked, so the age of an observation is visible to a consumer instead of inferred from the document-level generatedAt. This makes drift detectable; it does not prevent it."
     status: ACCEPTED
     acceptance_rationale: >-
       Accepted as an inherent property of a manually curated directory and as low
       impact: a stale operational status does not weaken the anti-phishing guarantee,
       which is about which domains are genuinely Mossland's, not about uptime. The page
       is explicit that it is not a live uptime monitor (assurance/SYSTEM.md section 2).
+    review_note: >-
+      Re-reviewed 2026-08-23. The acceptance stands — the reasoning above is unchanged
+      and the impact is still low — but one recorded mitigation did not survive contact
+      with practice and has been withdrawn. It read "Statuses are re-verified against the
+      live services when the registry is updated." On 2026-08-21 the registry WAS updated
+      (commit 9c7b186: media retired, Mossland Signal registered) and neither alpha nor
+      ao was re-verified. Both values, first recorded 2026-07-06, were still wrong 48 days
+      later: alpha stood at "paused" while /api/health?strict=1 returned status ok, db ok,
+      worst_status ok over 1642 indexed pages, and ao stood at "degraded" while /api/status
+      returned operational with every component healthy (both captured 2026-08-23,
+      EV-STATUS-001). That mitigation was author discipline described as a control, with
+      nothing enforcing it; the honest position is that it was not operating, so it is
+      removed rather than restated. Uncertainty is raised medium -> high accordingly: the
+      registry has now demonstrated, not merely risked, carrying a wrong operational
+      status across an edit. Impact stays low for the reason already recorded.
+      What replaces it is weaker than a control and is described as such: statusVerifiedAt
+      makes staleness visible. Anything stronger — a scheduled probe that compares the
+      registry against live health endpoints — would reverse the owner-approved non-goal
+      in assurance/SYSTEM.md section 2 ("not a live uptime monitor"), which is the very
+      basis on which this residual was accepted. That is a separate owner decision and is
+      deliberately not taken here.
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)
     accepted_by: MosslandOpenDevs maintainers (Mossland)
     accepted_at: 2026-07-18
+    reviewed_at: 2026-08-23
     review_after: 2026-10-18
 
   # --- data-curation profile (PROFILE.md 6.4) gaps, recorded on adoption 2026-07-18 ---
@@ -276,3 +300,38 @@ residuals:
     accepted_by: null
     accepted_at: null
     review_after: 2026-10-18
+
+  # --- Recorded 2026-08-23, adopting the MIP-1 lifecycle policy into the schema.
+
+  - id: RES-LIFECYCLE-001
+    summary: >-
+      The MIP-1 lifecycle policy is enforceable but not yet in force. The schema, the
+      rubric declaration and the CI check are in place and demonstrated (EV-LIFECYCLE-001),
+      but no service carries a lifecycle value: 17 of 17 entries in MIP-1 Article 1 scope
+      are unclassified, because the classification is an owner decision that this change
+      deliberately did not make. Two consequences follow. First, INV-LIFECYCLE-001 and
+      INV-LIFECYCLE-002 hold vacuously — they constrain a set that is currently empty.
+      Second, MIP-1 Article 1 requires the state to be *displayed* on links.moss.land, and
+      build/generate.mjs does not render lifecycle at all; today `status` is not rendered
+      either, so no lifecycle information reaches a visitor. The display obligation is
+      therefore unmet until a follow-up change both populates the values and renders them.
+    private_detail_location: null
+    affected_claims:
+      - CLAIM-REG-001
+    affected_invariants:
+      - INV-LIFECYCLE-001
+      - INV-LIFECYCLE-002
+    impact: medium
+    uncertainty: low
+    mitigation:
+      - "The validator reports the gap explicitly on every run rather than passing silently: it names the unclassified services and the count in MIP-1 Article 1 scope."
+      - "The mapping proposed by MIP-1 Annex A is drafted and awaiting owner approval, so the remaining work is a decision, not a design."
+      - "MIP-1 allows 14 days after ratification for exactly this step; the mechanism landing first is what makes that window achievable."
+    status: OPEN
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: null
+    accepted_at: null
+    review_after: 2026-09-16
+    # review_after is the end of MIP-1's 14-day implementation window measured from the
+    # close of voting (2026-09-02), not the register's usual quarterly cadence.

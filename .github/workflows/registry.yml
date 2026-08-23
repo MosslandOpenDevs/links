@@ -5,7 +5,8 @@
 # projection of the registry" property was checked on change — both relied on
 # author discipline.
 #
-# Enforces INV-PASSPORT-001 (schema) and INV-REG-001 (projection).
+# Enforces INV-PASSPORT-001 (schema), INV-REG-001 (projection), and
+# INV-LIFECYCLE-001/002 (the MIP-1 lifecycle policy).
 name: registry
 
 on: [push, pull_request]
@@ -35,6 +36,13 @@ jobs:
       # eligible entry is owner 'mossland' (CLAIM-PASSPORT-002).
       - name: Registry validates against its JSON Schema
         run: python .github/scripts/validate-registry.py
+
+      # INV-LIFECYCLE-001/002: the MIP-1 lifecycle rules must still reject what
+      # they exist to reject. Runs the constraints against deliberately violating
+      # copies of the registry, so the policy cannot be loosened without a red
+      # build. Evidence record: assurance/evidence/EVIDENCE.md EV-LIFECYCLE-001.
+      - name: MIP-1 lifecycle constraints reject violations
+        run: python .github/scripts/test-lifecycle-rules.py
 
       # INV-REG-001: the committed pages must be byte-identical to a fresh
       # generator run, so the page can never show a link the registry does not

@@ -10,6 +10,11 @@
     "$schema": { "type": "string" },
     "version": { "type": "string", "description": "Semantic version of the registry document." },
     "generatedAt": { "type": "string", "format": "date-time" },
+    "lifecycleReviewedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the lifecycle classifications were last reviewed as a whole. MIP-1 Article 4 makes this registry the single source of truth for service lifecycle state and requires a review once a month; this field is that review's timestamp. Document-level because the review is of the registry, not of one entry at a time — per-entry freshness is `statusVerifiedAt`."
+    },
     "owner": { "type": "string" },
     "registry": { "type": "string", "format": "uri" },
     "description": { "type": "string" },
@@ -23,7 +28,7 @@
     "rubric": {
       "type": "object",
       "description": "The editorial rubric of record: how a service's fields map to the trust chip shown on the page, and what each Passport stampClass signifies. build/generate.mjs derives both the chip and the on-page legend from this object, so the rendered page cannot drift from the declared rubric.",
-      "required": ["chips", "stampClasses"],
+      "required": ["chips", "stampClasses", "lifecycle"],
       "additionalProperties": true,
       "properties": {
         "note": { "type": "string" },
@@ -75,6 +80,47 @@
             }
           }
         },
+        "lifecycle": {
+          "type": "object",
+          "description": "The MIP-1 lifecycle states and what each one promises. Declared as data so the policy, the CI check that enforces it, and the text a reader sees cannot drift apart — the same arrangement the chip rules use.",
+          "required": ["order", "unstaffedCap", "states"],
+          "additionalProperties": true,
+          "properties": {
+            "note": { "type": "string" },
+            "unstaffedNote": { "type": "string" },
+            "order": {
+              "type": "array",
+              "description": "The lifecycle states from strongest promise to weakest. Position is meaningful: it is what `unstaffedCap` is compared against.",
+              "items": { "type": "string", "enum": ["core", "beta", "lab", "archive"] },
+              "minItems": 1
+            },
+            "unstaffedCap": {
+              "type": "string",
+              "enum": ["core", "beta", "lab", "archive"],
+              "description": "MIP-1 Article 3 — the strongest lifecycle a service may hold without a secondMaintainer. Anything stronger is an exception and requires lifecycleReason."
+            },
+            "states": {
+              "type": "object",
+              "description": "Per-state meaning and the fields that state requires. `requires` is what .github/scripts/validate-registry.py enforces, so the promise and the check are one declaration.",
+              "additionalProperties": {
+                "type": "object",
+                "required": ["ko", "en", "promise", "requires"],
+                "additionalProperties": true,
+                "properties": {
+                  "ko": { "type": "string" },
+                  "en": { "type": "string" },
+                  "promiseKo": { "type": "string" },
+                  "promise": { "type": "string" },
+                  "requires": {
+                    "type": "array",
+                    "items": { "type": "string", "enum": ["maintainer", "secondMaintainer", "lifecycleReason"] },
+                    "uniqueItems": true
+                  }
+                }
+              }
+            }
+          }
+        },
         "stampClasses": {
           "type": "object",
           "description": "What each stampClass signifies. Must cover every stampClass value used by a service.",
@@ -117,6 +163,12 @@
       "type": "string",
       "enum": ["operational", "degraded", "beta", "paused", "offline", "deprecated"]
     },
+    "handle": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9-]{0,38}(/[A-Za-z0-9._-]{1,100})?$",
+      "description": "A GitHub handle, or an `org/team` slug. This is a public repository (AGENTIC_ASSURANCE.md §9): record a handle or team, never a real name, an email address, or any other personal data. The pattern admits GitHub's username grammar and rejects address-like values.",
+      "examples": ["MosslandOpenDevs", "MosslandOpenDevs/registry-maintainers"]
+    },
     "service": {
       "type": "object",
       "required": ["id", "name", "domain", "url", "tier", "status", "passportEligible"],
@@ -140,6 +192,29 @@
           "description": "Additional sections to also render this service in. Currently unused; reserved for a service that must appear in more than one section."
         },
         "status": { "$ref": "#/$defs/status" },
+        "statusVerifiedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this entry's `status` was last checked against the live service. Distinct from `lastDataAt`, which records when the service's own data was last updated. This registry is not a live uptime monitor (assurance/SYSTEM.md §2); recording the observation time makes the age of a point-in-time judgement explicit instead of implied."
+        },
+        "lifecycle": {
+          "type": "string",
+          "enum": ["core", "beta", "lab", "archive"],
+          "description": "MIP-1 lifecycle state — the maintenance promise this service carries. core = always-on (maintainer and second maintainer, incident response, changes pre-announced); beta = running but subject to change (maintainer assigned); lab = experimental, best-effort, may change or stop without notice; archive = ended, preserved read-only. Orthogonal to `status`, which reports observed availability at a point in time: an archived service can still be reachable, and a core service can be degraded. Optional because MIP-1 Article 1 scopes the obligation to public *.moss.land services and deployment-linked public repositories — third-party, off-domain channel, and data-artifact entries are out of scope and omit it."
+        },
+        "maintainer": {
+          "$ref": "#/$defs/handle",
+          "description": "Responsible maintainer — MIP-1 Article 2's \"owner\". Deliberately NOT the existing `owner` field, which names the domain-owning party (mossland / third-party) and is depended on by INV-PASSPORT-001 and CLAIM-PASSPORT-002; reusing it would collide two unrelated meanings. Required for lifecycle core and beta."
+        },
+        "secondMaintainer": {
+          "$ref": "#/$defs/handle",
+          "description": "Backup maintainer — MIP-1 Article 2's \"second owner\", who must also hold deploy and recovery rights. Required for lifecycle core. Its absence caps the lifecycle at lab unless an exception reason is recorded (Article 3)."
+        },
+        "lifecycleReason": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Recorded justification for the lifecycle state. MIP-1 requires it in two cases: Article 3 — a service held above `lab` without a second maintainer is an exception and must record why; Article 4 — a lifecycle change, Archive in particular, must be recorded with its grounds."
+        },
         "passportEligible": {
           "type": "boolean",
           "description": "Whether this domain may back a Passport ecosystem stamp. MUST be false for all third_party/market and off-domain channel entries."
@@ -182,6 +257,39 @@
         {
           "if": { "properties": { "tier": { "const": "channel" } } },
           "then": { "properties": { "passportEligible": { "const": false } } }
+        },
+        {
+          "$comment": "MIP-1 Article 2 — Core requires a maintainer AND a second maintainer, both holding deploy and recovery rights. Article 2 states no exception, so this is unconditional. The `required: [lifecycle]` guard is load-bearing: without it the `if` is vacuously true for every entry that has no lifecycle at all, and out-of-scope entries (markets, channels, data artifacts) would be dragged into the requirement.",
+          "if": {
+            "required": ["lifecycle"],
+            "properties": { "lifecycle": { "const": "core" } }
+          },
+          "then": { "required": ["maintainer", "secondMaintainer"] }
+        },
+        {
+          "$comment": "MIP-1 state table — Beta promises an assigned maintainer. Core is already covered above; naming both keeps the rule readable next to the policy it encodes.",
+          "if": {
+            "required": ["lifecycle"],
+            "properties": { "lifecycle": { "enum": ["core", "beta"] } }
+          },
+          "then": { "required": ["maintainer"] }
+        },
+        {
+          "$comment": "MIP-1 Article 3 — a service without a second maintainer is capped at lab; holding it above lab is an exception and the reason must be recorded in the registry. Annex A applies exactly this exception when it publishes an unstaffed Core candidate as Beta.",
+          "if": {
+            "required": ["lifecycle"],
+            "properties": { "lifecycle": { "enum": ["core", "beta"] } },
+            "not": { "required": ["secondMaintainer"] }
+          },
+          "then": { "required": ["lifecycleReason"] }
+        },
+        {
+          "$comment": "MIP-1 Article 4 — a lifecycle change, Archive in particular, is recorded with its grounds. Archive is not deletion: the record is what preserves why the service ended.",
+          "if": {
+            "required": ["lifecycle"],
+            "properties": { "lifecycle": { "const": "archive" } }
+          },
+          "then": { "required": ["lifecycleReason"] }
         }
       ]
     }

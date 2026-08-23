@@ -21,6 +21,7 @@ job is anti-phishing: telling a visitor which domains are genuinely Mossland's.
 - [Files](#files)
 - [Sections](#sections)
 - [Chips (trust signal)](#chips-trust-signal)
+- [Lifecycle (MIP-1)](#lifecycle-mip-1)
 - [Conventions](#conventions)
 - [Adding or changing a service](#adding-or-changing-a-service)
 - [Security](#security)
@@ -31,7 +32,8 @@ job is anti-phishing: telling a visitor which domains are genuinely Mossland's.
 [`ecosystem-registry.json`](ecosystem-registry.json) is the single source of
 truth. Each service is keyed by a stable `id` and carries `name`, `domain`,
 `url`, `tier`, `status` and `passportEligible` (required), plus optional
-`section`, `stampType`/`stampClass`, `labelKo`/`label`, `chip` and more (see
+`section`, `stampType`/`stampClass`, `labelKo`/`label`, `chip`,
+`lifecycle`/`maintainer`/`secondMaintainer`/`lifecycleReason` and more (see
 [`ecosystem-registry.schema.json`](ecosystem-registry.schema.json) for the
 contract). The same file also holds the classification `rubric` and its
 `rubricVersion`. Other Mossland properties (moss.land, Passport, City, WA) can
@@ -144,7 +146,45 @@ not the chip. There are seven chips:
 Key rule: **the amber `실험` stage is decoupled from operational `status`.**
 `offline`/`paused` are uptime, not a stage — a service is `실험` because it *is*
 experimental, set via `tier: labs` (auto) or an explicit `chip: "실험"` on a
-non-labs service (e.g. `media`, which is live but still data-seeding).
+non-labs service (e.g. `signal`, live but still data-seeding on its home view).
+
+## Lifecycle (MIP-1)
+
+`lifecycle` records **the maintenance promise a service carries** — separate from
+`status`, which records observed availability at a point in time. An archived
+service can still be reachable; a core service can be degraded. The states come
+from **MIP-1** (*공개 서비스·저장소 생명주기 정책*), ratified through
+[Agora](https://agora.moss.land/), which names this registry the single source of
+truth for them and sets a monthly review (`lifecycleReviewedAt`).
+
+| State | 의미 | Promise | Required fields |
+|---|---|---|---|
+| `core` | 상시 운영 | Maintainer + second maintainer, incident response, changes pre-announced | `maintainer`, `secondMaintainer` |
+| `beta` | 운영 중, 변동 가능 | Maintainer assigned; features and data may change | `maintainer` |
+| `lab` | 실험, best-effort | May change or stop without notice | — |
+| `archive` | 종료·보존 | Development ended; the record is preserved read-only | `lifecycleReason` |
+
+Two rules are enforced, not just documented — the schema's `allOf` carries them
+for any consumer validating against the published contract, and CI fails the
+build with a message naming the article violated:
+
+- **No unstaffed Core.** `core` without a `secondMaintainer` is rejected.
+- **No silent exception, no silent ending.** A `core`/`beta` entry without a
+  `secondMaintainer` is an exception and needs `lifecycleReason`; `archive`
+  always needs one. Archive is not deletion — the reason is the record of *why*.
+
+`lifecycle` is **optional by design.** MIP-1 scopes the obligation to public
+`*.moss.land` services and deployment-linked public repositories, so third-party
+market entries, off-domain channels and data artifacts carry no lifecycle at all.
+
+> **Maintainers are public handles.** `maintainer` and `secondMaintainer` take a
+> GitHub handle or an `org/team` slug — never a real name or an email address.
+> This is a public repository; the schema pattern and CI both reject
+> address-like values.
+
+**Status of this repository:** `links` is proposed as **Core** in MIP-1's Annex A.
+The classification is not applied yet — the schema and checks landed first, and the
+values follow once the mapping is approved. Tracked as `RES-LIFECYCLE-001`.
 
 ## Conventions
 
@@ -162,11 +202,17 @@ non-labs service (e.g. `media`, which is live but still data-seeding).
   contract. Both are pinned by the schema's `allOf`, and CI rejects a violation
   (`INV-PASSPORT-001`): exchange and price links *and* off-domain channels
   (Medium, X) never back a Passport stamp.
-- **Empty-but-live services** (e.g. Media: live but 0 data) get an explicit
-  `chip: "실험"` while empty; drop the chip once real data appears and it falls
-  through to its **tier** chip — for `media` (`tier: intelligence`) that is
-  `인텔리전스`, not `베타`, because `인텔리전스` outranks `베타` in the precedence
-  order (see [`assurance/RUBRIC.md`](assurance/RUBRIC.md) §4.1).
+- **Empty-but-live services** (currently `signal`: live, but the home view still
+  renders `00` counters) get an explicit `chip: "실험"` while empty; drop the chip
+  once real data appears and it falls through to its **tier** chip — for `signal`
+  (`tier: intelligence`) that is `인텔리전스`, not `베타`, because `인텔리전스`
+  outranks `베타` in the precedence order (see
+  [`assurance/RUBRIC.md`](assurance/RUBRIC.md) §4.1).
+- **`lifecycle` is a governance decision, not curation.** `tier`, `chip` and
+  `status` are Mossland's own editorial judgements; `lifecycle` is a Mossland DAO
+  decision recorded here because MIP-1 makes this registry its source of truth.
+  Changing one needs `lifecycleReason` and belongs in the monthly review, not in a
+  routine registry edit.
 - **Always ground descriptions in the live site.** Several labels were corrected
   by actually rendering each service (many are client-side SPAs whose homepage is
   an empty shell — check `/about` or render with JS), not by guessing.
@@ -177,7 +223,8 @@ non-labs service (e.g. `media`, which is live but still data-seeding).
 > the OpenDevs Agentic Assurance Profile
 > ([`AGENTIC_ASSURANCE.md`](AGENTIC_ASSURANCE.md)). Adding a service is routine.
 > Changing what the registry **means** — a tier or chip's semantics,
-> `passportEligible`, `stampClass`, the rubric, or the `customHttp.yml` headers —
+> `passportEligible`, `stampClass`, a `lifecycle` state, the rubric, or the
+> `customHttp.yml` headers —
 > is a *material change* under §7, which means reading and updating the affected
 > artifacts in [`assurance/`](assurance/) as part of the same change.
 
@@ -189,11 +236,14 @@ non-labs service (e.g. `media`, which is live but still data-seeding).
 2. If the entry needs a `stampClass` or chip the registry's `rubric` does not
    already declare, add it there too and bump `rubricVersion` per
    [`assurance/RUBRIC.md`](assurance/RUBRIC.md) §3 — CI fails on an undeclared
-   `stampClass` or an orphan chip.
+   `stampClass` or an orphan chip. Setting or changing a `lifecycle` also needs
+   its `maintainer`/`secondMaintainer`/`lifecycleReason` companions — CI names the
+   MIP-1 article if one is missing.
 3. Run `node build/generate.mjs`.
-4. Validate locally: `git diff --exit-code` (after regenerating) and
-   `python .github/scripts/validate-registry.py` (needs the validator
-   prerequisites above).
+4. Validate locally: `git diff --exit-code` (after regenerating),
+   `python .github/scripts/validate-registry.py`, and — if you touched a
+   `lifecycle` rule — `python .github/scripts/test-lifecycle-rules.py` (all need
+   the validator prerequisites above).
 5. Commit the registry change **and** the regenerated `index.html`,
    `embed.html`, `llms.txt`, and `sitemap.xml`. CI re-runs the generator and
    fails the build if they differ.
