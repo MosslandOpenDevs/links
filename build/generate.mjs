@@ -238,7 +238,8 @@ const LEGEND_ITEMS = RUBRIC.chips.legendOrder
 
 // MIP-1 lifecycle legend — rendered only when the registry actually classifies
 // services, and read from rubric.lifecycle so the explanation is the declaration.
-const LIFECYCLE_LEGEND = reg.services.some((s) => s.lifecycle)
+const USES_LIFECYCLE = reg.services.some((s) => s.lifecycle);
+const LIFECYCLE_LEGEND = USES_LIFECYCLE
   ? "\n          <ul class=\"legend-lc\">\n" +
     (RUBRIC.lifecycle?.order || [])
       .map((name) => {
@@ -252,7 +253,7 @@ const LIFECYCLE_LEGEND = reg.services.some((s) => s.lifecycle)
   : "";
 
 const LEGEND = `        <details class="legend" open>
-          <summary>표시 안내 / Chips & lifecycle</summary>
+          <summary>표시 안내 / ${USES_LIFECYCLE ? "Chips & lifecycle" : "What the chips mean"}</summary>
           <ul>
 ${LEGEND_ITEMS}
           </ul>${LIFECYCLE_LEGEND}
@@ -381,7 +382,9 @@ function renderLlms() {
   lines.push("## Notes");
   lines.push("- Agora is Mossland's public decision layer: proposals and voting use gasless EIP-712 wallet signatures (no on-chain transaction), weighted by each voter's delegated MOC voting power at a fixed snapshot block (ERC20Votes getPastVotes, with a balanceOf fallback for holders who have never delegated). Unless a proposal explicitly says otherwise, Mossland DAO treats an Agora result as its binding decision of record.");
   lines.push("- Labs (AO, Algora, BRIDGE) are experimental; not official products or governance.");
-  lines.push("- Lifecycle states (core / beta / lab / archive) follow MIP-1, Mossland DAO's public service lifecycle policy: core is always-on with two named maintainers, beta is running but subject to change, lab is best-effort and may stop without notice, archive is ended and preserved read-only. This registry is the single source of truth for these states.");
+  if (USES_LIFECYCLE) {
+    lines.push("- Lifecycle states (core / beta / lab / archive) follow MIP-1, Mossland DAO's public service lifecycle policy: core is always-on with two named maintainers, beta is running but subject to change, lab is best-effort and may stop without notice, archive is ended and preserved read-only. This registry is the single source of truth for these states.");
+  }
   lines.push("- Markets / third-party links are reference only and are not trading recommendations.");
   lines.push("");
   return lines.join("\n");
