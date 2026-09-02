@@ -1,6 +1,6 @@
 {
   "$schema": "https://links.moss.land/ecosystem-registry.schema.json",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "generatedAt": "2026-08-21T00:00:00+09:00",
   "lifecycleReviewedAt": "2026-08-23T06:30:00Z",
   "owner": "mossland",
@@ -408,7 +408,7 @@
       "section": "ecosystem",
       "status": "operational",
       "lifecycle": "archive",
-      "lifecycleReason": "MIP-1 Annex A Archive. passportEligible withdrawn with archival (owner decision 2026-08-23): an ended, best-effort-frozen service should not back new Passport ecosystem stamps. Domain and record preserved read-only.",
+      "lifecycleReason": "MIP-1 Annex A Archive. passportEligible withdrawn with archival (owner decision 2026-08-23): an ended, best-effort-frozen service should not back new Passport ecosystem stamps. Domain and record preserved read-only. Scheduled report generation stopped 2026-09-02 (last scheduled report: Monthly August 2026); published reports stay as records, corrections only.",
       "passportEligible": false,
       "stampType": null,
       "stampClass": null,
