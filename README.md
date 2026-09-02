@@ -182,9 +182,11 @@ market entries, off-domain channels and data artifacts carry no lifecycle at all
 > This is a public repository; the schema pattern and CI both reject
 > address-like values.
 
-**Status of this repository:** `links` is proposed as **Core** in MIP-1's Annex A.
-The classification is not applied yet — the schema and checks landed first, and the
-values follow once the mapping is approved. Tracked as `RES-LIFECYCLE-001`.
+**Status of this repository:** **`Lifecycle: Beta`** — an Annex A **Core**
+candidate, published as Beta under Annex A's own rule until a second maintainer is
+designated (Art. 3 exception, recorded in the registry entry `links`). This line is
+the repository-README display MIP-1 Article 1 requires; the page marker and legend
+on links.moss.land cover the service side.
 
 ## Conventions
 

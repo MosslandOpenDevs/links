@@ -327,11 +327,29 @@ residuals:
       - "The validator reports the gap explicitly on every run rather than passing silently: it names the unclassified services and the count in MIP-1 Article 1 scope."
       - "The mapping proposed by MIP-1 Annex A is drafted and awaiting owner approval, so the remaining work is a decision, not a design."
       - "MIP-1 allows 14 days after ratification for exactly this step; the mechanism landing first is what makes that window achievable."
-    status: OPEN
+    status: RESOLVED
+    resolution_note: >-
+      Remediated 2026-08-23, by owner decision on the four open questions the residual
+      recorded. (a) Values applied: all 17 services in MIP-1 Article 1 scope now carry a
+      lifecycle, per Annex A — with the Annex A Core candidates published as beta under
+      Annex A's own unstaffed rule (Art. 3 exception recorded in each lifecycleReason,
+      maintainer MosslandOpenDevs as the accountable body until named individuals are
+      designated); signal, absent from Annex A, classified lab; algora archived with
+      passportEligible withdrawn (10 eligible entries remain). (b) Displayed: the
+      generator now renders each in-scope service's state on the page as a marker in the
+      card's domain line plus a legend section, both derived from rubric.lifecycle —
+      the same single-declaration arrangement the chips use — and llms.txt carries the
+      state per entry. (c) lifecycleReviewedAt is set; the initial classification act is
+      the first Article 4 review. The change ships in a pull request held for merge
+      until MIP-1's vote closes (2026-09-02), inside the policy's 14-day window.
+      Residual limitation, recorded rather than hidden: maintainer names an accountable
+      org, not yet the named individuals with deploy and recovery rights that Article 2
+      intends — promotion of the five Core candidates out of the Art. 3 exception is the
+      remaining human act, visible in each entry's lifecycleReason.
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)
     accepted_by: null
     accepted_at: null
     review_after: 2026-09-16
-    # review_after is the end of MIP-1's 14-day implementation window measured from the
-    # close of voting (2026-09-02), not the register's usual quarterly cadence.
+    # review_after retained: the first post-ratification monthly review (MIP-1 Art. 4)
+    # should confirm the applied values and revisit the Core-candidate exceptions.

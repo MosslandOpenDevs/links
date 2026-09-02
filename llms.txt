@@ -5,28 +5,28 @@
 Mossland is infrastructure for the AI civilization. This file lists the verified official Mossland domains, plus the official channels and accounts Mossland operates on third-party platforms, so search engines and AI agents can resolve real Mossland services and avoid impersonators. The machine-readable source of truth is the JSON registry below.
 
 ## Official
-- [Mossland](https://www.moss.land/): Official
-- [Disclosure](https://disclosure.moss.land/): Official Records
+- [Mossland](https://www.moss.land/): Official (lifecycle: beta)
+- [Disclosure](https://disclosure.moss.land/): Official Records (lifecycle: beta)
 - [Medium](https://medium.com/mossland-blog): Blog
 - [X](https://x.com/TheMossland): Social
 
 ## Participation
-- [Passport](https://passport.moss.land/): Wallet verification · participation record
-- [Agora](https://agora.moss.land/): Public Decision Layer
-- [Mossverse](https://wa.moss.land/): Web3 virtual world where your wallet is your identity
+- [Passport](https://passport.moss.land/): Wallet verification · participation record (lifecycle: beta)
+- [Agora](https://agora.moss.land/): Public Decision Layer (lifecycle: beta)
+- [Mossverse](https://wa.moss.land/): Web3 virtual world where your wallet is your identity (lifecycle: beta)
 
 ## Ecosystem
 > Mossland's ecosystem services. Anything marked 실험 (Experimental) is not yet a finished official product or governance.
-- [Alpha](https://alpha.moss.land/): Crypto, macro & geopolitics media curation
-- [Signal Map](https://signalmap.moss.land/): YouTuber opinion & issue map
-- [Mossland Signal](https://signal.moss.land/): On-chain prediction insights (research preview)
-- [City](https://city.moss.land/): Self-running AI city
-- [NPC](https://npc.moss.land/): Chat with AI residents
-- [Recipe](https://recipe.moss.land/): Recreate trending AI outputs (prompt gallery)
-- [MOSS.AO](https://ao.moss.land/): AI agent orchestration engine
-- [Algora](https://algora.moss.land/en): Multi-agent governance deliberation (lab)
-- [BRIDGE](https://bridge.moss.land/): Physical AI governance research
-- [Governance Monitor](https://monitor.moss.land/): Live dashboard for the AO·Algora·BRIDGE governance stack
+- [Alpha](https://alpha.moss.land/): Crypto, macro & geopolitics media curation (lifecycle: beta)
+- [Signal Map](https://signalmap.moss.land/): YouTuber opinion & issue map (lifecycle: beta)
+- [Mossland Signal](https://signal.moss.land/): On-chain prediction insights (research preview) (lifecycle: lab)
+- [City](https://city.moss.land/): Self-running AI city (lifecycle: lab)
+- [NPC](https://npc.moss.land/): Chat with AI residents (lifecycle: lab)
+- [Recipe](https://recipe.moss.land/): Recreate trending AI outputs (prompt gallery) (lifecycle: lab)
+- [MOSS.AO](https://ao.moss.land/): AI agent orchestration engine (lifecycle: lab)
+- [Algora](https://algora.moss.land/en): Multi-agent governance deliberation (lab) (lifecycle: archive)
+- [BRIDGE](https://bridge.moss.land/): Physical AI governance research (lifecycle: lab)
+- [Governance Monitor](https://monitor.moss.land/): Live dashboard for the AO·Algora·BRIDGE governance stack (lifecycle: lab)
 
 ## Developers
 - [GitHub](https://github.com/mossland): Official Mossland org on GitHub
@@ -51,4 +51,5 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 ## Notes
 - Agora is Mossland's public decision layer: proposals and voting use gasless EIP-712 wallet signatures (no on-chain transaction), weighted by each voter's delegated MOC voting power at a fixed snapshot block (ERC20Votes getPastVotes, with a balanceOf fallback for holders who have never delegated). Unless a proposal explicitly says otherwise, Mossland DAO treats an Agora result as its binding decision of record.
 - Labs (AO, Algora, BRIDGE) are experimental; not official products or governance.
+- Lifecycle states (core / beta / lab / archive) follow MIP-1, Mossland DAO's public service lifecycle policy: core is always-on with two named maintainers, beta is running but subject to change, lab is best-effort and may stop without notice, archive is ended and preserved read-only. This registry is the single source of truth for these states.
 - Markets / third-party links are reference only and are not trading recommendations.

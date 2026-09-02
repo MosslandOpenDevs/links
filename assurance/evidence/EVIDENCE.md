@@ -169,4 +169,8 @@ signalmap, sitemap, upbit, x, wa
 Upbit, Bithumb and `sitemap.xml` would each be required to name a maintainer. With the guard in place the same registry produces **0 errors**.
 
 - **Supports:** `INV-LIFECYCLE-001`, `INV-LIFECYCLE-002`.
-- **Does not close:** `RES-LIFECYCLE-001` — this proves the control works, not that any service is classified. No entry carries a lifecycle yet.
+- **Does not close:** `RES-LIFECYCLE-001` — this proves the control works, not that any service is classified. No entry carried a lifecycle at first capture.
+
+### Capture 2026-08-23 (after the Annex A values were applied)
+
+Re-run against the classified registry (17 services with a lifecycle, 8 of them on the Art. 3 exception). The mutations now strip an entry's real lifecycle fields before injecting the violation — otherwise "beta with no reason" would test an entry that legitimately has one and the case would silently stop testing anything. All 8 cases plus the guard proof still behave as specified; the guard case now reports 65 errors across the 13 out-of-scope entries, since the 17 classified ones satisfy the rules on their own terms.

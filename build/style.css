@@ -477,6 +477,27 @@
         border: 1px solid rgba(109, 74, 134, 0.5);
       }
 
+      .link-copy .lc,
+      .legend .lc {
+        display: inline-block;
+        padding: 0 5px;
+        border: 1px solid rgba(29, 36, 27, 0.22);
+        border-radius: 4px;
+        color: var(--muted);
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        line-height: 1.5;
+        vertical-align: 1px;
+      }
+
+      .legend .legend-lc {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px dashed rgba(29, 36, 27, 0.15);
+      }
+
       .link.featured {
         border-color: rgba(31, 59, 43, 0.28);
         background: linear-gradient(180deg, rgba(228, 240, 231, 0.92), var(--panel-strong));
