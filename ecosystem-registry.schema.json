@@ -200,7 +200,7 @@
         "statusUrl": {
           "type": "string",
           "format": "uri",
-          "description": "Where a consumer can ask the service itself how it is doing, when the service publishes such an endpoint. This is a pointer, not a measurement: the registry neither polls it nor derives `status` from it, so the \"not a live uptime monitor\" non-goal (assurance/SYSTEM.md §2) is untouched — the same reasoning that admitted `statusVerifiedAt`. Absence means the service publishes no such endpoint, not that it is down."
+          "description": "Where a consumer can ask the service itself how it is doing, when the service publishes such an endpoint. This is a pointer, not a measurement: the registry neither polls it nor derives `status` from it, so the \"not a live uptime monitor\" non-goal (assurance/SYSTEM.md §2) is untouched — the same reasoning that admitted `statusVerifiedAt`. Absence means this registry does not point at one — either the service publishes none, or it publishes one that is not suitable to advertise (an archived service whose endpoint reports live operational detail, for example). It never means the service is down."
         },
         "lifecycle": {
           "type": "string",
