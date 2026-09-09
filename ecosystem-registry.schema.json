@@ -202,6 +202,11 @@
           "format": "uri",
           "description": "Where a consumer can ask the service itself how it is doing, when the service publishes such an endpoint. This is a pointer, not a measurement: the registry neither polls it nor derives `status` from it, so the \"not a live uptime monitor\" non-goal (assurance/SYSTEM.md §2) is untouched — the same reasoning that admitted `statusVerifiedAt`. Absence means this registry does not point at one — either the service publishes none, or it publishes one that is not suitable to advertise (an archived service whose endpoint reports live operational detail, for example). It never means the service is down."
         },
+        "pipeline": {
+          "type": "string",
+          "enum": ["stream", "batch", "demand", "none"],
+          "description": "Whether this service does periodic work of its own, and so whether a consumer should expect a freshness timestamp from it. A stable property, which is why it lives here rather than in a live response: a static viewer reporting no freshness is correct rather than degraded, and a consumer cannot tell those two apart from the response alone. `stream` = produces continuously; any meaningful staleness is a fault. `batch` = produces on a schedule; staleness must be read against that period. `demand` = produces on a cadence but only when asked, so a stale value may mean nobody asked rather than that anything broke, and it cannot be judged on age alone. `none` = owns no periodic work; consumers do not read a freshness timestamp for it at all, and its absence is correct rather than an unimplemented contract. Distinct from `lastDataAt`, which is this registry's own static bookkeeping, and from the live `lastProcessedAt` a service publishes at its `statusUrl` — this field says whether to read that one. Absence means the service has not been classified, not that it has no pipeline. A future revision may carry an expected period for `batch`."
+        },
         "lifecycle": {
           "type": "string",
           "enum": ["core", "beta", "lab", "archive"],
