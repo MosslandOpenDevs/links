@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 // Generates index.html and embed.html from ecosystem-registry.json.
 // The registry is the single source of truth; the rendered HTML is a projection.
+// Also writes the site's health artifact, which is a build stamp rather than a
+// projection — see the /api/health block at the end of this file.
 // Pure Node, no dependencies. Run: `node build/generate.mjs`
-import { readFileSync, writeFileSync } from "node:fs";
+import { execSync } from "node:child_process";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -405,5 +408,46 @@ writeFileSync(join(ROOT, "index.html"), indexHtml);
 writeFileSync(join(ROOT, "embed.html"), embedHtml);
 writeFileSync(join(ROOT, "llms.txt"), renderLlms());
 writeFileSync(join(ROOT, "sitemap.xml"), sitemapXml);
+
+// --- /api/health — the ecosystem health contract (HEALTH_CONTRACT.md) ---------
+//
+// Unlike the four files above this is NOT a projection of the registry, and it is
+// not committed (.gitignore): it reports the build, and a committed copy would name
+// whichever build a human last ran locally. That is also why it is excluded from the
+// INV-REG-001 regenerate-and-diff — a value that must change on every run cannot be
+// asserted byte-identical.
+//
+// A generated static site has no process to ask how it is doing, so its build time is
+// the only "now" it has (contract section 3). `pipeline: "none"` says there is nothing
+// periodic here, so nobody reads liveness into that timestamp. Same arrangement as the
+// monitor viewer's vite healthEndpoint plugin.
+let commit = null;
+try {
+  // cwd: ROOT like every other path here, so the generator stays independent of where
+  // it was invoked from.
+  commit = execSync("git rev-parse --short HEAD", { cwd: ROOT, stdio: ["ignore", "pipe", "ignore"] })
+    .toString()
+    .trim() || null;
+} catch {
+  // Built outside a git checkout (a source tarball, an export): report null rather
+  // than inventing a value.
+}
+
+// One instant read once, emitted under both names so they can never disagree.
+const builtAt = new Date().toISOString();
+const healthJson = JSON.stringify(
+  { status: "ok", service: "links", timestamp: builtAt, role: "registry", pipeline: "none", buildTime: builtAt, commit },
+  null,
+  2,
+) + "\n";
+
+// Two names, one payload. `/api/health` is the contract path; the `.json` twin is the
+// target an Amplify console rewrite would point at if the extensionless object turns
+// out not to resolve — Amplify redirects and rewrites are app configuration, not
+// something this repository can set. Headers for both live in customHttp.yml.
+mkdirSync(join(ROOT, "api"), { recursive: true });
+writeFileSync(join(ROOT, "api", "health"), healthJson);
+writeFileSync(join(ROOT, "api", "health.json"), healthJson);
+
 const count = reg.services.filter((s) => !s.hidden && s.section).length;
 console.log(`Generated index.html + embed.html + llms.txt — ${count} visible links across ${SECTIONS.length} sections.`);

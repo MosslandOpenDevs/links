@@ -20,5 +20,11 @@ frontend:
       - llms.txt
       - ecosystem-registry.json
       - ecosystem-registry.schema.json
+      # The health artifact (HEALTH_CONTRACT.md). Written by the generator above and
+      # deliberately not committed, so unlike every other entry here it exists ONLY if
+      # that command succeeded — the `|| true` means a generator failure ships the
+      # committed pages with no /api/health rather than a stale one.
+      - api/health
+      - api/health.json
   cache:
     paths: []

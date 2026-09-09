@@ -78,17 +78,19 @@ and the CI check at merge time is what guarantees it matches the registry.
 | `ecosystem-registry.json` | **Source of truth** — every service and its fields, plus the classification `rubric` / `rubricVersion` that drives the chips and legend |
 | `ecosystem-registry.schema.json` | JSON Schema (draft 2020-12) contract for the registry |
 | `assurance/RUBRIC.md` | Rubric changelog, precedence table, and version-bump rules (the rubric *itself* is data in the registry) |
-| `build/generate.mjs` | Generator — renders `index.html` + `embed.html` + `llms.txt` + `sitemap.xml` from the registry, deriving chips and legend from the registry's `rubric` |
+| `build/generate.mjs` | Generator — renders `index.html` + `embed.html` + `llms.txt` + `sitemap.xml` from the registry, deriving chips and legend from the registry's `rubric`; also writes the health artifact |
 | `build/style.css` | Stylesheet, inlined into the generated HTML |
 | `index.html` | Generated public page (do not edit by hand) |
 | `embed.html` | Generated chrome-less kiosk view for embedding in play.wa / Mossverse |
 | `llms.txt` | Generated AI-readable summary (llmstxt.org format, English) |
 | `sitemap.xml` | Generated (lastmod from the registry's `generatedAt`) |
+| `api/health`, `api/health.json` | Generated health artifact — deployed, **not committed** (`.gitignore`), because it reports the build rather than the registry. See `HEALTH_CONTRACT.md` |
 | `robots.txt` | Static crawl directives (points to the sitemap + machine files) |
 | `favicon.svg`, `apple-touch-icon.png`, `og.png` | Icons + 1200×630 social card |
 | `amplify.yml` | Amplify build (runs the generator) and artifact list |
 | `customHttp.yml` | Amplify response headers (CSP, HSTS, COOP, CORS for the registry, UTF-8 charset for .txt/.xml, etc.) |
 | `.github/` | CI and templates — `workflows/registry.yml` (schema + projection checks), `workflows/assurance.yml` (assurance validator), `scripts/validate-registry.py`, issue forms and the PR template |
+| `HEALTH_CONTRACT.md` | The ecosystem-wide health-endpoint contract (`status` / `service` / `timestamp` at `/api/health`) that every Mossland service answers, and that `statusUrl` in the registry points at |
 | `AGENTS.md` | **Read first.** Agent/contributor instructions, build commands, and conventions |
 | `AGENTIC_ASSURANCE.md` | How this repo adopts the OpenDevs Agentic Assurance Profile; §7 defines the material-change workflow |
 | `.agentic-assurance/adoption.yaml` | The pinned upstream profile, adopted profile set, and the human owner (a named maintainers body) |

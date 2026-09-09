@@ -1,2 +1,5 @@
 .DS_Store
 .claude/
+# Health artifact written by build/generate.mjs. It reports the build, not the
+# registry, so it changes on every run by design: deployed, never committed.
+/api/

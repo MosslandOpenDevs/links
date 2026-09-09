@@ -48,3 +48,33 @@ customHeaders:
         value: 'cross-origin'
       - key: 'Cache-Control'
         value: 'public, max-age=3600'
+  # The health artifact (HEALTH_CONTRACT.md). Public, uncredentialed liveness data:
+  # a constant, this site's build time, and the public commit it was built from. It
+  # carries nothing to protect, and without ACAO a browser-side consumer cannot read
+  # it at all, which is the whole reason the ecosystem view depends on an aggregator.
+  # `no-store` because a cached health response reports the past — here it would name
+  # a build that is no longer the deployed one.
+  # Content-Type is stated rather than inferred: the extensionless object gives S3
+  # nothing to infer it from, and the global nosniff header stops the browser from
+  # recovering. The `.json` twin is covered too, because a rewrite would leave the
+  # request path as /api/health and it is not worth depending on which one matches.
+  - pattern: '/api/health'
+    headers:
+      - key: 'Content-Type'
+        value: 'application/json; charset=utf-8'
+      - key: 'Access-Control-Allow-Origin'
+        value: '*'
+      - key: 'Cross-Origin-Resource-Policy'
+        value: 'cross-origin'
+      - key: 'Cache-Control'
+        value: 'no-store'
+  - pattern: '/api/health.json'
+    headers:
+      - key: 'Content-Type'
+        value: 'application/json; charset=utf-8'
+      - key: 'Access-Control-Allow-Origin'
+        value: '*'
+      - key: 'Cross-Origin-Resource-Policy'
+        value: 'cross-origin'
+      - key: 'Cache-Control'
+        value: 'no-store'
