@@ -353,3 +353,40 @@ residuals:
     review_after: 2026-09-16
     # review_after retained: the first post-ratification monthly review (MIP-1 Art. 4)
     # should confirm the applied values and revisit the Core-candidate exceptions.
+
+  # --- Recorded 2026-09-09, publishing the health artifact (HEALTH_CONTRACT.md).
+
+  - id: RES-HEALTH-ROUTE-001
+    summary: >-
+      Whether https://links.moss.land/api/health actually serves the deployed artifact
+      cannot be established before the change deploys, because Amplify's redirect and
+      rewrite rules are app configuration and are not settable from this repository.
+      Today that path answers 301 to /api/health/ and then 404, and CloudFront has
+      cached that pair. What is known from live probes on 2026-09-09: the 301 is a
+      not-found fallback, not an unconditional rule on extensionless paths — GET /embed
+      returns 200 from the deployed embed.html, while GET /nope and GET /robots (no
+      matching object, since the resolver tries .html and not .txt) both 301. So the
+      resolver does look for an object first, and an object at the exact key `api/health`
+      has a real chance of being served. "Real chance" is not "verified": no extensionless
+      object has ever been deployed here, so the exact-key case is untested, and the
+      response's Content-Type would in any case have to come from customHttp.yml rather
+      than from an extension.
+    private_detail_location: null
+    affected_claims: []
+    affected_invariants:
+      - INV-CORS-001
+    impact: low
+    uncertainty: medium
+    mitigation:
+      - "The same payload also ships as api/health.json, an ordinary extensioned object with no routing question. If /api/health does not resolve after deploy, the fix is an Amplify console rewrite (/api/health -> /api/health.json, 200) — configuration by someone with console access, not another code change and deploy."
+      - "Amplify invalidates CloudFront on each deploy, so the cached 301/404 for this path clears with the change that introduces the artifact rather than needing a separate invalidation."
+      - "Nothing depends on the endpoint yet: registering links' statusUrl in ecosystem-registry.json is deliberately held in a separate change, blocked on the post-deploy capture, so the registry cannot advertise a pointer to a 404."
+    status: OPEN
+    disclosure: PUBLIC
+    owner: MosslandOpenDevs maintainers (Mossland)
+    accepted_by: null
+    accepted_at: null
+    review_after: 2026-09-16
+    # Resolves on one observation: curl -sSI https://links.moss.land/api/health after
+    # the next deploy. Close it with that capture appended to EV-HEADERS-001, or with
+    # the console rewrite plus the same capture.

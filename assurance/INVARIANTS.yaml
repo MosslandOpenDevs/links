@@ -54,7 +54,13 @@ invariants:
     intent:
       classification: INTENDED
       authority: "Owner intent review 2026-07-18 (MosslandOpenDevs maintainers); record: .agentic-assurance/adoption.yaml human_review + PR #6"
-    scope: All generated artifacts produced by build/generate.mjs.
+    scope: >-
+      The four projected files build/generate.mjs writes from the registry —
+      index.html, embed.html, llms.txt, sitemap.xml. The health artifact the same
+      run writes (api/health, api/health.json, added 2026-09-09) is out of scope
+      and always was in substance: it projects nothing from the registry, it
+      reports the build, and it is not committed. Recorded here so a later reader
+      does not mistake "all generated artifacts" for a check the diff never made.
     assumptions:
       - The committed generated files were produced by running build/generate.mjs against the committed registry.
     limitations:
@@ -144,11 +150,13 @@ invariants:
     owner: MosslandOpenDevs maintainers (Mossland)
 
   - id: INV-CORS-001
-    title: Only the public read-only registry is exposed cross-origin
+    title: Only public, read-only artifacts are exposed cross-origin
     statement: >-
-      The only responses served with Access-Control-Allow-Origin "*" are the public,
-      read-only ecosystem-registry.json and ecosystem-registry.schema.json; the site
-      exposes no credentialed, mutating, or private cross-origin surface.
+      The only responses served with Access-Control-Allow-Origin "*" are public,
+      read-only, non-credentialed artifacts — ecosystem-registry.json,
+      ecosystem-registry.schema.json, and the generated health artifact at
+      /api/health; the site exposes no credentialed, mutating, or private
+      cross-origin surface.
     severity: high
     intent:
       classification: INTENDED
@@ -158,18 +166,23 @@ invariants:
       - The site is a static deployment with no backend, cookies, or authenticated endpoints.
     limitations:
       - Verified by a one-time manual capture of the live responses (2026-07-18), not by an automated/continuous check; a later platform or config change could drop the scoping (see DEF-HTTP-001, RES-HEADERS-001).
+      - "The third path was added 2026-09-09 and is declared but not yet captured live: it cannot be, because the artifact it serves does not exist until the change deploys. Until that capture, /api/health is enforcement-declared and evidence-absent, and whether the path resolves at all is RES-HEALTH-ROUTE-001."
     enforcement:
       - "customHttp.yml lines 35-50: ACAO '*' and Cross-Origin-Resource-Policy 'cross-origin' are scoped to /ecosystem-registry.json and /ecosystem-registry.schema.json only; the global default-src 'self' / connect-src 'self' CSP (line 5) governs everything else."
+      - "customHttp.yml, the /api/health and /api/health.json blocks: the same two headers on the health artifact, which HEALTH_CONTRACT.md section 5 requires because a browser-side consumer cannot read a health endpoint without them. Widening the scope by one path does not widen what is exposed: the artifact is a constant, this site's build time, and a commit sha already public in this repository — it holds no registry data and nothing derived from the request."
     verification:
       - "Live response headers captured 2026-07-18 (assurance/evidence/EVIDENCE.md EV-HEADERS-001): /ecosystem-registry.json returns ACAO '*'; a normal page carries connect-src 'self' and form-action 'none'."
+      - "Pending for /api/health: `curl -sSI https://links.moss.land/api/health` after the 2026-09-09 change deploys, appended to EV-HEADERS-001."
     evidence:
       - "assurance/evidence/EVIDENCE.md EV-HEADERS-001 (served-response capture)"
       - "customHttp.yml:31-50 (registry CORS block, scoped by path pattern)"
       - "customHttp.yml:5 (connect-src 'self', form-action 'none')"
+      - "customHttp.yml, the /api/health blocks (health artifact CORS, scoped by path pattern) — declared 2026-09-09, capture pending"
     defeaters:
       - DEF-HTTP-001
     residuals:
       - RES-HEADERS-001
+      - RES-HEALTH-ROUTE-001
     status: VERIFIED
     disclosure: PUBLIC
     owner: MosslandOpenDevs maintainers (Mossland)

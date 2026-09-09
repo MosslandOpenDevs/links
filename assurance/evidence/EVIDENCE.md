@@ -55,6 +55,27 @@ register's references from going stale on every commit.
 
 **Result:** the served responses match `customHttp.yml` exactly, including the scoped CORS `*` on the registry and the `frame-ancestors` allow-list.
 
+### Pending capture — `/api/health` (declared 2026-09-09)
+
+The health artifact and its `customHttp.yml` block ship in the 2026-09-09 change, so
+the third `ACAO: *` path INV-CORS-001 now names has no capture yet — the artifact does
+not exist until the change deploys, which is why this is recorded as pending rather
+than left to be noticed later.
+
+- **Command (run after the change deploys):**
+  ```sh
+  curl -sSI https://links.moss.land/api/health
+  ```
+- **Expected:** `HTTP/2 200`, `content-type: application/json; charset=utf-8`,
+  `access-control-allow-origin: *`, `cross-origin-resource-policy: cross-origin`,
+  `cache-control: no-store`.
+- **Pre-change capture 2026-09-09 (before deploy):** `GET /api/health` → `HTTP/2 301`,
+  `location: /api/health/`; `GET /api/health/` → `HTTP/2 404`. This is the state the
+  change exists to fix, recorded so the post-deploy capture has a baseline.
+- **Also open:** if the response is still a 301, the extensionless object did not
+  resolve and an Amplify console rewrite is required — `RES-HEALTH-ROUTE-001`.
+  Registering links' `statusUrl` is blocked on this capture.
+
 ---
 
 ## EV-INTAKE-001 — private security intake is live
