@@ -32,28 +32,130 @@
     "note": "The editorial rubric of record: how a service's fields map to the trust chip shown on the page, and what each Passport stampClass signifies. Versioned separately from `version` (which versions this document's contents) so that a change in classification *meaning* is visible to consumers even when no entry changed. build/generate.mjs derives both the chip and the on-page legend from this object, so the rendered page cannot drift from the declared rubric. See assurance/RUBRIC.md for the changelog and the version-bump rules.",
     "chips": {
       "precedence": [
-        { "chip": "자료", "when": { "artifact": true } },
-        { "chip": "실험", "when": { "anyOf": [{ "chipOverride": true }, { "tier": "labs" }] } },
-        { "chip": "제3자", "when": { "anyOf": [{ "owner": "third-party" }, { "tier": "third_party" }] } },
-        { "chip": "쇼케이스", "when": { "tier": "showcase" } },
-        { "chip": "인텔리전스", "when": { "tier": "intelligence" } },
-        { "chip": "베타", "when": { "anyOf": [{ "tier": "official_beta" }, { "status": "beta" }] } },
-        { "chip": "공식", "when": "default" }
+        {
+          "chip": "자료",
+          "when": {
+            "artifact": true
+          }
+        },
+        {
+          "chip": "실험",
+          "when": {
+            "anyOf": [
+              {
+                "chipOverride": true
+              },
+              {
+                "tier": "labs"
+              }
+            ]
+          }
+        },
+        {
+          "chip": "제3자",
+          "when": {
+            "anyOf": [
+              {
+                "owner": "third-party"
+              },
+              {
+                "tier": "third_party"
+              }
+            ]
+          }
+        },
+        {
+          "chip": "쇼케이스",
+          "when": {
+            "tier": "showcase"
+          }
+        },
+        {
+          "chip": "인텔리전스",
+          "when": {
+            "tier": "intelligence"
+          }
+        },
+        {
+          "chip": "베타",
+          "when": {
+            "anyOf": [
+              {
+                "tier": "official_beta"
+              },
+              {
+                "status": "beta"
+              }
+            ]
+          }
+        },
+        {
+          "chip": "공식",
+          "when": "default"
+        }
       ],
-      "legendOrder": ["공식", "베타", "인텔리전스", "쇼케이스", "실험", "제3자", "자료"],
+      "legendOrder": [
+        "공식",
+        "베타",
+        "인텔리전스",
+        "쇼케이스",
+        "실험",
+        "제3자",
+        "자료"
+      ],
       "definitions": {
-        "공식": { "class": "chip", "aria": "공식 · 검증된 Mossland 링크", "ko": "Mossland 공식·검증 도메인과 채널", "en": "Verified Mossland domains and channels" },
-        "베타": { "class": "chip beta", "aria": "베타 · 운영 중인 공식 베타", "ko": "운영 중인 공식 베타", "en": "Official service in open beta" },
-        "인텔리전스": { "class": "chip intel", "aria": "인텔리전스 · 검증된 Mossland AI 분석·데이터", "ko": "Mossland AI 분석·데이터 서비스", "en": "Mossland AI intelligence & data" },
-        "쇼케이스": { "class": "chip show", "aria": "쇼케이스 · 검증된 Mossland 체험형 데모", "ko": "체험형 데모·월드 쇼케이스", "en": "Experiential demo & world showcase" },
-        "실험": { "class": "chip lab", "aria": "실험 · 아직 완성된 공식 제품 아님", "ko": "아직 완성된 공식 제품 아님", "en": "Experimental, not a finished official product" },
-        "제3자": { "class": "chip third", "aria": "제3자 · Mossland 미검증", "ko": "Mossland 미검증 외부 링크", "en": "Third-party, not verified by Mossland" },
-        "자료": { "class": "chip muted", "aria": "자료 · 개발자 데이터 파일", "ko": "개발자·데이터 파일", "en": "Developer & data files" }
+        "공식": {
+          "class": "chip",
+          "aria": "공식 · 검증된 Mossland 링크",
+          "ko": "Mossland 공식·검증 도메인과 채널",
+          "en": "Verified Mossland domains and channels"
+        },
+        "베타": {
+          "class": "chip beta",
+          "aria": "베타 · 운영 중인 공식 베타",
+          "ko": "운영 중인 공식 베타",
+          "en": "Official service in open beta"
+        },
+        "인텔리전스": {
+          "class": "chip intel",
+          "aria": "인텔리전스 · 검증된 Mossland AI 분석·데이터",
+          "ko": "Mossland AI 분석·데이터 서비스",
+          "en": "Mossland AI intelligence & data"
+        },
+        "쇼케이스": {
+          "class": "chip show",
+          "aria": "쇼케이스 · 검증된 Mossland 체험형 데모",
+          "ko": "체험형 데모·월드 쇼케이스",
+          "en": "Experiential demo & world showcase"
+        },
+        "실험": {
+          "class": "chip lab",
+          "aria": "실험 · 아직 완성된 공식 제품 아님",
+          "ko": "아직 완성된 공식 제품 아님",
+          "en": "Experimental, not a finished official product"
+        },
+        "제3자": {
+          "class": "chip third",
+          "aria": "제3자 · Mossland 미검증",
+          "ko": "Mossland 미검증 외부 링크",
+          "en": "Third-party, not verified by Mossland"
+        },
+        "자료": {
+          "class": "chip muted",
+          "aria": "자료 · 개발자 데이터 파일",
+          "ko": "개발자·데이터 파일",
+          "en": "Developer & data files"
+        }
       }
     },
     "lifecycle": {
       "note": "MIP-1 (Mossland DAO, agora.moss.land) — 공개 서비스·저장소 생명주기 정책. The lifecycle axis records the maintenance promise a service carries; `status` separately records observed availability at a point in time. Article 1 scopes the obligation to public *.moss.land services and deployment-linked public repositories, so out-of-scope entries (third-party markets, off-domain channels, data artifacts) carry no lifecycle. Article 4 makes this registry the single source of truth for these states, reviewed monthly.",
-      "order": ["core", "beta", "lab", "archive"],
+      "order": [
+        "core",
+        "beta",
+        "lab",
+        "archive"
+      ],
       "unstaffedCap": "lab",
       "unstaffedNote": "MIP-1 Article 3 — a service without a secondMaintainer is capped at `unstaffedCap`. Holding it above that cap is an exception and requires `lifecycleReason`.",
       "states": {
@@ -62,14 +164,19 @@
           "en": "Always-on",
           "promiseKo": "담당자·부담당자 지정 · 장애 대응 · 변경은 예고 후",
           "promise": "Maintainer and second maintainer, both with deploy and recovery rights; incident response; changes pre-announced",
-          "requires": ["maintainer", "secondMaintainer"]
+          "requires": [
+            "maintainer",
+            "secondMaintainer"
+          ]
         },
         "beta": {
           "ko": "운영 중, 변동 가능",
           "en": "Running, subject to change",
           "promiseKo": "담당자 지정 · 기능·데이터가 바뀔 수 있음",
           "promise": "Maintainer assigned; features and data may change",
-          "requires": ["maintainer"]
+          "requires": [
+            "maintainer"
+          ]
         },
         "lab": {
           "ko": "실험, best-effort",
@@ -83,17 +190,37 @@
           "en": "Ended, preserved",
           "promiseKo": "신규 개발 중단 · 기록은 읽기 전용으로 보존",
           "promise": "Development ended; the record is preserved read-only. Archive is not deletion — removing a domain, its data, or its repository requires its own proposal.",
-          "requires": ["lifecycleReason"]
+          "requires": [
+            "lifecycleReason"
+          ]
         }
       }
     },
     "stampClasses": {
-      "core": { "meaning": "identity / holder", "ko": "신원·홀더" },
-      "governance": { "meaning": "binding decision acts", "ko": "구속력 있는 의사결정 행위" },
-      "participation": { "meaning": "recurring community activity", "ko": "반복적 커뮤니티 활동" },
-      "connect": { "meaning": "lightweight verified-domain visit", "ko": "검증된 도메인 방문(경량)" },
-      "lab": { "meaning": "experimental observer", "ko": "실험 관찰자" },
-      "showcase": { "meaning": "experience visit", "ko": "체험 방문" }
+      "core": {
+        "meaning": "identity / holder",
+        "ko": "신원·홀더"
+      },
+      "governance": {
+        "meaning": "binding decision acts",
+        "ko": "구속력 있는 의사결정 행위"
+      },
+      "participation": {
+        "meaning": "recurring community activity",
+        "ko": "반복적 커뮤니티 활동"
+      },
+      "connect": {
+        "meaning": "lightweight verified-domain visit",
+        "ko": "검증된 도메인 방문(경량)"
+      },
+      "lab": {
+        "meaning": "experimental observer",
+        "ko": "실험 관찰자"
+      },
+      "showcase": {
+        "meaning": "experience visit",
+        "ko": "체험 방문"
+      }
     },
     "stampWeighting": "Not defined here. This registry declares what each stampClass signifies, not a numeric weight; the weighting policy belongs to Passport. rubricVersion is the signal that tells a consumer these meanings changed."
   },
@@ -108,6 +235,7 @@
       "labelKo": "공식 홈페이지",
       "section": "official",
       "status": "operational",
+      "pipeline": "stream",
       "lifecycle": "beta",
       "maintainer": "MosslandOpenDevs",
       "lifecycleReason": "MIP-1 Annex A Core candidate, published as Beta per Annex A's own rule: second maintainer not yet designated (Art. 3 exception, recorded here). Promote to core once maintainer and secondMaintainer are both named individuals with deploy and recovery rights.",
@@ -129,6 +257,7 @@
       "labelKo": "공식 공시",
       "section": "official",
       "status": "operational",
+      "pipeline": "batch",
       "lifecycle": "beta",
       "maintainer": "MosslandOpenDevs",
       "lifecycleReason": "MIP-1 Annex A Core candidate, published as Beta per Annex A's own rule: second maintainer not yet designated (Art. 3 exception, recorded here). Promote to core once maintainer and secondMaintainer are both named individuals with deploy and recovery rights.",
@@ -150,6 +279,7 @@
       "labelKo": "지갑 인증·참여 증명",
       "section": "participation",
       "status": "beta",
+      "pipeline": "batch",
       "lifecycle": "beta",
       "maintainer": "MosslandOpenDevs",
       "lifecycleReason": "MIP-1 Annex A Core candidate, published as Beta per Annex A's own rule: second maintainer not yet designated (Art. 3 exception, recorded here). Promote to core once maintainer and secondMaintainer are both named individuals with deploy and recovery rights.",
@@ -172,6 +302,7 @@
       "labelKo": "공개 의사결정",
       "section": "participation",
       "status": "operational",
+      "pipeline": "none",
       "lifecycle": "beta",
       "maintainer": "MosslandOpenDevs",
       "lifecycleReason": "MIP-1 Annex A Core candidate, published as Beta per Annex A's own rule: second maintainer not yet designated (Art. 3 exception, recorded here). Promote to core once maintainer and secondMaintainer are both named individuals with deploy and recovery rights.",
@@ -194,6 +325,7 @@
       "labelKo": "공식 링크 모음",
       "section": null,
       "status": "operational",
+      "pipeline": "none",
       "lifecycle": "beta",
       "maintainer": "MosslandOpenDevs",
       "lifecycleReason": "MIP-1 Annex A Core candidate, published as Beta per Annex A's own rule: second maintainer not yet designated (Art. 3 exception, recorded here). Promote to core once maintainer and secondMaintainer are both named individuals with deploy and recovery rights.",
@@ -215,6 +347,7 @@
       "labelKo": "지갑이 신원인 Web3 가상세계",
       "section": "participation",
       "status": "beta",
+      "pipeline": "none",
       "lifecycle": "beta",
       "maintainer": "MosslandOpenDevs",
       "lifecycleReason": "MIP-1 Annex A Beta. No second maintainer yet (Art. 3 exception, recorded here).",
@@ -245,6 +378,7 @@
       "status": "operational",
       "statusVerifiedAt": "2026-08-23T01:01:52Z",
       "statusUrl": "https://alpha.moss.land/api/health",
+      "pipeline": "batch",
       "lifecycle": "beta",
       "maintainer": "MosslandOpenDevs",
       "lifecycleReason": "MIP-1 Annex A Beta. No second maintainer yet (Art. 3 exception, recorded here).",
@@ -268,6 +402,7 @@
       "section": "ecosystem",
       "status": "operational",
       "statusUrl": "https://signalmap.moss.land/api/health",
+      "pipeline": "batch",
       "lifecycle": "beta",
       "maintainer": "MosslandOpenDevs",
       "lifecycleReason": "MIP-1 Annex A Beta, Core-track: promotion to core requires a named maintainer and second maintainer (Art. 2) and sustained operation of the live signal feed. No second maintainer yet (Art. 3 exception, recorded here).",
@@ -290,6 +425,7 @@
       "section": "ecosystem",
       "status": "beta",
       "statusUrl": "https://signal.moss.land/api/health",
+      "pipeline": "batch",
       "lifecycle": "lab",
       "passportEligible": false,
       "stampType": null,
@@ -311,6 +447,7 @@
       "labelKo": "이슈별 미디어 성향 지도",
       "section": "ecosystem",
       "status": "deprecated",
+      "pipeline": "none",
       "lifecycle": "archive",
       "lifecycleReason": "MIP-1 Annex A Archive. Absorbed into SignalMap 2026-08-21; DNS records deleted, repository archived (MosslandCore/mossland-media-kr). Record preserved read-only — archive is not deletion.",
       "passportEligible": false,
@@ -333,6 +470,7 @@
       "section": "ecosystem",
       "status": "operational",
       "statusUrl": "https://city.moss.land/api/health",
+      "pipeline": "batch",
       "lifecycle": "lab",
       "passportEligible": true,
       "stampType": "city_explorer",
@@ -353,6 +491,7 @@
       "section": "ecosystem",
       "status": "operational",
       "statusUrl": "https://npc.moss.land/api/health",
+      "pipeline": "demand",
       "lifecycle": "lab",
       "passportEligible": true,
       "stampType": "npc_visitor",
@@ -372,6 +511,7 @@
       "labelKo": "유행 AI 결과물 따라 만들기",
       "section": "ecosystem",
       "status": "operational",
+      "pipeline": "none",
       "lifecycle": "lab",
       "passportEligible": true,
       "stampType": "recipe_reader",
@@ -379,7 +519,8 @@
       "sourceOfTruth": null,
       "lastDataAt": null,
       "owner": "mossland",
-      "hidden": false
+      "hidden": false,
+      "statusUrl": "https://recipe.moss.land/api/health"
     },
     {
       "id": "ao",
@@ -393,6 +534,7 @@
       "status": "operational",
       "statusVerifiedAt": "2026-08-23T01:01:52Z",
       "statusUrl": "https://ao.moss.land/api/status",
+      "pipeline": "batch",
       "lifecycle": "lab",
       "passportEligible": false,
       "stampType": null,
@@ -413,6 +555,7 @@
       "labelKo": "AI 에이전트 거버넌스 토론장",
       "section": "ecosystem",
       "status": "operational",
+      "pipeline": "batch",
       "lifecycle": "archive",
       "lifecycleReason": "MIP-1 Annex A Archive. passportEligible withdrawn with archival (owner decision 2026-08-23): an ended, best-effort-frozen service should not back new Passport ecosystem stamps. Domain and record preserved read-only. Scheduled report generation stopped 2026-09-02 (last scheduled report: Monthly August 2026); published reports stay as records, corrections only.",
       "passportEligible": false,
@@ -434,6 +577,7 @@
       "section": "ecosystem",
       "status": "operational",
       "statusUrl": "https://bridge.moss.land/api/health",
+      "pipeline": "batch",
       "lifecycle": "lab",
       "passportEligible": true,
       "stampType": "research_visitor",
@@ -453,6 +597,7 @@
       "labelKo": "AI 거버넌스 실시간 대시보드",
       "section": "ecosystem",
       "status": "operational",
+      "pipeline": "none",
       "lifecycle": "lab",
       "passportEligible": true,
       "stampType": "monitor_observer",
@@ -460,7 +605,8 @@
       "sourceOfTruth": null,
       "lastDataAt": null,
       "owner": "mossland",
-      "hidden": false
+      "hidden": false,
+      "statusUrl": "https://monitor.moss.land/api/health"
     },
     {
       "id": "github-mossland",
