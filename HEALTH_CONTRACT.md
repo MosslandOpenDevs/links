@@ -115,3 +115,23 @@ A service that serves this endpoint gets a `statusUrl` in `ecosystem-registry.js
 The registry does not poll it and does not derive `status` from it — `statusUrl` is
 a pointer, not a measurement. That non-goal is deliberate and is documented in
 `ecosystem-registry.schema.json`.
+
+## Checking it
+
+`.github/scripts/check-health-conformance.py` probes every `statusUrl` in the
+registry against the rules above and runs daily from `.github/workflows/
+health-conformance.yml`. It sends a foreign `Origin`, because a service that
+reflects only allow-listed origins passes a same-origin `curl` and still fails
+every real consumer.
+
+It lives here rather than in each service's repo because conformance is mostly
+not a property of any service's source: the CORS header usually comes from
+nginx, Caddy or an API gateway, and every service's own deploy gate probes an
+origin *behind* that edge. Measured 2026-09-10, `passport`'s app sends no
+`Access-Control-Allow-Origin` at all — it arrives from a Caddyfile on the box.
+
+Services that do not yet satisfy a rule are listed in the script's `EXCEPTIONS`
+with the reason and who can fix it. The build goes red if one of them starts
+conforming, so an entry cannot outlive its reason. A service that simply does
+not answer is reported and skipped: this checks the contract, not uptime, and a
+gate that goes red for an outage is a gate people learn to ignore.
