@@ -1,0 +1,47 @@
+# Does the live ecosystem still hold HEALTH_CONTRACT.md?
+#
+# Deliberately not `on: push`. This probes production, so a push-triggered run
+# would report the state of the world at the moment someone edited a README —
+# and would go red for an outage that has nothing to do with the change. Daily
+# is the right cadence for drift that arrives from outside any repository:
+# an nginx edit, a Caddyfile restored from a backup, an AWS console change.
+#
+# It lives here because conformance is not a property of any service's source.
+# The CORS header usually comes from the edge, not the app, and every service's
+# own deploy gate probes an origin *behind* that edge — so each repo's CI is
+# structurally blind to this. The registry is here, so the check is here.
+name: health conformance
+
+on:
+  schedule:
+    # 03:00 UTC — noon KST, when someone is awake to act on a red.
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+  pull_request:
+    # Only when the check or the thing it reads changes. A registry edit that
+    # adds a statusUrl should be probed before it merges, not the day after.
+    paths:
+      - "ecosystem-registry.json"
+      - "HEALTH_CONTRACT.md"
+      - ".github/scripts/check-health-conformance.py"
+      - ".github/workflows/health-conformance.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # No dependencies on purpose: urllib only. A daily probe that installs
+      # from PyPI can fail for reasons that have nothing to do with what it
+      # measures, and a check nobody trusts is a check nobody reads.
+      - name: Every registered /api/health holds the contract
+        run: python3 .github/scripts/check-health-conformance.py
