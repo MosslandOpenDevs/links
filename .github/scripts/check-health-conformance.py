@@ -91,12 +91,6 @@ EXCEPTIONS: dict[str, dict] = {
                "lifecycle: archive — owner decision 2026-08-23, the code is frozen. "
                "Deliberately left visible rather than mapped to ok.",
     },
-    "signalmap": {
-        "rules": {1, 3, 5},
-        "why": "no ACAO, no `service`, no `timestamp`. Fix merged in "
-               "MosslandCore/signalmap#134; signalmap is manual-deploy on its own box, "
-               "so remove this entry once that deploy lands.",
-    },
 }
 
 # Rule 4's documented exception: these answer 503 when unhealthy because a probe
