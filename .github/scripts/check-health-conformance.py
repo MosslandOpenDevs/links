@@ -61,36 +61,32 @@ PROBE_ORIGIN = "https://monitor.moss.land"
 #
 # Keys are registry ids; values are the rule numbers from HEALTH_CONTRACT.md
 # that entry is exempt from, and why.
-# RULE 6 IS OPEN ACROSS MOST OF THE ECOSYSTEM, measured 2026-09-10. Seven of the
-# sixteen send no `Cache-Control` at all: the 2026-09-09 nginx session that added
-# `Access-Control-Allow-Origin` and `Vary` to eight vhosts did not add this one,
-# and no app sets it either. Without it a browser applies heuristic freshness, so
-# a consumer polling every 60s can be served an answer it already had — which is
-# the one thing rule 6 exists to prevent. It is recorded rather than enforced
-# because a gate that is red on the day it ships is a gate nobody reads; fixing it
-# is one `add_header Cache-Control "no-cache" always;` per vhost, on the box
-# reachable as `ssh mossland`. Remove each entry as it lands — and note the check
-# goes red if you fix one without removing it, which is the point.
+# Rule 6 was open across most of the ecosystem when this check was written —
+# seven of the sixteen sent no `Cache-Control` at all, because the 2026-09-09
+# nginx session that added `Access-Control-Allow-Origin` and `Vary` to eight
+# vhosts did not add this one. Closed 2026-09-10 by adding
+# `add_header Cache-Control "no-cache" always;` to the six vhosts on the box
+# reachable as `ssh mossland` (alpha needed a `location = /api/health` block
+# created for it — its ACAO comes from the app, so that stays untouched there).
+# `city` is the one that remains, and it is cached deliberately by its own app.
 EXCEPTIONS: dict[str, dict] = {
-    "alpha":  {"rules": {6}, "why": "no Cache-Control at the edge — see the note above"},
-    "signal": {"rules": {6}, "why": "no Cache-Control at the edge — see the note above"},
-    "npc":    {"rules": {1, 3, 6}, "why": "no `service`, no `timestamp`, no Cache-Control. "
-                                          "Manual-deploy service, no local checkout."},
-    "ao":     {"rules": {6}, "why": "no Cache-Control at the edge — see the note above"},
-    "bridge": {"rules": {6}, "why": "no Cache-Control at the edge — see the note above"},
-    "city": {
-        "rules": {1, 2, 3, 6},
-        "why": "its /api/health is the cross-service aggregate (checkedAt/summary/services), "
-               "not a report about itself, and it is served `public, s-maxage=60, "
-               "stale-while-revalidate=120` from its own Next app — the only entry here "
-               "that is cached on purpose. Manual-deploy service, no local checkout.",
+    "npc": {
+        "rules": {1, 3},
+        "why": "no `service`, no `timestamp`. Manual-deploy service, no local checkout.",
     },
     "recipe": {
         "rules": {1},
         "why": "no `service`. Manual-deploy service, no local checkout.",
     },
+    "city": {
+        "rules": {1, 2, 3, 6},
+        "why": "its /api/health is the cross-service aggregate (checkedAt/summary/services), "
+               "not a report about itself, and its own Next app serves it `public, s-maxage=60, "
+               "stale-while-revalidate=120` — the one entry here cached on purpose, and an app "
+               "change rather than an nginx one. Manual-deploy service, no local checkout.",
+    },
     "algora": {
-        "rules": {1, 2, 6},
+        "rules": {1, 2},
         "why": 'answers status "running", outside the enum, and sends no `service`. '
                "lifecycle: archive — owner decision 2026-08-23, the code is frozen. "
                "Deliberately left visible rather than mapped to ok.",
