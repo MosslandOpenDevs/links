@@ -390,3 +390,14 @@ residuals:
     # Resolves on one observation: curl -sSI https://links.moss.land/api/health after
     # the next deploy. Close it with that capture appended to EV-HEADERS-001, or with
     # the console rewrite plus the same capture.
+    resolution: >-
+      CLOSED 2026-09-10. The question was settled by deploying and then measuring, not by
+      argument: the extensionless object was NOT served. /api/health answered 301 to
+      /api/health/ and then 404, exactly the fallback shape described above, while the
+      .json mitigation served correctly throughout. An Amplify rewrite rule
+      (/api/health -> /api/health.json, 200) was added in the console by the app owner,
+      and the contract path now returns 200 application/json with
+      Access-Control-Allow-Origin "*", verified live. The registry statusUrl for `links`
+      moved from the .json key to the contract path in the same change. The residual's
+      own prediction was therefore wrong in the direction it flagged as uncertain, which
+      is the outcome the mitigation existed for.

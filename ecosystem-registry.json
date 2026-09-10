@@ -329,7 +329,7 @@
       "labelKo": "공식 링크 모음",
       "section": null,
       "status": "operational",
-      "statusUrl": "https://links.moss.land/api/health.json",
+      "statusUrl": "https://links.moss.land/api/health",
       "pipeline": "none",
       "lifecycle": "beta",
       "maintainer": "MosslandOpenDevs",
