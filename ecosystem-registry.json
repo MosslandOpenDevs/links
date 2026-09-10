@@ -305,6 +305,7 @@
       "labelKo": "공개 의사결정",
       "section": "participation",
       "status": "operational",
+      "statusUrl": "https://agora.moss.land/api/health",
       "pipeline": "none",
       "lifecycle": "beta",
       "maintainer": "MosslandOpenDevs",
