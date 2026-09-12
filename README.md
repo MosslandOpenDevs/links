@@ -1,6 +1,12 @@
 # Mossland Verified Links
 
-[![registry CI](https://github.com/MosslandOpenDevs/links/actions/workflows/registry.yml/badge.svg)](https://github.com/MosslandOpenDevs/links/actions/workflows/registry.yml)
+<!-- opendevs-badges:start -->
+[![Lifecycle: Beta](https://img.shields.io/badge/Lifecycle-Beta-3b82f6?style=flat)](https://links.moss.land/ecosystem-registry.json)
+[![CI](https://github.com/MosslandOpenDevs/links/actions/workflows/registry.yml/badge.svg)](https://github.com/MosslandOpenDevs/links/actions/workflows/registry.yml)
+[![Website: links.moss.land](https://img.shields.io/badge/Website-links.moss.land-2563eb?style=flat)](https://links.moss.land/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-64748b?style=flat)](https://github.com/MosslandOpenDevs/links/blob/main/LICENSE)
+<!-- opendevs-badges:end -->
+
 [![assurance](https://github.com/MosslandOpenDevs/links/actions/workflows/assurance.yml/badge.svg)](https://github.com/MosslandOpenDevs/links/actions/workflows/assurance.yml)
 
 The official **Verified Links** registry for `https://links.moss.land`.
