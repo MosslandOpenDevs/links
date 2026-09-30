@@ -441,7 +441,7 @@
       "lastDataAt": null,
       "owner": "mossland",
       "hidden": false,
-      "note": "Research preview per the 2026-08 consolidation plan (crowd/AI/smart-money probability comparison; the planned hub to absorb Alpha's brief/ask). Observed 2026-09-30 in a real browser (2026-09 monthly review): the home page shows its counters (54 tracked issues, 54 AI forecasts, 6 focus areas) and lists live questions, and /api/health reports signalCount 54; the server-rendered HTML still prints the counters as 00 until the page fills them in. This supersedes the 2026-08-21 observation of 00 counters and an empty signal feed. The explicit 실험 chip is kept while Signal remains a lab-state research preview.",
+      "note": "Research preview per the 2026-08 consolidation plan (crowd/AI/smart-money probability comparison; the planned hub to absorb Alpha's brief/ask). Observed 2026-09-30 in a real browser (2026-09 monthly review): the home page shows its counters (54 tracked issues, 54 AI forecasts, 6 focus areas) and lists live questions, and /api/health reports signalCount 54; the server-rendered HTML still prints the counters as 00 until the page fills them in. This supersedes the 2026-08-21 observation of 00 counters and an empty signal feed, so the README's empty-but-live reason for the explicit 실험 chip no longer applies. The chip is kept for now because Signal's MIP-1 lifecycle is lab; whether to drop it is left to the 2026-10 review.",
       "chip": "실험"
     },
     {
