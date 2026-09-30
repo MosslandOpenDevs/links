@@ -2,7 +2,7 @@
   "$schema": "https://links.moss.land/ecosystem-registry.schema.json",
   "version": "1.1.1",
   "generatedAt": "2026-08-21T00:00:00+09:00",
-  "lifecycleReviewedAt": "2026-08-23T06:30:00Z",
+  "lifecycleReviewedAt": "2026-09-30T06:40:00Z",
   "owner": "mossland",
   "registry": "https://links.moss.land/",
   "description": "Mossland Verified Links — the official directory of verified Mossland domains, ecosystem apps, labs, official channels, and third-party market references. Anything not listed here should be treated as unofficial.",
@@ -441,7 +441,7 @@
       "lastDataAt": null,
       "owner": "mossland",
       "hidden": false,
-      "note": "Research preview per the 2026-08 consolidation plan (crowd/AI/smart-money probability comparison; the planned hub to absorb Alpha's brief/ask). Explicit 실험 chip: observed 2026-08-21 in a real browser, the home page renders 00 counters and an empty signal feed while /accuracy shows resolved questions — keep the chip until the home shows real data.",
+      "note": "Research preview per the 2026-08 consolidation plan (crowd/AI/smart-money probability comparison; the planned hub to absorb Alpha's brief/ask). Observed 2026-09-30 in a real browser (2026-09 monthly review): the home page shows its counters (54 tracked issues, 54 AI forecasts, 6 focus areas) and lists live questions, and /api/health reports signalCount 54; the server-rendered HTML still prints the counters as 00 until the page fills them in. This supersedes the 2026-08-21 observation of 00 counters and an empty signal feed, so the README's empty-but-live reason for the explicit 실험 chip no longer applies. The chip is kept for now because Signal's MIP-1 lifecycle is lab; whether to drop it is left to the 2026-10 review.",
       "chip": "실험"
     },
     {
