@@ -24,7 +24,7 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 - [NPC](https://npc.moss.land/): Chat with AI residents (lifecycle: lab)
 - [Recipe](https://recipe.moss.land/): Recreate trending AI outputs (prompt gallery) (lifecycle: lab)
 - [MOSS.AO](https://ao.moss.land/): AI agent orchestration engine (lifecycle: lab)
-- [Algora](https://algora.moss.land/en): Multi-agent governance deliberation (lab) (lifecycle: archive)
+- [Algora](https://algora.moss.land/en): Multi-agent deliberation archive (lifecycle: archive)
 - [BRIDGE](https://bridge.moss.land/): Physical AI governance research (lifecycle: lab)
 - [Governance Monitor](https://monitor.moss.land/): Live dashboard for the AO·Algora·BRIDGE governance stack (lifecycle: lab)
 
