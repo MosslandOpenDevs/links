@@ -427,8 +427,8 @@
       "domain": "signal.moss.land",
       "url": "https://signal.moss.land/",
       "tier": "intelligence",
-      "label": "On-chain prediction insights (research preview)",
-      "labelKo": "온체인 예측 인사이트",
+      "label": "Manifold public probabilities and AI estimates (research preview)",
+      "labelKo": "Manifold 공개 확률·AI 추정 비교",
       "section": "ecosystem",
       "status": "beta",
       "statusUrl": "https://signal.moss.land/api/health",
@@ -441,7 +441,7 @@
       "lastDataAt": null,
       "owner": "mossland",
       "hidden": false,
-      "note": "Research preview per the 2026-08 consolidation plan (crowd/AI/smart-money probability comparison; the planned hub to absorb Alpha's brief/ask). Observed 2026-09-30 in a real browser (2026-09 monthly review): the home page shows its counters (54 tracked issues, 54 AI forecasts, 6 focus areas) and lists live questions, and /api/health reports signalCount 54; the server-rendered HTML still prints the counters as 00 until the page fills them in. This supersedes the 2026-08-21 observation of 00 counters and an empty signal feed, so the README's empty-but-live reason for the explicit 실험 chip no longer applies. The chip is kept for now because Signal's MIP-1 lifecycle is lab; whether to drop it is left to the 2026-10 review.",
+      "note": "Research preview comparing public probabilities from Manifold’s play-money forecasting community with AI estimates. The current feed has no linked on-chain markets or whale positions. Accuracy is reported with resolved-question sample counts; neither source is claimed to be superior.",
       "chip": "실험"
     },
     {
