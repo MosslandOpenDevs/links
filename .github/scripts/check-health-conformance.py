@@ -85,12 +85,6 @@ EXCEPTIONS: dict[str, dict] = {
                "stale-while-revalidate=120` — the one entry here cached on purpose, and an app "
                "change rather than an nginx one. Manual-deploy service, no local checkout.",
     },
-    "algora": {
-        "rules": {1, 2},
-        "why": 'answers status "running", outside the enum, and sends no `service`. '
-               "lifecycle: archive — owner decision 2026-08-23, the code is frozen. "
-               "Deliberately left visible rather than mapped to ok.",
-    },
 }
 
 # Rule 4's documented exception: these answer 503 when unhealthy because a probe
