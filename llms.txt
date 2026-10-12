@@ -19,7 +19,7 @@ Mossland is infrastructure for the AI civilization. This file lists the verified
 > Mossland's ecosystem services. Anything marked 실험 (Experimental) is not yet a finished official product or governance.
 - [Alpha](https://alpha.moss.land/): Crypto, macro & geopolitics media curation (lifecycle: beta)
 - [Signal Map](https://signalmap.moss.land/): YouTuber opinion & issue map (lifecycle: beta)
-- [Mossland Signal](https://signal.moss.land/): On-chain prediction insights (research preview) (lifecycle: lab)
+- [Mossland Signal](https://signal.moss.land/): Manifold public probabilities and AI estimates (research preview) (lifecycle: lab)
 - [City](https://city.moss.land/): Self-running AI city (lifecycle: lab)
 - [NPC](https://npc.moss.land/): Chat with AI residents (lifecycle: lab)
 - [Recipe](https://recipe.moss.land/): Recreate trending AI outputs (prompt gallery) (lifecycle: lab)
