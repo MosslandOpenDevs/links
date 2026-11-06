@@ -2,7 +2,7 @@
   "$schema": "https://links.moss.land/ecosystem-registry.schema.json",
   "version": "1.1.1",
   "generatedAt": "2026-08-21T00:00:00+09:00",
-  "lifecycleReviewedAt": "2026-09-30T06:40:00Z",
+  "lifecycleReviewedAt": "2026-11-02T06:57:06Z",
   "owner": "mossland",
   "registry": "https://links.moss.land/",
   "description": "Mossland Verified Links — the official directory of verified Mossland domains, ecosystem apps, labs, official channels, and third-party market references. Anything not listed here should be treated as unofficial.",
@@ -394,7 +394,7 @@
       "sourceOfTruth": "alpha-canonical-store",
       "lastDataAt": null,
       "owner": "mossland",
-      "note": "Serving live data: /api/health?strict=1 returns status ok, db ok, worst_status ok over 1642 indexed pages, and sitemap.xml lists same-day entries (verified 2026-08-23). Supersedes the 2026-07-06 observation of an empty data backend and 404ing sitemap URLs, which the registry carried until this correction.",
+      "note": "Serving live data: /api/health?detail=1&strict=1 returned status ok, db ok, worst_status warn (11 of 12 subsystems ok; the warn is db_backup) and seo_pages 2540 (observed 2026-11-02). Supersedes the 2026-08-23 observation of worst_status ok over 1642 indexed pages.",
       "hidden": false
     },
     {
